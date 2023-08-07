@@ -33,19 +33,19 @@ export class EditeurComponent implements OnInit {
   dialogErrorMessage: any;
 
 
-  constructor(private editeurService:EditeurService,
+  constructor(private editeurService: EditeurService,
     private confirmationService: ConfirmationService,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.load();
   }
 
   load(event?: LazyLoadEvent) {
-     this.isLoading = true;
-    this.editeurService.getAll(event).subscribe(response => {
+    this.isLoading = true;
+    this.editeurService.getAll().subscribe(response => {
       this.isLoading = false;
-      this.editeurs = response.editeurs;
+      this.editeurs = response.result as Editeur[];
     }, error => {
       this.message = { severity: 'error', summary: error.error };
       console.error(JSON.stringify(error));
@@ -53,7 +53,7 @@ export class EditeurComponent implements OnInit {
   }
 
   //Détail
-  onInfo(selection:any){
+  onInfo(selection: any) {
     /*localStorage.removeItem("editeur");
     localStorage.setItem("editeur",JSON.stringify(selection));
     this.router.navigate(['/admin/sous-category']);*/
@@ -68,8 +68,8 @@ export class EditeurComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
+  //Creation
+  onCreate() {
     this.editeur = {};
     this.clearDialogMessages();
     this.form.resetForm();
@@ -80,22 +80,34 @@ export class EditeurComponent implements OnInit {
   create() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.editeurService.create(this.editeur).subscribe(response => {
-      if (this.editeurs.length !== this.recordsPerPage) {
-        this.editeurs.push(response);
-        this.editeurs = this.editeurs.slice();
+    this.editeurService.createOrUpdate(this.editeur).subscribe(response => {
+      if (response.code == 200) {
+        if (this.editeurs.length !== this.recordsPerPage) {
+          this.editeurs.push(response.result as Editeur);
+          this.editeurs = this.editeurs.slice();
+        }
+        this.totalRecords++;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+
       }
-      this.totalRecords++;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Editeur créé avec succès' });
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+
+
     }, error => this.handleError(error));
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
+  // Edit
+  onEdit(selection: any) {
+    console.log(selection);
     this.editeur = Object.assign({}, selection);
     this.clearDialogMessages();
     this.showDialog = true;
@@ -104,12 +116,22 @@ export class EditeurComponent implements OnInit {
   edit() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.editeurService.update(this.editeur).subscribe(response => {
-      let index = this.editeurs.findIndex(editeur => editeur.id === response.id);
-      this.editeurs[index] = response;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Editeur modifié avec succès' });
+    this.editeurService.createOrUpdate(this.editeur).subscribe(response => {
+
+      if (response.code == 200) {
+        let editeurReponse = response.result as Editeur
+        let index = this.editeurs.findIndex(editeur => editeur.id === editeurReponse.id);
+        this.editeurs[index] = editeurReponse;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: 'Editeur modifié avec succès' });
+      }
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
     }, error => this.handleError(error));
   }
 
@@ -119,7 +141,7 @@ export class EditeurComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -128,15 +150,28 @@ export class EditeurComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
+  delete(selection: any) {
     console.log(selection.id);
     this.isOpInProgress = true;
-    this.editeurService.delete(selection.id).subscribe(() => {
-      this.editeurs = this.editeurs.filter(editeur => editeur.id !== selection.id);
-      selection = null;
-      this.isOpInProgress = false;
-      this.totalRecords--;
-      this.showMessage({ severity: 'success', summary: 'Editeur supprimé avec succès' });
+    this.editeurService.delete(selection.id).subscribe((response) => {
+
+      if (response.code == 200) {
+        this.editeurs = this.editeurs.filter(editeur => editeur.id !== selection.id);
+        selection = null;
+        this.isOpInProgress = false;
+        this.totalRecords--;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+        window.location.reload()
+      }
+      else {
+        this.isOpInProgress = false;
+        selection = null;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+
+
     }, error => {
       console.error(JSON.stringify(error));
       this.isOpInProgress = false;

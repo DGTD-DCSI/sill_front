@@ -32,12 +32,12 @@ export class SousCategorieComponent implements OnInit {
   showDialog = false;
   message: any;
   dialogErrorMessage: any;
-  sousCat: any;
+  categorieMereLibelle!: string;
 
 
-  constructor(private categorieService:CategorieService,
+  constructor(private categorieService: CategorieService,
     private confirmationService: ConfirmationService,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.load();
@@ -45,19 +45,29 @@ export class SousCategorieComponent implements OnInit {
   }
 
 
-  load(event?: LazyLoadEvent){
-    const data = localStorage.getItem("categorie");
-    if(data){
-      this.sousCat = JSON.parse(data);
-      this.categories = this.sousCat.sousCategories;
+  load(event?: LazyLoadEvent) {
+    const categorieID = localStorage.getItem("categorieID");
+    const categorieLibelle = localStorage.getItem("categorieLibelle");
+
+    if (categorieID && categorieLibelle) {
+      this.categorieMereLibelle = categorieLibelle;
+      this.categorieService.getSouscategorieById(localStorage.getItem("categorieID")).subscribe(p => {
+        if (p.code == 200) {
+          this.categories = p.result as Categorie[];
+        }
+        else {
+
+        }
+      })
+
     }
-  } 
+  }
 
   loadCategoriesMere(event?: LazyLoadEvent) {
-     this.isLoading = true;
+    this.isLoading = true;
     this.categorieService.getAll(event).subscribe(response => {
       this.isLoading = false;
-      this.categoriesMeres = response.categories;
+      this.categoriesMeres = response.result as Categorie[];
     }, error => {
       this.message = { severity: 'error', summary: error.error };
       console.error(JSON.stringify(error));
@@ -75,8 +85,8 @@ export class SousCategorieComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
+  //Creation
+  onCreate() {
     this.categorie = {};
     this.clearDialogMessages();
     this.form.resetForm();
@@ -85,25 +95,44 @@ export class SousCategorieComponent implements OnInit {
 
 
   create() {
+    let categorieID = localStorage.getItem("categorieID");
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.categorie.categorieMere=this.sousCat.id;
-    this.categorieService.create(this.categorie).subscribe(response => {
-      if (this.categories.length !== this.recordsPerPage) {
-        this.categories.push(response);
-        this.categories = this.categories.slice();
+    if (categorieID) {
+      let body = {
+        "categorieMereID": Number(categorieID),
+        "libelleCat": this.categorie?.libelleCat,
+        "descriptionCat": this.categorie?.descriptionCat
       }
-      this.totalRecords++;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Sous categorie créée avec succes' });
-    }, error => this.handleError(error));
+      this.categorieService.create(body).subscribe(response => {
+        if (response.code == 200) {
+          if (this.categories.length !== this.recordsPerPage) {
+            this.categories.push(response as Categorie);
+            this.categories = this.categories.slice();
+          }
+          this.totalRecords++;
+          this.isDialogOpInProgress = false;
+          this.showDialog = false;
+          this.showMessage({ severity: 'success', summary: response.message?.toString() });
+          window.location.reload()
+        }
+        else {
+          this.isDialogOpInProgress = false;
+          this.showDialog = false;
+          this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+        }
+
+      }, error => this.handleError(error));
+
+    }
+
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
+  // Edit
+  onEdit(selection: any) {
+    console.log("selection" + selection);
     this.categorie = Object.assign({}, selection);
     this.clearDialogMessages();
     this.showDialog = true;
@@ -112,12 +141,23 @@ export class SousCategorieComponent implements OnInit {
   edit() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.categorieService.update(this.categorie).subscribe(response => {
-      let index = this.categories.findIndex(categorie => categorie.id === response.id);
-      this.categories[index] = response;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Catégorie modifiée avec succès' });
+    this.categorie.categorieMereID = (this.categorie.categorieMere?.id != null) ? Number(this.categorie.categorieMere?.id) : Number(localStorage.getItem("categorieID"))
+    this.categorieService.create(this.categorie).subscribe(response => {
+      if (response.code == 200) {
+        let cat = response as Categorie
+        let index = this.categories.findIndex(categorie => categorie.id === cat.id);
+        this.categories[index] = cat;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+        window.location.reload()
+      }
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
     }, error => this.handleError(error));
   }
 
@@ -127,7 +167,7 @@ export class SousCategorieComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -136,7 +176,7 @@ export class SousCategorieComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
+  delete(selection: any) {
     console.log(selection.id);
     this.isOpInProgress = true;
     this.categorieService.delete(selection.id).subscribe(() => {

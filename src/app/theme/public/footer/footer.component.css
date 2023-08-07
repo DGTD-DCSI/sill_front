@@ -1,16 +1,15 @@
-.text_color{
+.text_color {
     color: rgb(17, 20, 228);
 }
 
 a.nounderline:link {
     text-decoration: none;
 }
-footer{
-<<<<<<< HEAD
-    background-color: rgb(17, 20, 228); 
-    position:relative;
-  bottom: 0;
-  right: 0;
-  left: 0;
-}
 
+footer {
+    background-color: rgb(17, 20, 228);
+    position: relative;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}

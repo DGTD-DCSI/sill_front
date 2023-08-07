@@ -14,7 +14,7 @@
             <p-divider></p-divider>
 
             <p-table #dt [value]="versions" [paginator]="true" [rows]="recordsPerPage" [loading]="isLoading"
-                (onLazyLoad)="load($event)" [totalRecords]="totalRecords"
+                (onLazyLoad)="load()" [totalRecords]="totalRecords"
                 [globalFilterFields]="['numeroVer', 'dateVer', 'licenceVer']"
                 currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements"
                 [showCurrentPageReport]=true [rowsPerPageOptions]="[10, 20]" styleClass="p-datatable-sm">
@@ -80,9 +80,9 @@
                 <div class="p-fluid grid">
                     <div class="p-fluid p-col-12 col-md-12">
                         <label for="selectedVersion">Logiciels</label>
-                        <p-dropdown [options]="logiciels" name="selectedLogiciel" [filter]="true"
-                            placeholder="Choisir le logiciel" optionLabel="libelleLog" inputId="selectedLogiciel"
-                            [showClear]="true"></p-dropdown>
+                        <p-dropdown [options]="logiciels" [(ngModel)]="version.logiciel" name="LogicielID"
+                            [filter]="true" placeholder="Choisir le logiciel" optionLabel="libelleLog"
+                            inputId="LogicielID" [showClear]="true"></p-dropdown>
                     </div>
                     <div class="p-fluid p-col-12 col-md-6">
                         <label for="numeroVer">Numero version</label>
@@ -110,8 +110,8 @@
 
                     <div class="p-fluid p-col-12 col-md-12">
                         <label for="logoVer">Logo version </label>
-                        <input type="file" id="logoVer" name="logoVer" #logoVer="ngModel" [(ngModel)]="version.logoVer"
-                            pInputText />
+                        <input type="file" id="logoVerFile" enctype="multipart/form-data" (change)="selectFile($event)"
+                            name="logoVerFile" pInputText />
                     </div>
 
                     <div class="p-fluid p-col-12 col-md-6">

@@ -21,6 +21,8 @@ export class CategorieComponent implements OnInit {
   categories!: Categorie[];
   categorie: Categorie = {};
   enableCreate = true;
+  errorGetAllCategorie = false;
+
   enableBtnInfo = true;
   enableBtnEdit = true;
   enableBtnDelete = true;
@@ -30,31 +32,40 @@ export class CategorieComponent implements OnInit {
   showDialog = false;
   message: any;
   dialogErrorMessage: any;
-  selectedCategory:any;
+  selectedCategory: any;
 
 
-  constructor(private categorieService:CategorieService,
+  constructor(private categorieService: CategorieService,
     private confirmationService: ConfirmationService,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.load();
   }
 
   load(event?: LazyLoadEvent) {
-     this.isLoading = true;
+    this.isLoading = true;
+    this.errorGetAllCategorie = false;
     this.categorieService.getAll(event).subscribe(response => {
-      this.isLoading = false;
-      this.categories = response.categories;
+      if (response.code == 200) {
+        this.isLoading = false;
+        this.categories = response.result as Categorie[];
+      }
+      else {
+        this.errorGetAllCategorie = true;
+        this.message = response.message
+        this.isLoading = false;
+
+      }
+
     }, error => {
       this.message = { severity: 'error', summary: error.error };
-      console.error(JSON.stringify(error));
     });
   }
 
   loadCategorie(event?: LazyLoadEvent) {
     this.categorieService.getAll(event).subscribe(response => {
-      this.categories = response.categories;
+      this.categories = response.result as Categorie[];
       console.log(this.categories);
     }, error => {
       this.message = { severity: 'error', summary: error.error };
@@ -63,9 +74,11 @@ export class CategorieComponent implements OnInit {
   }
 
   //Détail
-  onInfo(selection:any){
-    localStorage.removeItem("categorie");
-    localStorage.setItem("categorie",JSON.stringify(selection));
+  onInfo(selection: any) {
+    localStorage.removeItem("categorieID");
+    localStorage.removeItem("categorieLibelle");
+    localStorage.setItem("categorieID", JSON.stringify(selection.id));
+    localStorage.setItem("categorieLibelle", JSON.stringify(selection.libelleCat));
     this.router.navigate(['/admin/sous-categorie']);
   }
 
@@ -78,8 +91,8 @@ export class CategorieComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
+  //Creation
+  onCreate() {
     this.categorie = {};
     this.clearDialogMessages();
     this.form.resetForm();
@@ -90,22 +103,37 @@ export class CategorieComponent implements OnInit {
   create() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.categorieService.create(this.categorie).subscribe(response => {
-      if (this.categories.length !== this.recordsPerPage) {
-        this.categories.push(response);
-        this.categories = this.categories.slice();
+    let body = {
+      "categorieMereID": this.categorie.categorieMere?.id,
+      "libelleCat": this.categorie?.libelleCat,
+      "descriptionCat": this.categorie?.descriptionCat
+    }
+    this.categorieService.create(body).subscribe(response => {
+      if (response.code == 200) {
+        if (this.categories.length !== this.recordsPerPage) {
+          this.load()
+          this.categories = this.categories.slice();
+        }
+        this.totalRecords++;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+
       }
-      this.totalRecords++;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Categorie créée avec succes' });
-    }, error => this.handleError(error));
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+    }
+      , error => this.handleError(error));
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
+  // Edit
+  onEdit(selection: any) {
     this.categorie = Object.assign({}, selection);
     this.clearDialogMessages();
     this.showDialog = true;
@@ -115,12 +143,24 @@ export class CategorieComponent implements OnInit {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
     this.categorieService.update(this.categorie).subscribe(response => {
-      let index = this.categories.findIndex(categorie => categorie.id === response.id);
-      this.categories[index] = response;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Catégorie modifiée avec succès' });
-    }, error => this.handleError(error));
+      if (response.code == 200) {
+        let cat = response as Categorie;
+        let index = this.categories.findIndex(categorie => categorie.id === cat.id);
+        this.categories[index] = cat;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+
+      }
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+    }
+      , error => this.handleError(error));
   }
 
   isEditing() {
@@ -129,7 +169,7 @@ export class CategorieComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -138,20 +178,31 @@ export class CategorieComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
-    console.log(selection.id);
+  delete(selection: any) {
     this.isOpInProgress = true;
-    this.categorieService.delete(selection.id).subscribe(() => {
-      this.categories = this.categories.filter(categorie => categorie.id !== selection.id);
-      selection = null;
-      this.isOpInProgress = false;
-      this.totalRecords--;
-      this.showMessage({ severity: 'success', summary: 'Catégorie supprimée avec succès' });
-    }, error => {
-      console.error(JSON.stringify(error));
-      this.isOpInProgress = false;
-      this.showMessage({ severity: 'error', summary: error.error.message });
-    });
+   
+    this.categorieService.delete(selection.id).subscribe((response) => {
+      if (response.code == 200) {
+        this.categories = this.categories.filter(categorie => categorie.id !== selection.id);
+        selection = null;
+        this.isOpInProgress = false;
+        this.totalRecords--;
+        this.load();
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+
+      }
+      else {
+        this.isOpInProgress = false;
+        selection = null;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+    },
+      error => {
+        this.isOpInProgress = false;
+        this.showMessage({ severity: 'error', summary: error.error.message });
+      });
   }
 
   // Errors

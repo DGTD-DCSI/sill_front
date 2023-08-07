@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-import { StorageService } from '../../../services/storage/storage.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
@@ -11,39 +9,44 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  erreur: number= 0;
-
+  erreur: number = 0;
+  messageError: string = "aaa";
   user = new User();
 
 
-  constructor(private authService : AuthService,
-              private router: Router) { }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  onLoggedin()
-    {
-      console.log(this.user);
-      let isValidUser: Boolean = this.authService.SignIn(this.user);
-      if (isValidUser)
-          this.router.navigate(['/admin']);
-      else
-         //   alert('Login ou mot de passe incorrecte!');
-         this.erreur=1;
+  onLoggedin() {
+    this.authService.initLocastorage()
+    this.authService.login(this.user).subscribe(p => {
+      //console.log(JSON.stringify(p))
+      if (p.code == 200) {
+        this.erreur = 0;
+        this.authService.createLocalStorage(p.result.id, p.result.role, p.result.token)
+        this.router.navigate(['/admin']);
+      }
+      else {
+        this.erreur = 1;
+        this.messageError = p.message;
+      }
+    })
 
-    }
-    logiciel(){
-      this.router.navigate(['logiciels']);
-    }
-    
-    login(){
-      this.router.navigate(['login']);
-      
-    }
-    categorie(){
-      this.router.navigate(['accueil']);
-      
-    }
-  
+  }
+  logiciel() {
+    this.router.navigate(['logiciels']);
+  }
+
+  login() {
+    this.router.navigate(['login']);
+
+  }
+  categorie() {
+    this.router.navigate(['accueil']);
+
+  }
+
 }

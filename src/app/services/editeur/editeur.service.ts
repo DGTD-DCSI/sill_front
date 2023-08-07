@@ -5,6 +5,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Editeur, GetAllEditeurResponse } from 'src/app/models/editeur';
+import { Reponse } from 'src/app/models/reponse';
 const resourceUrl = environment.editeurResource;
 
 
@@ -15,25 +16,15 @@ export class EditeurService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(event?: LazyLoadEvent): Observable<GetAllEditeurResponse> {
-    return this.http.get(resourceUrl, { observe: 'response' })
-    .pipe(map(response => {
-        let editeursResponse: GetAllEditeurResponse = {
-          editeurs: response.body as Editeur[]
-        };
-        return editeursResponse;
-     }));
+  getAll(): Observable<Reponse> {
+    return this.http.get(resourceUrl + "/active")
   }
 
-  create(request: Editeur): Observable<Editeur> {
+  createOrUpdate(request: Editeur): Observable<Reponse> {
     return this.http.post(resourceUrl, request);
   }
 
-  update(editeur: Editeur): Observable<Editeur> {
-    return this.http.put(resourceUrl+'/update', editeur);
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${resourceUrl+'/delete'}/${id}`);
+  delete(id: number): Observable<Reponse> {
+    return this.http.get(`${resourceUrl + '/delete'}/${id}`);
   }
 }

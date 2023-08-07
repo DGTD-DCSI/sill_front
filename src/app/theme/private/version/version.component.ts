@@ -9,6 +9,8 @@ import { Version } from 'src/app/models/version';
 import { Router } from '@angular/router';
 import { LogicielService } from 'src/app/services/logiciel/logiciel.service';
 import { Logiciel } from 'src/app/models/logiciel';
+import { UploadFileService } from 'src/app/services/uploadFile/upload-file.service';
+import { FileDTO } from 'src/app/models/file';
 
 @Component({
   selector: 'app-version',
@@ -23,7 +25,7 @@ export class VersionComponent implements OnInit {
   totalRecords!: number;
   recordsPerPage = environment.recordsPerPage;
   versions!: Version[]
-  version: Version= {};
+  version: Version = {};
   logiciels!: Logiciel[];
   selectedLogiciel!: Logiciel;
   enableCreate = true;
@@ -36,25 +38,30 @@ export class VersionComponent implements OnInit {
   showDialog = false;
   message: any;
   dialogErrorMessage: any;
+  currentFile!: File;
+  dtoFile: FileDTO = {};
 
-
-  constructor(private versionService:VersionService,
-    private logicielService:LogicielService,
+  constructor(private versionService: VersionService,
+    private logicielService: LogicielService,
+    private uploadFileService: UploadFileService,
     private confirmationService: ConfirmationService,
-    
-    private router : Router) { }
 
+    private router: Router) { }
+  selectFile(event: any): void {
+    this.currentFile = event.target.files.item(0);
+
+  }
   ngOnInit(): void {
     this.load();
     this.loadLogiciel();
-    
+
   }
 
-  load(event?: LazyLoadEvent) {
-     this.isLoading = true;
-    this.versionService.getAll(event).subscribe(response => {
+  load() {
+    this.isLoading = true;
+    this.versionService.getAll().subscribe(response => {
       this.isLoading = false;
-      this.versions = response.versions;
+      this.versions = response.result as Version[];
     }, error => {
       this.message = { severity: 'error', summary: error.error };
       console.error(JSON.stringify(error));
@@ -62,20 +69,20 @@ export class VersionComponent implements OnInit {
   }
 
 
-  loadLogiciel(event?: LazyLoadEvent) {
+  loadLogiciel() {
     this.isLoading = true;
-   this.logicielService.getAll(event).subscribe(response => {
-     this.isLoading = false;
-     this.logiciels = response.logiciels;
-   }, error => {
-     this.message = { severity: 'error', summary: error.error };
-     console.error(JSON.stringify(error));
-   });
- }
+    this.logicielService.getAll().subscribe(response => {
+      this.isLoading = false;
+      this.logiciels = response.result as Logiciel[];
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+      console.error(JSON.stringify(error));
+    });
+  }
 
 
   //Détail
-  onInfo(selection:any){
+  onInfo(selection: any) {
     /*localStorage.removeItem("editeur");
     localStorage.setItem("editeur",JSON.stringify(selection));
     this.router.navigate(['/admin/sous-category']);*/
@@ -90,9 +97,9 @@ export class VersionComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
-    this.version= {};
+  //Creation
+  onCreate() {
+    this.version = {};
     this.clearDialogMessages();
     this.form.resetForm();
     this.showDialog = true;
@@ -102,22 +109,66 @@ export class VersionComponent implements OnInit {
   create() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.versionService.create(this.version).subscribe(response => {
-      if (this.versions.length !== this.recordsPerPage) {
-        this.versions.push(response);
-        this.versions= this.versions.slice();
+    this.version.logicielID = this.version.logiciel?.id
+    this.uploadFileService.createFileVersion(this.currentFile).subscribe(response => {
+      if (response.code == 200) {
+        let dtoVserion = response.result as FileDTO
+        this.version.logoVer = dtoVserion.logoVer;
+        this.version.localUrl = dtoVserion.localUrl;
+        this.dtoFile = dtoVserion
+        this.versionService.create(this.version).subscribe(responseVersion => {
+          if (responseVersion.code == 200) {
+            if (this.versions.length !== this.recordsPerPage) {
+              this.versions.push(responseVersion.result as Version);
+              this.versions = this.versions.slice();
+            }
+            this.totalRecords++;
+            this.isDialogOpInProgress = false;
+            this.showDialog = false;
+            this.showMessage({ severity: 'success', summary: responseVersion.message?.toString() });
+
+          }
+          else {
+            this.uploadFileService.delete(this.dtoFile).subscribe(z => {
+
+              if (z.code != 200) {
+
+                this.isDialogOpInProgress = false;
+                this.showDialog = false;
+                this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+              }
+
+            }
+            )
+
+            this.isDialogOpInProgress = false;
+            this.showDialog = false;
+            this.showMessage({ severity: 'echec', summary: responseVersion.message?.toString() });
+
+          }
+
+
+
+        }, error => this.handleError(error));
+
+
       }
-      this.totalRecords++;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Version créé avec succès' });
-    }, error => this.handleError(error));
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+    }, error => this.handleError(error)
+
+    )
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
+  // Edit
+  onEdit(selection: any) {
+    console.log(selection);
     this.version = Object.assign({}, selection);
     this.clearDialogMessages();
     this.showDialog = true;
@@ -126,9 +177,10 @@ export class VersionComponent implements OnInit {
   edit() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.versionService.update(this.version).subscribe(response => {
-      let index = this.versions.findIndex(version => version.id === response.id);
-      this.versions[index] = response;
+    this.versionService.create(this.version).subscribe(response => {
+      let version = response.result as Version;
+      let index = this.versions.findIndex(version => version.id === version.id);
+      this.versions[index] = version;
       this.isDialogOpInProgress = false;
       this.showDialog = false;
       this.showMessage({ severity: 'success', summary: 'version modifié avec succès' });
@@ -141,7 +193,7 @@ export class VersionComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -150,7 +202,7 @@ export class VersionComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
+  delete(selection: any) {
     this.isOpInProgress = true;
     this.versionService.delete(selection.id).subscribe(() => {
       this.versions = this.versions.filter(version => version.id !== selection.id);

@@ -1,39 +1,23 @@
-
-
 <div class="inkindonations-selector">
     <div id="selector-row">
-        
-        <fieldset>Categories: 
-        <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]= "searchLogiciel" style="width: 500px; height: 40px;" >
-            <option data-tokens="ketchup base">base</option>
-            <option data-tokens="mustard">education</option>
-            <option data-tokens="frosting">email</option>
-          </select>
-        
+        <fieldset>Categories:
+            <select class="selectpicker" data-live-search="true" (input)="loadSousCategorie($event)"
+                searchLogiciel="true" [(ngModel)]="searchLogiciel" style="width: 250px; height: 40px;">
+                <option *ngFor="let categorie of categories" data-tokens="ketchup base">{{categorie.libelleCat}}
+                </option>
+            </select>
         </fieldset>
-          
-        
-        <fieldset> sous Categories: 
-            <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]= "searchLogiciel" style="width: 500px; height: 40px;" >
-                <option selected>  vvv</option>
-                <option data-tokens="ketchup base">base</option>
-                <option data-tokens="mustard">education</option>
-                <option data-tokens="frosting">email</option>
-              </select>
-            
-            </fieldset>
-              
-        
-      
+        <fieldset> sous Categories:
+            <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]="searchLogiciel"
+                style="width: 300px; height: 40px;">
+                <option *ngFor="let categorie of sousCategories" data-tokens="ketchup base">{{categorie.libelleCat}}
+                </option>
+            </select>
 
-
-      
-
-
-
+        </fieldset>
 
     </div>
-  </div>
+</div>
 <div class="cont">
     <div class="logic-list">
         <div class="logic flex" *ngFor="let logiciel of logiciells | filter:searchLogiciel">
@@ -58,7 +42,7 @@
                 </div>
 
                 <div class="categorie">
-                {{logiciel?.type}}
+                    {{logiciel?.type}}
                 </div>
 
 
@@ -75,11 +59,12 @@
 
     <div class="row">
         <div class="col md-12 d-flex justify-content-center">
-            
+
 
             <div class="btn-group flot-right">
-                <button class="btn btn-outline-primary " *ngFor="let page of PageNumbers" (click)=" changePage(page)" [class.Active] = "page == selectedpage">{{page}}</button>
-               
+                <button class="btn btn-outline-primary " *ngFor="let page of PageNumbers" (click)=" changePage(page)"
+                    [class.Active]="page == selectedpage">{{page}}</button>
+
 
             </div>
 

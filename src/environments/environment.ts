@@ -1,22 +1,22 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-//const commonAppURI: string = 'http://10.4.162.64:8081/';
 const commonAppURI: string = 'http://localhost:8081/';
+//const commonAppURI: string = 'http://192.168.85.21:8081/';
 
 export const environment = {
   production: false,
-  categorieResource: commonAppURI +'categorie',
-  logicielResource: commonAppURI +'logiciel',
-  editeurResource: commonAppURI +'editeur',
-  telechargementResource: commonAppURI +'telechargement',
-  versionResource: commonAppURI +'version',
-  compatibiliteOSResource: commonAppURI +'compatibiliteOS',
-  utiliteLogicielResource: commonAppURI +'utiliteLogiciel',
-  authResource: commonAppURI +'auth',
-  utilisateurResource: commonAppURI +'utilisateur',
-  profileResource: commonAppURI +'profile',
-  privilegeResource: commonAppURI +'privileges',
+  categorieResource: commonAppURI + 'categories',
+  logicielResource: commonAppURI + 'logiciels',
+  editeurResource: commonAppURI + 'editeurs',
+  telechargementResource: commonAppURI + 'telechargement',
+  versionResource: commonAppURI + 'versions',
+  compatibiliteOSResource: commonAppURI + 'compatibiliteOS',
+  utiliteLogicielResource: commonAppURI + 'utiliteLogiciel',
+  authResource: commonAppURI + 'auth',
+  utilisateurResource: commonAppURI + 'utilisateur',
+  profileResource: commonAppURI + 'profile',
+  privilegeResource: commonAppURI + 'privileges',
   recordsPerPage: 10,
 };
 

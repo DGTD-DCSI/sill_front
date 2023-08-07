@@ -12,7 +12,7 @@ import { FooterComponent } from './theme/public/footer/footer.component';
 import { HomeComponent } from './components/public/home/home.component';
 import { CategorieComponent } from './theme/private/categorie/categorie.component';
 import { ApplicationComponent } from './theme/private/application/application.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfirmationService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { AppCommonModule } from './common/app-common.module';
@@ -26,7 +26,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SousCategorieComponent } from './theme/private/sous-categorie/sous-categorie.component';
 import { EditeurComponent } from './theme/private/editeur/editeur.component';
 import { UtiliteLogicielComponent } from './theme/private/butTelechargement/butTelechargement.component';
@@ -36,7 +36,7 @@ import { UtilisateurComponent } from './theme/private/utilisateur/utilisateur.co
 import { PrivilegeComponent } from './theme/private/privilege/privilege.component';
 import { TelechargementComponent } from './theme/private/telechargement/telechargement.component';
 import { VersionComponent } from './theme/private/version/version.component';
-import {PaginatorModule} from 'primeng/paginator';
+import { PaginatorModule } from 'primeng/paginator';
 import { CarouselComponent } from './theme/public/carousel/carousel.component';
 import { ContComponent } from './theme/public/cont/cont.component';
 import { LogicComponent } from './theme/public/logic/logic.component';
@@ -48,6 +48,7 @@ import { TextComponent } from './theme/public/text/text.component';
 import { RechercheComponent } from './theme/public/recherche/recherche.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { CategorieLogComponent } from './theme/public/categorie-log/categorie-log.component';
+import { HttpinterceptorService } from './services/httpinterceptor/httpinterceptor.service';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,7 @@ import { CategorieLogComponent } from './theme/public/categorie-log/categorie-lo
     TextComponent,
     RechercheComponent,
     CategorieLogComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -98,11 +99,12 @@ import { CategorieLogComponent } from './theme/public/categorie-log/categorie-lo
     DropdownModule,
     InputTextareaModule,
     AppCommonModule,
+    ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
     Ng2SearchPipeModule
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, { provide: HTTP_INTERCEPTORS, useClass: HttpinterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

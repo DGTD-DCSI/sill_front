@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Version,GetAllVersionResponse} from 'src/app/models/version';
+import { Version } from 'src/app/models/version';
+import { Reponse } from 'src/app/models/reponse';
 const resourceUrl = environment.versionResource;
 
 @Injectable({
@@ -14,26 +15,16 @@ const resourceUrl = environment.versionResource;
 export class VersionService {
 
   constructor(private http: HttpClient) { }
-  getAll(event?: LazyLoadEvent): Observable<GetAllVersionResponse> {
-    return this.http.get(resourceUrl, { observe: 'response' })
-    .pipe(map(response => {
-        let versionsResponse: GetAllVersionResponse = {
-          versions: response.body as Version[]
-        };
-        return versionsResponse;
-     }));
+  getAll(): Observable<Reponse> {
+    return this.http.get(resourceUrl)
+  }
+  create(request: Version): Observable<Reponse> {
+    return this.http.post(resourceUrl, request)
   }
 
-  create(request: Version): Observable<Version> {
-    return this.http.post(resourceUrl, request);
-  }
 
-  update(version: Version): Observable<Version> {
-    return this.http.put(resourceUrl+'/update', version);
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${resourceUrl+'/delete'}/${id}`);
+  delete(id: number): Observable<Reponse> {
+    return this.http.get(`${resourceUrl + '/delete'}/${id}`)
   }
 }
 

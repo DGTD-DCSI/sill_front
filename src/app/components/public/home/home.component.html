@@ -1,4 +1,3 @@
-
 <div class="menu">
 
 
@@ -12,7 +11,7 @@
     <ul>
 
       <div class="dropdown">
-        <button class="dropbtn"><a [routerLink]="'/logiciels'" (click)="logiciel()">LOGICIEL</a></button>
+        <button class="dropbtn"><a [routerLink]="'/logiciels'" (click)="logicielRoute()">LOGICIEL</a></button>
 
       </div>
 
@@ -31,24 +30,30 @@
 <app-carousel></app-carousel>
 <app-text></app-text>
 <section class="clean-block slider dark" style="height: 150px; background-color:blue ;margin-left: 0px;margin-top: 0;">
-  <section class="clean-block clean-info dark" style="height: 200px;max-height: 1400px; z-index:auto;width: 100%;padding-left: 0px;">
-    <div class="row align-items-center" style="margin-right: 20px;margin-left: 10px;border-style: none; display: flex; flex-direction:row ;">
-      <div class="col-md-6" style="padding-right: 0px;margin-left: 0px; height: 220px; width:600px;margin-bottom: 5px;"><video controls loop autoplay  class="video">
-        <source src="assets\videos\vidbanvd21.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video></div>
-        <div class="col-md-6">
-          <div class="card" style="border: none;background-color:transparent;">
-             <p style="text-align: justify;width: 700px; padding-left: 150px; font-size: 19px; line-height: 30px;margin-top: 0px;font-family: Georgia, 'Times New Roman', Times, serif;padding-top: 0px;">Le Socle Interministériel des logiciels libres ( <b>SILL</b> ) est une liste de
-              logiciels libres qui sont préconisés et promus par l'état Burkinabè dans l'ensemble de ses démembrements, pour
-              garantir sa souveraineté numérique et la mise en place progressive des systèmes d'informations fiables et
-              sécurisés.Ces logiciels sont des references en matières de logiciels libre à utiliser dans
-              l'ensemble des demembrements de l'etat.</p>
-          </div>
+  <section class="clean-block clean-info dark"
+    style="height: 200px;max-height: 1400px; z-index:auto;width: 100%;padding-left: 0px;">
+    <div class="row align-items-center"
+      style="margin-right: 20px;margin-left: 10px;border-style: none; display: flex; flex-direction:row ;">
+      <div class="col-md-6" style="padding-right: 0px;margin-left: 0px; height: 220px; width:600px;margin-bottom: 5px;">
+        <video controls loop autoplay class="video">
+          <source src="assets\videos\vidbanvd21.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video></div>
+      <div class="col-md-6">
+        <div class="card" style="border: none;background-color:transparent;">
+          <p
+            style="text-align: justify;width: 700px; padding-left: 150px; font-size: 19px; line-height: 30px;margin-top: 0px;font-family: Georgia, 'Times New Roman', Times, serif;padding-top: 0px;">
+            Le Socle Interministériel des logiciels libres ( <b>SILL</b> ) est une liste de
+            logiciels libres qui sont préconisés et promus par l'état Burkinabè dans l'ensemble de ses démembrements,
+            pour
+            garantir sa souveraineté numérique et la mise en place progressive des systèmes d'informations fiables et
+            sécurisés.Ces logiciels sont des references en matières de logiciels libre à utiliser dans
+            l'ensemble des demembrements de l'etat.</p>
         </div>
       </div>
+    </div>
   </section>
-  </section>
+</section>
 
 
 
@@ -56,8 +61,8 @@
 <p id="tool-tip"
   style="font-family:Georgia, 'Times New Roman', Times, serif ; font-size: 20px; text-align: left; margin-left: 20px;margin-top: 70px;margin-bottom: 10px;">
   LES CATEGORIE DE LOGICIELS DISPONIBLE ET RECOMMANDES</p>
-  <app-categorie-log></app-categorie-log>
-  <!--recherche--
+<app-categorie-log></app-categorie-log>
+<!--recherche--
 <div class="inkindonations-selector">
   <div id="selector-row">
 

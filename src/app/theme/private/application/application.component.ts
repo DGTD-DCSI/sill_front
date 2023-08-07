@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MenuItem, Message } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { ApplicationService } from '../../../services/application/apllication.service';
-import { Logiciel } from 'src/app/models/logiciel';
+import { Logiciel, LogicielDTO } from 'src/app/models/logiciel';
 import { CategorieService } from '../../../services/categorie/categorie.service';
 import { Categorie } from 'src/app/models/categorie';
 import { EditeurService } from '../../../services/editeur/editeur.service';
@@ -25,6 +25,7 @@ export class ApplicationComponent implements OnInit {
   recordsPerPage = environment.recordsPerPage;
   logiciels!: Logiciel[];
   logiciel: Logiciel = {};
+  logicielDTO: LogicielDTO = {};
   enableCreate = true;
   enableBtnInfo = true;
   enableBtnEdit = true;
@@ -42,11 +43,11 @@ export class ApplicationComponent implements OnInit {
 
 
   constructor(
-    private applicationService:ApplicationService,
-    private categorieService:CategorieService,
-    private editeurService:EditeurService,
+    private applicationService: ApplicationService,
+    private categorieService: CategorieService,
+    private editeurService: EditeurService,
     private confirmationService: ConfirmationService,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.load();
@@ -55,10 +56,10 @@ export class ApplicationComponent implements OnInit {
   }
 
   load(event?: LazyLoadEvent) {
-     this.isLoading = true;
-    this.applicationService.getAll(event).subscribe(response => {
+    this.isLoading = true;
+    this.applicationService.getAll().subscribe(response => {
       this.isLoading = false;
-      this.logiciels = response.logiciels;
+      this.logiciels = response.result as Logiciel[];
       console.log(this.logiciels);
     }, error => {
       this.message = { severity: 'error', summary: error.error };
@@ -67,28 +68,26 @@ export class ApplicationComponent implements OnInit {
   }
 
   loadCategorie(event?: LazyLoadEvent) {
-   this.categorieService.getAll(event).subscribe(response => {
-     this.categories = response.categories;
-     console.log(this.categories);
-   }, error => {
-     this.message = { severity: 'error', summary: error.error };
-     console.error(JSON.stringify(error));
-   });
- }
+    this.categorieService.getAll().subscribe(response => {
+      this.categories = response.result as Categorie[];
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+    });
+  }
 
 
- loadEditeur(event?: LazyLoadEvent) {
- this.editeurService.getAll(event).subscribe(response => {
-   this.editeurs = response.editeurs;
-   console.log(this.logiciels);
- }, error => {
-   this.message = { severity: 'error', summary: error.error };
-   console.error(JSON.stringify(error));
- });
-}
+  loadEditeur(event?: LazyLoadEvent) {
+    this.editeurService.getAll().subscribe(response => {
+      this.editeurs = response.result as Editeur[];
+      console.log(this.logiciels);
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+      console.error(JSON.stringify(error));
+    });
+  }
 
   //Détail
-  onInfo(selection:any){
+  onInfo(selection: any) {
     console.log(selection);
     /* localStorage.removeItem("category");
     localStorage.setItem("category",JSON.stringify(selection));
@@ -104,8 +103,8 @@ export class ApplicationComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
+  //Creation
+  onCreate() {
     this.logiciel = {};
     this.clearDialogMessages();
     this.form.resetForm();
@@ -117,22 +116,32 @@ export class ApplicationComponent implements OnInit {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
     this.applicationService.create(this.logiciel).subscribe(response => {
-      if (this.logiciels.length !== this.recordsPerPage) {
-        this.logiciels.push(response);
-        this.logiciels = this.logiciels.slice();
+      if (response.code == 200) {
+        if (this.logiciels.length !== this.recordsPerPage) {
+          this.logiciels.push(response.result as Logiciel);
+          this.logiciels = this.logiciels.slice();
+        }
+        this.totalRecords++;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+
       }
-      this.totalRecords++;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Logiciel créé avec succes' });
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+
     }, error => this.handleError(error));
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
-    this.logiciel = Object.assign({}, selection);
+  // Edit
+  onEdit(selection: any) {
+    this.logiciel = selection as Logiciel
     this.clearDialogMessages();
     this.showDialog = true;
   }
@@ -140,12 +149,21 @@ export class ApplicationComponent implements OnInit {
   edit() {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.applicationService.update(this.logiciel).subscribe(response => {
-      let index = this.logiciels.findIndex(logiciel => logiciel.id === response.id);
-      this.logiciels[index] = response;
-      this.isDialogOpInProgress = false;
-      this.showDialog = false;
-      this.showMessage({ severity: 'success', summary: 'Logiciel modifié avec succès' });
+    this.applicationService.create(this.logiciel).subscribe(response => {
+      if (response.code == 200) {
+        let cat = response.result as Logiciel
+        let index = this.logiciels.findIndex(logiciel => logiciel.id === cat.id);
+        this.logiciels[index] = cat;
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+      }
+      else {
+        this.isDialogOpInProgress = false;
+        this.showDialog = false;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
     }, error => this.handleError(error));
   }
 
@@ -155,7 +173,7 @@ export class ApplicationComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -164,17 +182,25 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
-    console.log(selection.id);
-    this.isOpInProgress = true;  
-    this.applicationService.delete(selection.id).subscribe(() => {
-      this.logiciels = this.logiciels.filter(logiciel => logiciel.id !== selection.id);
-      selection = null;
-      this.isOpInProgress = false;
-      this.totalRecords--;
-      this.showMessage({ severity: 'success', summary: 'Logiciel supprimé avec succès' });
+  delete(selection: any) {
+    this.isOpInProgress = true;
+    this.applicationService.delete(selection.id).subscribe(response => {
+      if (response.code == 200) {
+        this.logiciels = this.logiciels.filter(logiciel => logiciel.id !== selection.id);
+        selection = null;
+        this.isOpInProgress = false;
+        this.totalRecords--;
+        this.showMessage({ severity: 'success', summary: response.message?.toString() });
+      }
+      else {
+        this.isOpInProgress = false;
+        selection = null;
+        this.showMessage({ severity: 'echec', summary: response.message?.toString() });
+
+      }
+
+
     }, error => {
-      console.error(JSON.stringify(error));
       this.isOpInProgress = false;
       this.showMessage({ severity: 'error', summary: error.error.message });
     });

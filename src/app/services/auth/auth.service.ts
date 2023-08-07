@@ -1,27 +1,28 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  users: User[] = [{"username":"kiemtore12","password":"papson12","roles":['ADMIN']},
-                   {"username":"idrissa","password":"123","roles":['USERS']} ];
+  users: User[] = []
+  public loggedUser!: string;
+  public isloggedIn: Boolean = false;
+  public roles!: string[];
 
-public loggedUser!:string;
-public isloggedIn: Boolean = false;
-public roles!:string[];
-
-  constructor(private router : Router) { }
+  constructor(private router: Router, protected _http: HttpClient) { }
 
   SignIn(user: User): Boolean {
     let validUser: Boolean = false;
     this.users.forEach((curUser) => {
-      if (user.username == curUser.username && user.password == curUser.password) {
+      if (user.login == curUser.login && user.password == curUser.password) {
         validUser = true;
-        this.loggedUser = curUser.username;
+        this.loggedUser = curUser.login;
         this.isloggedIn = true;
         this.roles = curUser.roles;
         localStorage.setItem('loggedUser', this.loggedUser);
@@ -31,39 +32,37 @@ public roles!:string[];
     return validUser;
   }
 
-  isAdmin():Boolean{
-    if (!this.roles) //this.roles== undefiened
-    return false;
-    return (this.roles.indexOf('ADMIN') >-1) ;
+  isAdmin(): Boolean {
+    if (localStorage.getItem('userConnectedRole') != "ADMIN")
+      return false;
+    return true;
     ;
-  }  
-  isUers():Boolean{
-    if (!this.roles) //this.roles== undefiened
-    return false;
-    return (this.roles.indexOf('USERS') >-1) ;
-    ;
-  }  
+  }
+
 
   logout() {
-    this.isloggedIn = false;
-    this.loggedUser = undefined!;
-    this.roles = undefined!;
-    localStorage.removeItem('loggedUser');
-    localStorage.setItem('isloggedIn', String(this.isloggedIn));
+    this.initLocastorage();
     this.router.navigate(['/login']);
   }
 
-  setLoggedUserFromLocalStorage(login: string) {
-    this.loggedUser = login;
-    this.isloggedIn = true;
-    this.getUserRoles(login);
+
+
+
+  // NEW METHOS COME FROM BACKEND
+  login(p: User): Observable<any> {
+    return this._http.post<any>(environment.authResource + "/login", p)
+
   }
-  getUserRoles(username: string) {
-    this.users.forEach((curUser) => {
-      if (curUser.username == username) {
-        this.roles = curUser.roles;
-      }
-    });
+  initLocastorage() {
+    localStorage.removeItem('userConnectedRole')
+    localStorage.removeItem('userConnectedID')
+    localStorage.removeItem('userConnectedToken')
+
   }
-    
+  createLocalStorage(id: any, role: any, token: any) {
+    localStorage.setItem('userConnectedRole', role)
+    localStorage.setItem('userConnectedID', id)
+    localStorage.setItem('userConnectedToken', token)
+
+  }
 }

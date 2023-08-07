@@ -5,8 +5,8 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Categorie, GetAllCategorieResponse } from 'src/app/models/categorie';
+import { Reponse } from 'src/app/models/reponse';
 
-import { Compatibilite_os, GetAllCompatibiliteOSResponse } from 'src/app/models/compatibiliteOS';
 
 const resourceUrl = environment.categorieResource;
 
@@ -17,29 +17,30 @@ export class CategorieService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(event?: LazyLoadEvent): Observable<GetAllCategorieResponse> {
-    return this.http.get(resourceUrl+'/niveau1', { observe: 'response' })
-    .pipe(map(response => {
-        let categoriesResponse: GetAllCategorieResponse = {
-          categories: response.body as Categorie[]
-        };
-        return categoriesResponse;
-      }));
+  getAll(event?: LazyLoadEvent): Observable<Reponse> {
+    return this.http.get(resourceUrl + '/niveau1')
   }
 
-
-
-  create(request: Categorie): Observable<Categorie> {
+  getById(id: any): Observable<Reponse> {
+    return this.http.get(resourceUrl + '/' + id)
+  }
+  getSouscategorieById(id: any): Observable<Reponse> {
+    return this.http.get(resourceUrl + '/souscategories/' + id)
+  }
+  getSouscategorieByLibelle(libelle: String): Observable<Reponse> {
+    return this.http.get(resourceUrl + '/souscategories/libelle/' + libelle)
+  }
+  create(request: Categorie): Observable<Reponse> {
     return this.http.post(resourceUrl, request);
   }
 
 
 
-  update(categorie: Categorie): Observable<Categorie> {
-    return this.http.put(resourceUrl+'/update', categorie);
+  update(categorie: Categorie): Observable<Reponse> {
+    return this.http.post(resourceUrl, categorie);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${resourceUrl+'/delete'}/${id}`);
+  delete(id: number): Observable<Reponse> {
+    return this.http.get(resourceUrl + '/delete/' + id)
   }
 }

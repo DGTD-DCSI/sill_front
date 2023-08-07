@@ -16,31 +16,31 @@ export class ContComponent implements OnInit {
   logiciel: Logiciel = {};
   isLoading!: boolean;
   message: any;
-  logicielPerPage: number= 1;
-  public selectedpage =1; 
-  constructor( private applicationService:ApplicationService,) { }
+  logicielPerPage: number = 1;
+  public selectedpage = 1;
+  constructor(private applicationService: ApplicationService,) { }
 
   ngOnInit(): void {
-    let pageIndex = (this.selectedpage -1 ) * this.logicielPerPage;
-    this.logiciels=this.logiciels.slice(pageIndex, this.logicielPerPage)
+    let pageIndex = (this.selectedpage - 1) * this.logicielPerPage;
+    this.logiciels = this.logiciels.slice(pageIndex, this.logicielPerPage)
   }
   load(event?: LazyLoadEvent) {
     this.isLoading = true;
-   this.applicationService.getAll(event).subscribe(response => {
-     this.isLoading = false;
-     this.logiciels = response.logiciels;
-     console.log(this.logiciels);
-   }, error => {
-     this.message = { severity: 'error', summary: error.error };
-     console.error(JSON.stringify(error));
-   });
- }
+    this.applicationService.getAll().subscribe(response => {
+      this.isLoading = false;
+      this.logiciels = response.result;
+      console.log(this.logiciels);
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+      console.error(JSON.stringify(error));
+    });
+  }
 
- changePageSize(event : Event){
-}
-  get PageNumbers(): Number[]{
+  changePageSize(event: Event) {
+  }
+  get PageNumbers(): Number[] {
     return Array(Math.ceil(this.logiciels.length / this.logicielPerPage))
-    .fill(0).map((x,i)=> i+1);
+      .fill(0).map((x, i) => i + 1);
   }
 
 }

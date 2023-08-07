@@ -6,9 +6,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ConfirmationService, LazyLoadEvent, MenuItem, Message } from 'primeng/api';
 import { environment } from 'src/environments/environment';
-import {  ButTelechargementService } from '../../../services/butTelechargement/butTelechargement.service';
+import { ButTelechargementService } from '../../../services/butTelechargement/butTelechargement.service';
 import { ButTelechargement } from 'src/app/models/butTelechargement';
-import { Version} from 'src/app/models/version';
+import { Version } from 'src/app/models/version';
 import { Router } from '@angular/router';
 import { VersionService } from 'src/app/services/version/version.service';
 import { TelechargementService } from '../../../services/telechargement/telechargement.service';
@@ -43,11 +43,11 @@ export class TelechargementComponent implements OnInit {
   selectedVersion!: Version;
 
 
-  constructor(private telechargementService:TelechargementService,
-    private butTelechargementService:ButTelechargementService,
-    private versionService:VersionService,
+  constructor(private telechargementService: TelechargementService,
+    private butTelechargementService: ButTelechargementService,
+    private versionService: VersionService,
     private confirmationService: ConfirmationService,
-    private router : Router) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.load();
@@ -56,7 +56,7 @@ export class TelechargementComponent implements OnInit {
   }
 
   load(event?: LazyLoadEvent) {
-     this.isLoading = true;
+    this.isLoading = true;
     this.telechargementService.getAll(event).subscribe(response => {
       this.isLoading = false;
       this.telechargements = response.telechargements;
@@ -68,28 +68,28 @@ export class TelechargementComponent implements OnInit {
   }
 
   loadModelUtiliteLog(event?: LazyLoadEvent) {
-   this.butTelechargementService.getAll(event).subscribe(response => {
-     this.butTelechargements = response.butTelechargements;
-     console.log(this.butTelechargements);
-   }, error => {
-     this.message = { severity: 'error', summary: error.error };
-     console.error(JSON.stringify(error));
-   });
- }
+    this.butTelechargementService.getAll(event).subscribe(response => {
+      this.butTelechargements = response.butTelechargements;
+      console.log(this.butTelechargements);
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+      console.error(JSON.stringify(error));
+    });
+  }
 
 
- loadVersion(event?: LazyLoadEvent) {
- this.versionService.getAll(event).subscribe(response => {
-   this.versions = response.versions;
-   console.log(this.versions);
- }, error => {
-   this.message = { severity: 'error', summary: error.error };
-   console.error(JSON.stringify(error));
- });
-}
+  loadVersion(event?: LazyLoadEvent) {
+    this.versionService.getAll().subscribe(response => {
+      this.versions = response.result as Version[];
+      console.log(this.versions);
+    }, error => {
+      this.message = { severity: 'error', summary: error.error };
+      console.error(JSON.stringify(error));
+    });
+  }
 
   //Détail
-  onInfo(selection:any){
+  onInfo(selection: any) {
     console.log(selection);
     /* localStorage.removeItem("category");
     localStorage.setItem("category",JSON.stringify(selection));
@@ -105,9 +105,9 @@ export class TelechargementComponent implements OnInit {
   }
 
 
-   //Creation
-   onCreate() {
-    this.telechargement= {};
+  //Creation
+  onCreate() {
+    this.telechargement = {};
     this.clearDialogMessages();
     this.form.resetForm();
     this.showDialog = true;
@@ -120,7 +120,7 @@ export class TelechargementComponent implements OnInit {
     this.telechargementService.create(this.telechargement).subscribe(response => {
       if (this.telechargements.length !== this.recordsPerPage) {
         this.telechargements.push(response);
-        this.telechargements= this.telechargements.slice();
+        this.telechargements = this.telechargements.slice();
       }
       this.totalRecords++;
       this.isDialogOpInProgress = false;
@@ -130,10 +130,10 @@ export class TelechargementComponent implements OnInit {
   }
 
 
-   // Edit
-   onEdit(selection:any) {
-     console.log(selection);
-    this.telechargement= Object.assign({}, selection);
+  // Edit
+  onEdit(selection: any) {
+    console.log(selection);
+    this.telechargement = Object.assign({}, selection);
     this.clearDialogMessages();
     this.showDialog = true;
   }
@@ -142,7 +142,7 @@ export class TelechargementComponent implements OnInit {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
     this.telechargementService.update(this.telechargement).subscribe(response => {
-      let index = this.telechargements.findIndex(telechargement => telechargement.id=== response.id);
+      let index = this.telechargements.findIndex(telechargement => telechargement.id === response.id);
       this.telechargements[index] = response;
       this.isDialogOpInProgress = false;
       this.showDialog = false;
@@ -156,7 +156,7 @@ export class TelechargementComponent implements OnInit {
 
 
   // Deletion
-  onDelete(selection:any) {
+  onDelete(selection: any) {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir supprimer ?',
       accept: () => {
@@ -165,11 +165,11 @@ export class TelechargementComponent implements OnInit {
     });
   }
 
-  delete(selection:any) {
+  delete(selection: any) {
     console.log(selection.id_log);
     this.isOpInProgress = true;
     this.telechargementService.delete(selection.id_log).subscribe(() => {
-      this.telechargements = this.telechargements.filter(telechargement=> telechargement.id !== selection.id);
+      this.telechargements = this.telechargements.filter(telechargement => telechargement.id !== selection.id);
       selection = null;
       this.isOpInProgress = false;
       this.totalRecords--;

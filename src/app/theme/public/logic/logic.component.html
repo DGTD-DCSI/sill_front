@@ -1,54 +1,42 @@
-
-
 <div class="inkindonations-selector">
     <div id="selector-row">
-        
-        <fieldset>Categories: 
-        <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]= "searchLogiciel" style="width: 250px; height: 40px;" >
-            <option data-tokens="ketchup base">base</option>
-            <option data-tokens="mustard">education</option>
-            <option data-tokens="frosting">email</option>
-          </select>
-        
+
+        <fieldset>Categories:
+            <select class="selectpicker" data-live-search="true" (input)="loadSousCategorie($event)"
+                searchLogiciel="true" [(ngModel)]="searchLogiciel" style="width: 250px; height: 40px;">
+                <option *ngFor="let categorie of categories" data-tokens="ketchup base">{{categorie.libelleCat}}
+                </option>
+            </select>
         </fieldset>
-          
-        
-        <fieldset> sous Categories: 
-            <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]= "searchLogiciel" style="width: 300px; height: 40px;" >
-                <option selected>  vvv</option>
-                <option data-tokens="ketchup base">base</option>
-                <option data-tokens="mustard">education</option>
-                <option data-tokens="frosting">email</option>
-              </select>
-            
-            </fieldset>
-              
-        
-      
+        <fieldset> sous Categories:
+            <select class="selectpicker" data-live-search="true" searchLogiciel="true" [(ngModel)]="searchLogiciel"
+                style="width: 300px; height: 40px;">
+                <option *ngFor="let categorie of sousCategories" data-tokens="ketchup base">{{categorie.libelleCat}}
+                </option>
+            </select>
 
+        </fieldset>
 
-      <div class="form-outline mb-4">
-        <input type="search" class="form-control" id="datatable-search-input" name= "search" [(ngModel)]= "searchLogiciel" placeholder="Recherche logiciels.."style="width: 400px; margin-top: 25px; " >
-        
-      </div>
-      
+        <div class="form-outline mb-4">
+            <input type="search" class="form-control" id="datatable-search-input" name="search"
+                [(ngModel)]="searchLogiciel" placeholder="Recherche logiciels.."
+                style="width: 400px; margin-top: 25px; ">
 
-
-
+        </div>
 
     </div>
-  </div>
+</div>
 <div class="cont">
     <div class="logic-list">
         <div class="logic flex" *ngFor="let logiciel of logiciells | filter:searchLogiciel">
             <!-- Offcanvas Sidebar -->
             <div class="logiciel-img  aic">
-                <img [src]="logiciel?.imagelog" [alt]=" " height="40" width="200">
-            </div>
+                <img [src]="generateSafeImageUrl(logiciel?.imagelog)" alt="placeholder" height="40" width="200">
 
+            </div>
             <div class="logiciel-detail">
                 <div class="logiciel-name ">
-                    <h3>{{logiciel?.libelleLog}}</h3>
+                    <h3>{{logiciel?.libelleLog}} </h3>
                 </div>
                 <div class="logiciel-description">
                     <h5>{{logiciel?.descriptionLog}}</h5>
@@ -62,7 +50,7 @@
                 </div>
 
                 <div class="categorie">
-                {{logiciel?.type}}
+                    {{logiciel?.type}}
                 </div>
 
 
@@ -79,11 +67,12 @@
 
     <div class="row">
         <div class="col md-12 d-flex justify-content-center">
-            
+
 
             <div class="btn-group flot-right">
-                <button class="btn btn-outline-primary " *ngFor="let page of PageNumbers" (click)=" changePage(page)" [class.Active] = "page == selectedpage">{{page}}</button>
-               
+                <button class="btn btn-outline-primary " *ngFor="let page of PageNumbers" (click)=" changePage(page)"
+                    [class.Active]="page == selectedpage">{{page}}</button>
+
 
             </div>
 
