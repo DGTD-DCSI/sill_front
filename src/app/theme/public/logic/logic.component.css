@@ -1,17 +1,18 @@
 .logic{
 
-    text-align: center;
-    border:0.1px solid #ccc;
-    width: 270px;
-    height: 300px;
-    margin: 10px;
-    cursor: pointer;
-    border-radius: 20px;
-    background-color: #fff;
-   max-height: 350px;
-    transition: all 0.7s ease-in-out;
-    line-height: 24px;
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.24), 0 2px 21px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  border:0.1px solid #ccc;
+  width:250px;
+  max-width: 260px;
+  height: 245px;
+  max-height: 400px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #fff;
+  transition: all 0.7s ease-in-out;
+  line-height: 24px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.24), 0 2px 21px rgba(0, 0, 0, 0.35);
 }
 .logic:hover{
     background-color: #fff;
@@ -27,9 +28,14 @@
  
 
 }
-.logiciel-detail .logiciel-name h2{
+.logic .logiciel-img{
+
+  height: 80px;
+    width: 80px;
+}
+.logiciel-detail .logiciel-name h3{
     padding: 10px;
-    font-size:1.1rem ;
+    font-size:1.3rem ;
     font-family:Georgia, 'Times New Roman', Times, serif
 
 }
@@ -42,19 +48,20 @@
 }
 
 .logic .logiciel-description{
-    padding: 10px;
-    font-size:1.5rem ;
+    font-size:1rem ;
     font-family: 'Times New Roman', Times, serif;
 }
 
 .logic .logiciel-version{
-    padding: 10px;
-    font-size:1.5rem ;
+
+font-size:1rem ;
+    font-size:1rem ;
     font-family: 'Times New Roman', Times, serif;
 }
 .logic .logiciel-editeur{
-    padding: 10px;
-    font-size:1.5rem ;
+
+
+    font-size:1rem ;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -183,3 +190,16 @@ color: white;
 font-size: 0px;
 
       }
+      .logiciel-telechargement{
+        text-align: center;
+        text-decoration: none;
+        border: 0;
+        background-color: #ffff;
+        justify-content: center;
+        align-items:center;
+       position: fixed;
+        
+      }
+      .logiciel-telechargement a{
+       text-decoration: none;
+               }

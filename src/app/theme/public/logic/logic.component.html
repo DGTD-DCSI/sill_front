@@ -4,7 +4,7 @@
         <fieldset>Categories:
             <select class="selectpicker" data-live-search="true" (input)="loadSousCategorie($event)"
                 searchLogiciel="true" [(ngModel)]="searchLogiciel" style="width: 250px; height: 40px;">
-                <option *ngFor="let categorie of categories" data-tokens="ketchup base">{{categorie.libelleCat}}
+                <option *ngFor="let categorie of categories" data-tokens="categorie.libelleCat">{{categorie.libelleCat}}
                 </option>
             </select>
         </fieldset>
@@ -14,7 +14,7 @@
                 <option *ngFor="let categorie of sousCategories" data-tokens="ketchup base">{{categorie.libelleCat}}
                 </option>
             </select>
-
+<!-- ceci est un commentaire -->
         </fieldset>
 
         <div class="form-outline mb-4">
@@ -30,8 +30,8 @@
     <div class="logic-list">
         <div class="logic flex" *ngFor="let logiciel of logiciells | filter:searchLogiciel">
             <!-- Offcanvas Sidebar -->
-            <div class="logiciel-img  aic">
-                <img [src]="generateSafeImageUrl(logiciel?.imagelog)" alt="placeholder" height="40" width="200">
+            <div class="logiciel-img">
+                <img [src]="(logiciel?.imagelog)" alt="" height="40" width="200">
 
             </div>
             <div class="logiciel-detail">
@@ -39,25 +39,24 @@
                     <h3>{{logiciel?.libelleLog}} </h3>
                 </div>
                 <div class="logiciel-description">
-                    <h5>{{logiciel?.descriptionLog}}</h5>
+                    <h6>{{logiciel?.descriptionLog}}</h6>
                 </div>
 
                 <div class="logiciel-version">
-                    <h5>{{logiciel?.versionlog}}</h5>
+                    <h6><b>version:</b> {{logiciel?.versionlog}}</h6>
                 </div>
                 <div class="logiciel-editeur">
-                    <h5>{{logiciel?.editeurlog}}</h5>
+                    <h6><b>editeur:</b> {{logiciel?.editeurlog}}</h6>
                 </div>
 
                 <div class="categorie">
                     {{logiciel?.type}}
                 </div>
 
-
-
-                <button class="btnn btn btn-succes" style="align-items:center;"><a [href]="logiciel?.communauteUrlLog"
-                        target="_blank"><i class="bi bi-download"> TELECHARGER</i></a></button>
-
+               <div  class="logiciel-telechargement" style="align-item: center;">
+         <a [href]="logiciel?.communauteUrlLog"
+                        target="_blank"><i class="bi bi-download"> TELECHARGER</i></a>
+                    </div>
             </div>
         </div>
 
