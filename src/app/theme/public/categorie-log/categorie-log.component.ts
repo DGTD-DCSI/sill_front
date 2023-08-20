@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { VersionService } from 'src/app/services/version/version.service';
 import { UploadFileService } from 'src/app/services/uploadFile/upload-file.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { LazyLoadEvent } from 'primeng/api';
 @Component({
@@ -39,6 +40,7 @@ export class CategorieLogComponent implements OnInit {
     private authService: AuthService,
     private categorieService: CategorieService,
     private sanitizer: DomSanitizer,
+    private modalService: NgbModal,
     private fileService: UploadFileService,
     private versionService: VersionService) { }
 
@@ -48,7 +50,12 @@ export class CategorieLogComponent implements OnInit {
     this.loadLogiciel(pageIndex, this.logicielPerPage);
     this.load();
   }
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+    }, (reason) => {
 
+    });
+  }
 
   generateSafeImageUrl(imgBase64: any): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(imgBase64);
@@ -82,6 +89,15 @@ export class CategorieLogComponent implements OnInit {
     this.changePage(1);
   }
 
+
+  suivant() {
+    this.selectedpage = (this.selectedpage < this.PageNumbers.length) ? this.selectedpage + 1 : 1;
+    this.SlicedLogiciel();
+  }
+  precedant() {
+    this.selectedpage = (this.selectedpage > 1) ? this.selectedpage - 1 : 1;
+    this.SlicedLogiciel();
+  }
 
   changePage(page: any) {
     this.selectedpage = page;

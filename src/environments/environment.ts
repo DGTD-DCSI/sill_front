@@ -2,7 +2,6 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const commonAppURI: string = 'http://localhost:8081/';
-//const commonAppURI: string = 'http://192.168.85.21:8081/';
 
 export const environment = {
   production: false,

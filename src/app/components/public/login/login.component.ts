@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   onLoggedin() {
     this.authService.initLocastorage()
     this.authService.login(this.user).subscribe(p => {
-      //console.log(JSON.stringify(p))
       if (p.code == 200) {
         this.erreur = 0;
         this.authService.createLocalStorage(p.result.id, p.result.role, p.result.token)

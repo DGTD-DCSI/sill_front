@@ -49,7 +49,9 @@ import { RechercheComponent } from './theme/public/recherche/recherche.component
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { CategorieLogComponent } from './theme/public/categorie-log/categorie-log.component';
 import { HttpinterceptorService } from './services/httpinterceptor/httpinterceptor.service';
-
+import { LogicDetailComponent } from './theme/public/logic-detail/logic-detail.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +83,7 @@ import { HttpinterceptorService } from './services/httpinterceptor/httpintercept
     TextComponent,
     RechercheComponent,
     CategorieLogComponent,
-
+    LogicDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +93,7 @@ import { HttpinterceptorService } from './services/httpinterceptor/httpintercept
     DividerModule,
     MessageModule,
     ProgressSpinnerModule,
+    NgxPaginationModule,
     TableModule,
     InputTextModule,
     DialogModule,
@@ -102,7 +105,8 @@ import { HttpinterceptorService } from './services/httpinterceptor/httpintercept
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    NgbModule
   ],
   providers: [ConfirmationService, { provide: HTTP_INTERCEPTORS, useClass: HttpinterceptorService, multi: true }],
   bootstrap: [AppComponent]
