@@ -34,7 +34,7 @@ export class LogicielComponent implements OnInit {
   constructor(private applicationService: ApplicationService,) { }
 
   ngOnInit(): void {
-    this.load();
+   // this.load();
   }
   load(event?: LazyLoadEvent) {
     this.isLoading = true;
@@ -44,7 +44,6 @@ export class LogicielComponent implements OnInit {
       console.log(this.logiciels);
     }, error => {
       this.message = { severity: 'error', summary: error.error };
-      console.error(JSON.stringify(error));
     });
   }
 

@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
       if (p.code == 200) {
         this.erreur = 0;
         this.authService.createLocalStorage(p.result.id, p.result.role, p.result.token)
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/dashboard']);
+        
       }
       else {
         this.erreur = 1;
