@@ -60,7 +60,6 @@ export class ApplicationComponent implements OnInit {
     this.applicationService.getAll().subscribe(response => {
       this.isLoading = false;
       this.logiciels = response.result as Logiciel[];
-      console.log(this.logiciels);
     }, error => {
       this.message = { severity: 'error', summary: error.error };
       console.error(JSON.stringify(error));
@@ -70,6 +69,8 @@ export class ApplicationComponent implements OnInit {
   loadCategorie(event?: LazyLoadEvent) {
     this.categorieService.getAll().subscribe(response => {
       this.categories = response.result as Categorie[];
+      console.log(JSON.stringify(this.categories));
+
     }, error => {
       this.message = { severity: 'error', summary: error.error };
     });

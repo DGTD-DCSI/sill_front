@@ -4,6 +4,7 @@ export interface Categorie {
     descriptionCat?: String;
     categorieMere?: Categorie;
     categorieMereID?: number;
+    sous_categories?:Categorie[]
 
 }
 

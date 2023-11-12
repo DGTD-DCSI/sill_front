@@ -21,7 +21,9 @@ export class SousCategorieComponent implements OnInit {
   recordsPerPage = environment.recordsPerPage;
   categories!: Categorie[]
   categoriesMeres!: Categorie[]
-  categorie: Categorie = {};
+  categorie: Categorie = {
+    sous_categories: []
+  };
   enableCreate = true;
   enableBtnInfo = false;
   enableBtnEdit = true;

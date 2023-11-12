@@ -19,7 +19,9 @@ export class CategorieComponent implements OnInit {
   totalRecords!: number;
   recordsPerPage = environment.recordsPerPage;
   categories!: Categorie[];
-  categorie: Categorie = {};
+  categorie: Categorie = {
+    sous_categories: []
+  };
   enableCreate = true;
   errorGetAllCategorie = false;
 
