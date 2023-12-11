@@ -20,8 +20,8 @@ import { UserComponent } from './pages/private/components/settings/user/user.com
                 ]
             },
             { path: '', loadChildren: () => import('./pages/public/public.module').then(m => m.PublicModule) },
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
+            { path: 'auth', loadChildren: () => import('./pages/public/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })

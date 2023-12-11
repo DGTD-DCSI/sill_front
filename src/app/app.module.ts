@@ -11,10 +11,12 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { RegisterComponent } from './pages/public/components/auth/register/register.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent
+        AppComponent, NotfoundComponent, 
     ],
     imports: [
         AppRoutingModule,
@@ -23,7 +25,7 @@ import { PhotoService } from './demo/service/photo.service';
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService, HttpClientModule
     ],
     bootstrap: [AppComponent]
 })

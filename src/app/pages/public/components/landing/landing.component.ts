@@ -14,4 +14,12 @@ export class LandingComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  btnLogin= function () {
+    this.router.navigateByUrl('/auth/login')
+  };
+
+  btnRegister= function () {
+    this.router.navigateByUrl('/auth/register')
+  };
+
 }
