@@ -1,9 +1,10 @@
 import { GroupeThematique } from "./groupeThematique.model";
 
 export interface User {
-  id: string;
+  id?: string;
   nom: string;
   prenom: string;
+  password?: string;
   token: string;
   login: string;
   isAdmin: boolean;

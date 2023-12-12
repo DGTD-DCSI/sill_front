@@ -22,6 +22,7 @@ export class UserComponent implements OnInit {
     id: '',
     nom: '',
     prenom: '',
+    password: '',
     token: '',
     login: '',
     isAdmin: false,
@@ -33,6 +34,8 @@ export class UserComponent implements OnInit {
 
   selectedUsers: User[] = [];
 
+  submitted: boolean = false;
+
   deleteUserDialog: boolean = false;
 
   deleteUsersDialog: boolean = false;
@@ -41,11 +44,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe((data) => {
-      if (data.code === 200) {
-        this.users = data.result;
-    console.log("osij");
-    console.log(this.users);
-      }
+        this.users = data;
     });
 
     this.cols = [
@@ -81,5 +80,114 @@ export class UserComponent implements OnInit {
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  openNew() {
+      this.user ={
+        id: '',
+        nom: '',
+        prenom: '',
+        password: '',
+        token: '',
+        login: '',
+        isAdmin: false,
+        isActif: false,
+        groupeThematiques: [],
+      };
+      this.submitted = false;
+      this.userDialog = true;
+  }
+
+  hideDialog() {
+      this.userDialog = false;
+      this.submitted = false;
+  }
+
+  saveUser() {
+      this.submitted = true;
+
+      if (this.user.nom?.trim()) {
+          if (this.user.id) {
+              // @ts-ignore
+              this.users[this.findIndexById(this.user.id)] = this.user;
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
+          } else {
+                this.user.password = "admin";
+                this.userService.saveUser( this.user ).subscribe( data => {
+                this.user = data;
+                this.users.push(this.user);
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
+                })
+
+          }
+
+          this.users = [...this.users];
+          this.userDialog = false;
+          this.user = {
+            id: '',
+            nom: '',
+            prenom: '',
+            password: '',
+            token: '',
+            login: '',
+            isAdmin: false,
+            isActif: false,
+            groupeThematiques: [],
+          };
+      }
+  }
+
+  findIndexById(id: string): number {
+      let index = -1;
+      for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i].id === id) {
+              index = i;
+              break;
+          }
+      }
+
+      return index;
+  }
+
+  deleteUser(user: User) {
+    console.log("sosio oijzodij")
+      this.deleteUserDialog = true;
+      this.user = { ...user };
+  }
+
+  confirmDelete() {
+    this.userService.deleteUser( this.user.id ).subscribe( data => {
+        console.log("soidsoi oikjfvqz")
+      this.deleteUserDialog = false;
+      this.users = this.users.filter(val => val.id !== this.user.id);
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
+      this.user = {
+        id: '',
+        nom: '',
+        prenom: '',
+        password: '',
+        token: '',
+        login: '',
+        isAdmin: false,
+        isActif: false,
+        groupeThematiques: [],
+      };
+    })
+  }
+
+  deleteSelectedUsers() {
+      this.deleteUsersDialog = true;
+  }
+
+  confirmDeleteSelected() {
+      this.deleteUsersDialog = false;
+      this.users = this.users.filter(val => !this.selectedUsers.includes(val));
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateurs supprimé', life: 3000 });
+      this.selectedUsers = [];
+  }
+
+  editUser(user: User) {
+      this.user = { ...user };
+      this.userDialog = true;
   }
 }
