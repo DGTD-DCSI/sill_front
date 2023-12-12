@@ -1,7 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <!-- <p-toast></p-toast> -->
+            <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
@@ -44,14 +44,14 @@
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
                             {{ groupeThematique.code }}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td>
                             <span class="p-column-title">Libellé</span>
                             {{ groupeThematique.libelle }}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="ediGroupeThematique(groupeThematique)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteGroupeThematiquesDialo(groupeThematique)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editGroupeThematique(groupeThematique)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteGroupeThematique(groupeThematique)"></button>
                             </div>
                         </td>
                     </tr>
@@ -59,53 +59,36 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="groupeThematiqueDialog" [style]="{width: '450px'}" header="Editer utilisateur" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="groupeThematiqueDialog" [style]="{width: '450px'}" header="Editer groupe thématique" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="nom">Nom</label>
-                    <input type="text" pInputText id="nom" [(ngModel)]="user.nom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.nom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.nom">Veuillez saisir le nom.</small>
+                    <label for="code">Code</label>
+                    <input type="text" pInputText id="code" [(ngModel)]="groupeThematique.code" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !groupeThematique.code}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !groupeThematique.code">Veuillez saisir le code.</small>
                 </div>
                 <div class="field">
-                    <label for="prenom">Prenom(s)</label>
-                    <input type="text" pInputText id="prenom" [(ngModel)]="user.prenom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.prenom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.prenom">Veuillez saisir le(s) prénom(s).</small>
-                </div>
-                <div class="field">
-                    <label for="login">Identifiant</label>
-                    <input type="text" pInputText id="login" [(ngModel)]="user.login" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.login}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.login">Veuillez saisir le login.</small>
-                </div>
-                <div class="field">
-                    <label for="isAdmin">Est admin</label>
-                    <p-inputSwitch [(ngModel)]="user.isAdmin"></p-inputSwitch>
-                </div>
-                <div class="field">
-                    <label for="isActif">Est Actif</label>
-                    <p-inputSwitch [(ngModel)]="user.isActif"></p-inputSwitch>
-                </div>
-                <div class="field">
-                    <label for="groupeThematiques">Groupe thématique</label>
-                    <p-multiSelect [options]="groupeThematiques" [(ngModel)]="user.groupeThematiques" placeholder="Veuillez choisir les groupes thématiques" optionLabel="name" display="chip" [showClear]="true"></p-multiSelect>
+                    <label for="groupeThematique">Libellé</label>
+                    <input type="text" pInputText id="groupeThematique" [(ngModel)]="groupeThematique.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !groupeThematique.libelle}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !groupeThematique.libelle">Veuillez saisir le libellé.</small>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveGroupeThematique()"></button>
             </ng-template>
         </p-dialog>
 
-        <!-- <p-dialog [(visible)]="deleteUserDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteGroupeThematiqueDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="user">Veuillez confirmer la suppression de l'utilisateur <b>{{user.login}}</b>?</span>
+                <span *ngIf="groupeThematique">Veuillez confirmer la suppression du groupe thématique <b>{{groupeThematique.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUserDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="deleteUserDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Oui" (click)="confirmDelete()"></button>
             </ng-template>
-        </p-dialog> -->
+        </p-dialog>
 
         <!-- <p-dialog [(visible)]="deleteUsersDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">

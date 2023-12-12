@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ProductService } from 'src/app/demo/service/product.service';
 import { User } from 'src/app/pages/shared/models/user.model';
 import { UserService } from 'src/app/pages/shared/service/user.service';
 
@@ -92,14 +91,16 @@ export class UserComponent implements OnInit {
       if (this.user.nom?.trim()) {
           if (this.user.id) {
               // @ts-ignore
-              this.users[this.findIndexById(this.user.id)] = this.user;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
+              this.userService.saveUser( this.user ).subscribe( data => {
+                this.users[this.findIndexById(this.user.id)] = this.user;
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
+              })
           } else {
                 this.user.password = "admin";
                 this.userService.saveUser( this.user ).subscribe( data => {
-                this.user = data;
-                this.users.push(this.user);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
+                    this.user = data;
+                    this.users.push(this.user);
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
                 })
 
           }

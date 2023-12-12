@@ -7,7 +7,8 @@ import { GroupeThematiqueService } from 'src/app/pages/shared/service/groupeThem
 @Component({
   selector: 'app-groupe-thematique',
   templateUrl: './groupe-thematique.component.html',
-  styleUrls: ['./groupe-thematique.component.scss']
+  styleUrls: ['./groupe-thematique.component.scss'],
+  providers: [MessageService],
 })
 export class GroupeThematiqueComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class GroupeThematiqueComponent implements OnInit {
 
   submitted: boolean = false;
 
-  deleteUserDialog: boolean = false;
+  deleteGroupeThematiqueDialog: boolean = false;
 
   groupeThematiqueDialog: boolean = false;
 
@@ -31,7 +32,7 @@ export class GroupeThematiqueComponent implements OnInit {
 
   deleteGroupeThematiquesDialog: boolean = false;
 
-  constructor( private groupeThematiqueService: GroupeThematiqueService ) { }
+  constructor( private messageService: MessageService, private groupeThematiqueService: GroupeThematiqueService ) { }
 
   ngOnInit(): void {
     this.groupeThematiqueService.getGroupeThematiques().subscribe((data) => {
@@ -65,6 +66,11 @@ export class GroupeThematiqueComponent implements OnInit {
       this.groupeThematiqueDialog = true;
   }
 
+  editGroupeThematique(groupeThematique: GroupeThematique) {
+      this.groupeThematique = { ...groupeThematique };
+      this.groupeThematiqueDialog = true;
+  }
+
   hideDialog() {
       this.groupeThematiqueDialog = false;
       this.submitted = false;
@@ -76,13 +82,15 @@ export class GroupeThematiqueComponent implements OnInit {
       if (this.groupeThematique.code?.trim()) {
           if (this.groupeThematique.id) {
               // @ts-ignore
-              this.groupeThematiques[this.findIndexById(this.groupeThematique.id)] = this.groupeThematique;
-              // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Groupe Thématique mis-à-jour', life: 3000 });
+              this.groupeThematiqueService.saveGroupeThematique( this.groupeThematique ).subscribe( data => {
+                this.groupeThematiques[this.findIndexById(this.groupeThematique.id)] = this.groupeThematique;
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Groupe Thématique mis-à-jour', life: 3000 }); 
+              })
           } else {
-                this.groupeThematiqueService.saveUser( this.groupeThematique ).subscribe( data => {
-                this.groupeThematique = data;
-                this.groupeThematiques.push(this.groupeThematique);
-                // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'roupe Thématique ajouté', life: 3000 });
+                this.groupeThematiqueService.saveGroupeThematique( this.groupeThematique ).subscribe( data => {
+                  this.groupeThematique = data;
+                  this.groupeThematiques.push(this.groupeThematique);
+                  this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Groupe Thématique ajouté', life: 3000 });
                 })
 
           }
@@ -109,31 +117,23 @@ export class GroupeThematiqueComponent implements OnInit {
       return index;
   }
 
-  // deleteUser(groupeThematique: GroupeThematique) {
-  //   console.log("sosio oijzodij")
-  //     this.deleteGroupeThematiqueDialog = true;
-  //     this.groupeThematique = { ...groupeThematique };
-  // }
+  deleteGroupeThematique(groupeThematique: GroupeThematique) {
+      this.deleteGroupeThematiqueDialog = true;
+      this.groupeThematique = { ...groupeThematique };
+  }
 
-  // confirmDelete() {
-  //   this.userService.deleteUser( this.user.id ).subscribe( data => {
-  //       console.log("soidsoi oikjfvqz")
-  //     this.deleteUserDialog = false;
-  //     this.users = this.users.filter(val => val.id !== this.user.id);
-  //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
-  //     this.user = {
-  //       id: '',
-  //       nom: '',
-  //       prenom: '',
-  //       password: '',
-  //       token: '',
-  //       login: '',
-  //       isAdmin: false,
-  //       isActif: false,
-  //       groupeThematiques: [],
-  //     };
-  //   })
-  // }
+  confirmDelete() {
+    this.groupeThematiqueService.deleteGroupeThematique( this.groupeThematique.id ).subscribe( data => {
+      this.deleteGroupeThematiqueDialog = false;
+      this.groupeThematiques = this.groupeThematiques.filter(val => val.id !== this.groupeThematique.id);
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Groupe thématique supprimé', life: 3000 });
+      this.groupeThematique = {
+        'id': '',
+        'code': '',
+        'libelle': '',
+      };
+    })
+  }
 
   // deleteSelectedUsers() {
   //     this.deleteUsersDialog = true;
