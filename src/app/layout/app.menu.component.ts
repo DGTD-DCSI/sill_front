@@ -18,7 +18,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Administration Fonctionnel',
                 items: [
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/private'] },
-                    { label: 'Logiciels', icon: 'pi pi-fw pi-server', routerLink: ['/private'] }
+                    { label: 'Logiciels', icon: 'pi pi-fw pi-server', routerLink: ['/private/settings/logiciels'] }
                 ]
             },
             {
