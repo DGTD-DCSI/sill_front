@@ -63,7 +63,9 @@ import { LogicielComponent } from './components/settings/logiciel/logiciel.compo
 
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
-      { path: 'settings/users', component: UserComponent }
+      { path: 'settings/users', component: UserComponent },
+      { path: 'settings/groupes-thematiques', component: GroupeThematiqueComponent },
+      { path: 'settings/logiciels', component: LogicielComponent },
     ])
   ]
 })
