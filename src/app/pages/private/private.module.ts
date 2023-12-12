@@ -21,7 +21,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { UserComponent } from './components/settings/user/user.component';
-
+import { ChipModule } from 'primeng/chip';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,9 @@ import { UserComponent } from './components/settings/user/user.component';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
+    ChipModule,
+    InputSwitchModule,
+    MultiSelectModule,
 
     RouterModule.forChild([
       { path: '', component: DashboardComponent },

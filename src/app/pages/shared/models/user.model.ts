@@ -1,7 +1,12 @@
+import { GroupeThematique } from "./groupeThematique.model";
+
 export interface User {
-    id: number;
-    name: string;
-    mail: string;
-    password: string;
-    password_check: string;
-  }
+  id: string;
+  nom: string;
+  prenom: string;
+  token: string;
+  login: string;
+  isAdmin: boolean;
+  isActif: boolean;
+  groupeThematiques: GroupeThematique[];
+}

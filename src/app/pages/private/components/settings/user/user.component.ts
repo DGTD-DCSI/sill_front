@@ -3,6 +3,8 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { User } from 'src/app/pages/shared/models/user.model';
+import { UserService } from 'src/app/pages/shared/service/user.service';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +20,10 @@ export class UserComponent implements OnInit {
 
   deleteProductsDialog: boolean = false;
 
-  products: Product[] = [];
+  products: Product[] = []; 
+  
+  userList: User[] = [];
+  selectedUser: User;
 
   product: Product = {};
 
@@ -32,7 +37,7 @@ export class UserComponent implements OnInit {
 
   rowsPerPageOptions = [5, 10, 20];
 
-  constructor(private productService: ProductService, private messageService: MessageService) { }
+  constructor(private productService: ProductService, private messageService: MessageService, private userService: UserService) { }
 
   ngOnInit() {
       this.productService.getProducts().then(data => this.products = data);

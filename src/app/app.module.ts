@@ -11,7 +11,6 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { RegisterComponent } from './pages/public/components/auth/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({

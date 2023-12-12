@@ -3,12 +3,14 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { UserComponent } from './pages/private/components/settings/user/user.component';
+import { AuthGuardGuard } from './auth-guard.guard';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
             {
                 path: 'private', component: AppLayoutComponent,
+                canActivate: [AuthGuardGuard],
                 children: [
                     { path: '', loadChildren: () => import('./pages/private/private.module').then(m => m.PrivateModule) },
                     { path: 'dashboard', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
