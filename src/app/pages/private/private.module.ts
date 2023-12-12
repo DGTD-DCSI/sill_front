@@ -24,11 +24,13 @@ import { UserComponent } from './components/settings/user/user.component';
 import { ChipModule } from 'primeng/chip';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { GroupeThematiqueComponent } from './components/settings/groupe-thematique/groupe-thematique.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    UserComponent
+    UserComponent,
+    GroupeThematiqueComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
-      { path: 'settings/users', component: UserComponent }
+      { path: 'settings/users', component: UserComponent },
+      { path: 'settings/groupes-thematiques', component: GroupeThematiqueComponent }
     ])
   ]
 })

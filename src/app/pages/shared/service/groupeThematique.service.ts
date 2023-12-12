@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { UserResponse } from '../models/response/user.response.model';
 import { Observable } from 'rxjs';
 import { GroupeThematiqueResponse } from '../models/response/groupeThematique.response.model';
+import { GroupeThematique } from '../models/groupeThematique.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,14 @@ import { GroupeThematiqueResponse } from '../models/response/groupeThematique.re
 export class GroupeThematiqueService {
   constructor(private httpClient: HttpClient) {}
 
-  getGroupeThematiques(): Observable<GroupeThematiqueResponse> {
-    return this.httpClient.get<GroupeThematiqueResponse>( environment.baseUrl + '/groupe-thematiques' );
+  getGroupeThematiques(): Observable<GroupeThematique[]> {
+    return this.httpClient.get<GroupeThematique[]>( environment.baseUrl + '/groupe-thematiques' );
+  }
+
+  saveUser(groupeThematique: GroupeThematique): Observable<GroupeThematique> {
+    return this.httpClient.post<GroupeThematique>(
+      environment.baseUrl + '/groupe-thematiques',
+      groupeThematique
+    );
   }
 }

@@ -1,5 +1,5 @@
 export interface GroupeThematique {
-    id: string
+    id?: string
     code: string
     libelle: string
   }

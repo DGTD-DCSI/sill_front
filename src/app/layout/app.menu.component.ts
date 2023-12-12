@@ -26,7 +26,7 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Utilisateurs', icon: 'pi pi-fw pi-user', items: [
                         { label: 'Utilisateur', icon: 'pi pi-fw pi-user', routerLink: ['/private/settings/users'] },
-                        { label: 'Groupe Thématique', icon: 'pi pi-fw pi-users', routerLink: ['/private'] },
+                        { label: 'Groupe Thématique', icon: 'pi pi-fw pi-users', routerLink: ['/private/settings/groupes-thematiques'] },
                     ] },
                     { label: 'Paramètres', icon: 'pi pi-spin pi-cog', items: [
                         { label: 'Catégorie logicielle', icon: 'pi pi-fw pi-desktop', routerLink: ['/private'] },

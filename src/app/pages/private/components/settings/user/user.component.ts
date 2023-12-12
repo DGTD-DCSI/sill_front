@@ -56,23 +56,6 @@ export class UserComponent implements OnInit {
       { field: 'groupeThematiques', header: 'Groupe thématique' },
     ];
   }
-  // ngOnInit() {
-  //     this.userService.getUsers( ).subscribe( data => {
-  //         if( data.code == 200 ){
-  //             this.users = data.result;
-  //             console.log( this.users );
-  //         }
-  //     });
-
-  //     this.cols = [
-  //         { field: 'nom', header: 'Nom' },
-  //         { field: 'prenom', header: 'Prénom(s)' },
-  //         { field: 'login', header: 'Identifiant' },
-  //         { field: 'isAdmin', header: 'Est admin' },
-  //         { field: 'isActif', header: 'Est Actif' },
-  //         { field: 'groupeThematiques', header: 'Groupe thématique' }
-  //     ];
-  // }
 
   deleteSelectedProducts() {
     this.deleteUsersDialog = true;
