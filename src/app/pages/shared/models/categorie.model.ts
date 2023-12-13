@@ -1,9 +1,7 @@
 export interface Categorie {
-    id: string;
-    deleted: boolean;
-    createdDate: string;
-    lastUpdatedDate: string;
+    id?: string;
     libelle: string;
-    categorieMereId: any;
+    categorieMereId: string;
     description: string;
+    // categorieMere?: Categorie | null;
   }

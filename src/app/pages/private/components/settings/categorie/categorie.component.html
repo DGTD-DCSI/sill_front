@@ -1,0 +1,115 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Ajouter une catégorie" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                       
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="categories" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','description', 'categorie_mere ']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedCategories" selectionMode="multiple" [rowHover]="true" dataKey="id">
+
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Gestion des catégories</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Rechercher..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="libelle">Libellé<p-sortIcon field="nom"></p-sortIcon></th>
+                        <th pSortableColumn="description">Description<p-sortIcon field="prenom"></p-sortIcon></th>
+                        <th pSortableColumn="categorie_mere">Catégorie mère<p-sortIcon field="categorie_mere"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-categorie>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="categorie"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Libellé</span>
+                            {{ categorie.libelle }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Description</span>
+                            {{ categorie.description }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Catégorie mère</span>
+                            {{ getLibelleCategorieMere(categorie.categorieMereId) }}
+                          </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCategorie(categorie)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCategorie(categorie)" ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="categorieDialog" [style]="{width: '650px'}"  header="Editer Catégorie" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="categorie_mere">Catégorie mère</label>
+                    <p-dropdown [options]="categoriesMeres" [(ngModel)]="selectedCategorieMere" placeholder="Selectionner une categorie" [showClear]="true" optionLabel="libelle"></p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="libelle">Libelle</label>
+                    <input type="text" pInputText id="libelle" [(ngModel)]="categorie.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !categorie.libelle}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !categorie.libelle">Veuillez saisir le libelle.</small>
+                </div>
+                <div class="field">
+                    <label for="description">Description</label>
+                    <input type="text" pInputText id="description" [(ngModel)]="categorie.description" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !categorie.description}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !categorie.description">Veuillez saisir la description.</small>
+                </div>
+                
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCategorie()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteCategorieDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="categorie">Veuillez confirmer la suppression de la catégorie <b>{{categorie.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCategorieDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteCategoriesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Voulez-vous vraiment supprimer ces catégories ?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCategoriesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
