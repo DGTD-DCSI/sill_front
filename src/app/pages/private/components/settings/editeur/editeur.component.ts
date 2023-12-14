@@ -78,9 +78,9 @@ export class EditeurComponent implements OnInit {
 
   }
 
-  deleteSelectedProducts() {
-    this.deleteEditeurDialog = true;
-  }
+  // deleteSelectedProducts() {
+  //   this.deleteEditeurDialog = true;
+  // }
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -103,35 +103,84 @@ hideDialog() {
     this.submitted = false;
 }
 
+// saveEditeur() {
+//   this.submitted = true;
+
+//   if (this.editeur.libelle?.trim()) {
+//       if (this.editeur.id) {
+//           // @ts-ignore
+//           this.editeurs[this.findIndexById(this.editeur.id)] = this.editeur;
+//           //this.editeurService.UpdateEditeur(this.editeur ).subscribe( data => {console.log(data);
+//           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Editeur mis-à-jour', life: 3000 });
+//       } else {
+//             //this.editeur.libelle = "admin";
+//             this.editeurService.createOrUpdateEditeur( this.editeur ).subscribe( data => {console.log(data);
+//             this.editeur = data.result;
+//             this.editeurs.push(this.editeur);
+//             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Editeur ajouté', life: 3000 })
+//             })
+
+//       }
+//       this.editeurs = [...this.editeurs];
+//       this.editeurDialog = false;
+//       this.editeur = {
+//         id: '',
+//         libelle: '',
+//         createdDate: '',
+//         lastUpdatedDate: '',
+//         url: '',
+//         deleted: true,
+//       };
+//   }
+// }
 saveEditeur() {
   this.submitted = true;
 
   if (this.editeur.libelle?.trim()) {
       if (this.editeur.id) {
-          // @ts-ignore
-          this.editeurs[this.findIndexById(this.editeur.id)] = this.editeur;
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Editeur mis-à-jour', life: 3000 });
-      } else {
-            //this.editeur.libelle = "admin";
-            this.editeurService.createOrUpdateEditeur( this.editeur ).subscribe( data => {console.log(data);
-            this.editeur = data.result;
-            this.editeurs.push(this.editeur);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Editeur ajouté', life: 3000 })
-            })
+          // Mise à jour de l'éditeur
+            console.log('poiuytrew');
+          this.editeurService.UpdateEditeur(this.editeur).subscribe(data => {
+            console.log('gggggggggg');
+              console.log(data);
+              this.updateEditeurInList(this.editeur);
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Editeur mis-à-jour', life: 3000 });
+              
+              // Mise à jour de l'éditeur dans le tableau local
+              const index = this.findIndexById(this.editeur.id);
+              if (index !== -1) {
+                  this.editeurs[index] = this.editeur;
+              }
 
+              this.resetEditeur();
+          });
+      } else {
+          // Création d'un nouvel éditeur
+          this.editeurService.createOrUpdateEditeur(this.editeur).subscribe(data => {
+              console.log(data);
+              this.editeur = data.result;
+              this.editeurs.push(this.editeur);
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Editeur ajouté', life: 3000 });
+
+              this.resetEditeur();
+          });
       }
-      this.editeurs = [...this.editeurs];
-      this.editeurDialog = false;
-      this.editeur = {
-        id: '',
-        libelle: '',
-        createdDate: '',
-        lastUpdatedDate: '',
-        url: '',
-        deleted: true,
-      };
   }
 }
+
+resetEditeur() {
+  this.editeurs = [...this.editeurs];
+  this.editeurDialog = false;
+  this.editeur = {
+      id: '',
+      libelle: '',
+      createdDate: '',
+      lastUpdatedDate: '',
+      url: '',
+      deleted: true,
+  };
+}
+
 findIndexById(id: string): number {
   let index = -1;
   for (let i = 0; i < this.editeurs.length; i++) {
@@ -145,14 +194,13 @@ findIndexById(id: string): number {
 }
 
 deleteEditeur(editeur: Editeur) {
-console.log("sosio oijzodij")
   this.deleteEditeurDialog = true;
   this.editeur = { ...editeur };
 }
 
 
-confirmDelete() {
-  const editeurId = Number(this.editeur.id); // Convertit l'ID en nombre
+/*confirmDelete() {
+  const editeurId = this.editeur.id; // Convertit l'ID en nombre
   this.editeurService.deleteEditeur( editeurId).subscribe( data => {
       console.log("supp");
     this.deleteEditeurDialog = false;
@@ -167,10 +215,30 @@ confirmDelete() {
       deleted: true,
     };
   })
+} */
+
+confirmDelete() {
+  console.log('this.editeur') 
+  console.log(this.editeur) 
+  this.editeurService.deleteEditeur( this.editeur.id).subscribe( data => {
+      console.log("soidsoi oikjfvqz")
+    this.deleteEditeurDialog = false;
+    this.editeurs = this.editeurs.filter(val => val.id !== this.editeur.id);
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
+    this.editeur = {
+      id: '',
+      libelle: '',
+      createdDate: '',
+      lastUpdatedDate: '',
+      url: '',
+      deleted: true,
+    };
+  })
 }
 
 deleteSelectedEditeurs() {
     this.deleteEditeurDialog = true;
+    
 }
 
 confirmDeleteSelected() {
@@ -185,5 +253,32 @@ editEditeur(editeur: Editeur) {
     this.editeurDialog = true;
 }
 
+// updateEditeur() {
+//   const id = 1; // L'ID de l'éditeur à mettre à jour
+//   const updatedEditeur: Editeur = {       
+//     id: '',
+//   libelle: '',
+//   createdDate: '',
+//   lastUpdatedDate: '',
+//   url: '',
+//   deleted: true, };
+
+//   this.editeurService.UpdateEditeur(updatedEditeur).subscribe({
+//     next: (response) => {
+//       this.editeurDialog = true;
+//       console.log('Editeur mis à jour avec succès', response);
+//     },
+//     error: (error) => {
+//       console.error('Erreur lors de la mise à jour de l\'éditeur', error);
+//     }
+//   });
+// }
+updateEditeurInList(editeur: Editeur) {
+  const index = this.editeurs.findIndex(e => e.id === editeur.id);
+  if (index !== -1) {
+    this.editeurs[index] = editeur;
+    this.editeurs = [...this.editeurs]; // Déclenche la détection de changement
+  }
+}
 
 }

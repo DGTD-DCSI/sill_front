@@ -41,12 +41,26 @@ export class EditeurService {
     return this.httpClient.post<Response<Editeur>>(environment.baseUrl + '/editeurs', editeur );
   }
 
-  UpdateEditeur(editeur: Editeur): Observable<Response<Editeur>> {
-    return this.httpClient.post<Response<Editeur>>(environment.baseUrl + '/editeurs', editeur );
-  }
+  // UpdateEditeur(id: number): Observable<Response<Editeur>> {
+  //   return this.httpClient.put<Response<Editeur>>(`${environment.baseUrl + '/editeurs'}/${id}`);
+  // }
 
-  deleteEditeur(id: number): Observable<Response<Editeur[]>> {
-    return this.httpClient.get<Response<Editeur[]>>(`${environment.baseUrl + '/editeurs/delete'}/${id}`);
+// UpdateEditeur(id: string, edit): Observable<Response<Editeur>> {
+//     return this.httpClient.put<Response<Editeur>>(`${environment.baseUrl}/editeurs/${id}`, editeurData);
+// }
+UpdateEditeur(editeur: Editeur): Observable<Response<Editeur>> {
+  return this.httpClient.put<Response<Editeur>>(
+    environment.baseUrl + '/editeurs/' + editeur.id,
+    editeur
+  );
+}
+
+
+  deleteEditeur(id: string): Observable<Response<Editeur[]>> {
+    //return this.httpClient.get<Response<Editeur[]>>(`${environment.baseUrl + '/editeurs/delete/' + id);
+
+    return this.httpClient.delete<Response<Editeur[]>>(
+      environment.baseUrl + '/editeurs/delete/' + id    );
   }
   getEditeursActives(): Observable<Response<Editeur[]>> {
     return this.httpClient.get<Response<Editeur[]>>(environment.baseUrl + "/editeurs/active");

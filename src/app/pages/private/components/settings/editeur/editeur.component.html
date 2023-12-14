@@ -1,6 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
+            <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
@@ -31,11 +32,12 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="libelle">Libellé<p-sortIcon field="libelle"></p-sortIcon></th>
-                        <th pSortableColumn="createdDate">Date de création<p-sortIcon field="createdDate"></p-sortIcon></th>
-                        <th pSortableColumn="lastUpdatedDate">Date de la dernière mise à jour<p-sortIcon field="lastUpdatedDate"></p-sortIcon></th>
-                        <th pSortableColumn="url">URL<p-sortIcon field="url"></p-sortIcon></th>
-                        <th></th>
+                        <th pSortableColumn="libelle"  >Libellé<p-sortIcon field="libelle" ></p-sortIcon></th>
+                        <!-- <th pSortableColumn="createdDate">Date de création<p-sortIcon field="createdDate"></p-sortIcon></th>
+                        <th pSortableColumn="lastUpdatedDate">Date de la dernière mise à jour<p-sortIcon field="lastUpdatedDate"></p-sortIcon></th> -->
+                        <th pSortableColumn="url" >URL<p-sortIcon field="url" ></p-sortIcon></th>
+                        <th pSortableColumn="action" >Actions<p-sortIcon field="action" ></p-sortIcon></th>
+                        <!-- <th> </th> -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-editeur>
@@ -47,22 +49,22 @@
                             <span class="p-column-title">Libellé</span>
                             {{ editeur.libelle }}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <!-- <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Date de création</span>
                             {{ editeur.createdDate }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Date de la dernière mise à jour</span>
                             {{ editeur.lastUpdatedDate }}
-                        </td>
+                        </td> -->
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">URL</span>
                             {{ editeur.url }}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEditeur(editeur)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"(click)="deleteEditeur(editeur)"></button>
                             </div>
                         </td>
                     </tr>
@@ -77,7 +79,7 @@
                     <input type="text" pInputText id="libelle" [(ngModel)]="editeur.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.libelle}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.libelle">Veuillez saisir le libellé.</small>
                 </div>
-                <div class="field">
+                <!-- <div class="field">
                     <label for="createdDate">Date de création</label>
                     <input type="date" pInputText id="createdDate" [(ngModel)]="editeur.createdDate" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.createdDate}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.createdDate">Veuillez saisir la date de creation.</small>
@@ -86,7 +88,7 @@
                     <label for="login">Date de la dernière mise à jour</label>
                     <input type="date" pInputText id="lastUpdatedDate" [(ngModel)]="editeur.lastUpdatedDate" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.lastUpdatedDate}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.lastUpdatedDate">Veuillez saisir la dernier date de modification.</small>
-                </div>
+                </div> -->
                 <div class="field">
                     <label for="url">URL</label>
                     <input type="text" pInputText id="url" [(ngModel)]="editeur.url" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.url}"/>
@@ -115,16 +117,16 @@
             </ng-template>
         </p-dialog> 
 
-<p-dialog [(visible)]="deleteEditeurDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+<!-- <p-dialog [(visible)]="deleteEditeurDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected products?</span>
+                <span>Êtes-vous sûr de vouloir supprimer l’éditeur sélectionné ?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEditeursDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEditeurDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
             </ng-template>
-        </p-dialog> 
+        </p-dialog>  -->
     </div>
 </div>
 
