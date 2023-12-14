@@ -116,7 +116,7 @@ export class UserComponent implements OnInit {
                 this.userService.saveUser( this.user ).subscribe( data => {
                 this.user = data;
                 this.users.push(this.user);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 })
                 })
 
           }

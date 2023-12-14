@@ -25,12 +25,14 @@ import { ChipModule } from 'primeng/chip';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { LogicielComponent } from './components/settings/logiciel/logiciel.component';
+import { EditeurComponent } from './components/settings/editeur/editeur.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     UserComponent,
-    LogicielComponent
+    LogicielComponent,
+    EditeurComponent
   ],
   imports: [
     CommonModule,
@@ -63,6 +65,7 @@ import { LogicielComponent } from './components/settings/logiciel/logiciel.compo
       { path: '', component: DashboardComponent },
       { path: 'settings/users', component: UserComponent },
       { path: 'settings/logiciels', component: LogicielComponent },
+      { path: 'settings/editeurs', component: EditeurComponent },
     ])
   ]
 })
