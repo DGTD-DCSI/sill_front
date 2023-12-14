@@ -4,6 +4,7 @@ import { SelectItem } from 'primeng/api';
 import { Logiciel } from 'src/app/pages/public/models/logiciel';
 import { LogicielService } from 'src/app/pages/public/service/logiciel.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { DataView } from 'primeng/dataview';
 
 @Component({
   selector: 'app-landing',
@@ -87,7 +88,7 @@ export class LandingComponent implements OnInit {
   }
 
   onFilter(dv: DataView, event: Event) {
-    //dv.filter((event.target as HTMLInputElement).value);
+    dv.filter((event.target as HTMLInputElement).value);
   }
 
 }

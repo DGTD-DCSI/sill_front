@@ -95,15 +95,16 @@
                     <div class="card">
                         <h5>Liste des logiciels</h5>
 
-                        <p-dataView #dv [value]="logiciels" [paginator]="true" [rows]="9" filterBy="name"
+                        <p-dataView #dv [value]="logiciels" [paginator]="true" [rows]="6" filterBy="libelle"
                             [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                             <ng-template pTemplate="header">
                                 <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
-                                    <p-dropdown [options]="sortOptions" placeholder="Sort By Price"
+                                    <p-dropdown [options]="sortOptions" placeholder="Trier"
                                         (onChange)="onSortChange($event)"></p-dropdown>
+
                                     <span class="p-input-icon-left">
                                         <i class="pi pi-search"></i>
-                                        <input type="search" pInputText placeholder="Search by Name"
+                                        <input type="search" pInputText placeholder="Rechercher"
                                             (input)="onFilter(dv, $event)">
                                     </span>
                                     <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
@@ -141,41 +142,65 @@
                             </ng-template>
                         -->
                             <ng-template let-logiciel pTemplate="gridItem">
-                                <div class="col-12 md:col-4">
-                                    <div class="card m-3 border-1 surface-border">
-                                        <div
-                                            class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
-                                            <div class="flex align-items-center">
-                                                <!--<i class="pi pi-tag mr-2"></i>-->
-                                                <span class="font-semibold">{{logiciel.categorie['libelle']}}</span>
-                                            </div>
-                                            <span class="font-semibold">{{logiciel.categorie['libelle']}}</span>
-                                            <!--
+                                <div class="col-12 md:col-4 border-green-900 shadow-1 ">
+                                    <a href="#" class="text-color">
+                                        <div class="card m-3 border-1 surface-border">
+                                            <div
+                                                class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+                                                <div class="flex align-items-center">
+                                                    <!--<i class="pi pi-tag mr-2"></i>-->
+                                                    <p class="text-center">
+                                                        <span class=" font-semibold bg-orange-200 border-round px-2">{{
+                                                            logiciel.lastVersion?.licence?.libelle
+                                                            }}</span>
+                                                        <br>
+                                                        <span class="font-semibold bg-blue-200 border-round px-2">{{
+                                                            logiciel.editeur?.libelle
+                                                            }}</span>
+                                                    </p>
+                                                </div>
+                                                <span class="font-semibold bg-yellow-200 border-round px-2">{{
+                                                    logiciel?.categorie?.libelle }}</span>
+
+                                                <!--
                                             <span
                                                 [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
                                             -->
-                                        </div>
-                                        <div class="flex flex-column align-items-center text-center mb-3">
-                                            <img [src]="logiciel.logoUrl" [alt]="logiciel.libelle"
-                                                class="w-9 shadow-2 my-3 mx-0" />
-                                            <div class="text-2xl font-bold">{{logiciel.libelle}}</div>
-                                            <div class="mb-3">{{logiciel.description}}</div>
-                                            <!--
+                                            </div>
+                                            <div class="flex flex-column align-items-center text-center mb-3">
+                                                <img width="200" height="200" [src]="logiciel.logoUrl"
+                                                    [alt]="logiciel.libelle"
+                                                    class="border-round p-1 w-9 shadow-none my-3 mx-0" />
+                                                <div class="text-2xl font-bold text-green-500">{{ logiciel.libelle }}
+                                                </div>
+                                                <div class="mb-3" title="{{ logiciel.description }}">{{
+                                                    logiciel.description |
+                                                    slice:O:100}}</div>
+                                                <!--
                                             <p-rating [ngModel]="product.rating" [readonly]="true"
                                                 [cancel]="false"></p-rating>
                                                 -->
-                                        </div>
-                                        <div class="flex align-items-center justify-content-between">
-                                            <span class="text-2xl font-semibold">${{logiciel.versions}}</span>
+                                            </div>
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="text-2xl font-semibold"> {{
+                                                    logiciel.lastVersion?.libelle
+                                                    }} <em class="text-xs bg-green-100 border-round px-2">{{
+                                                        logiciel.lastVersion?.datePublication
+                                                        | date }}</em>
+                                                </span>
+                                                <!--<p-chip label="Apple" class="bg-green-500" icon="pi pi-apple">ivi
+                                                </p-chip>-->
 
-                                            <p-button icon="pi pi-download" label="Telecharger"
-                                                class="p-button-text p-button-rounded"></p-button>
-                                            <!--
+                                                <a [href]="logiciel.telechargementUrl" target="_blank"><p-button
+                                                        icon="pi pi-download" label="Telecharger"
+                                                        class="p-button-text p-button-rounded"></p-button></a>
+                                                <!--
                                             <p-button icon="pi pi-shopping-cart"
                                                 [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
                                                 -->
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </ng-template>
                         </p-dataView>
