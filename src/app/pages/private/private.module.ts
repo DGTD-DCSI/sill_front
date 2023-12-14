@@ -24,6 +24,7 @@ import { UserComponent } from './components/settings/user/user.component';
 import { ChipModule } from 'primeng/chip';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { GroupeThematiqueComponent } from './components/settings/groupe-thematique/groupe-thematique.component';
 import { LogicielComponent } from './components/settings/logiciel/logiciel.component';
 import { EditeurComponent } from './components/settings/editeur/editeur.component';
 
@@ -31,8 +32,9 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
   declarations: [
     DashboardComponent,
     UserComponent,
+    GroupeThematiqueComponent,
     LogicielComponent,
-    EditeurComponent
+    EditeurComponent,
   ],
   imports: [
     CommonModule,
@@ -64,6 +66,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
       { path: 'settings/users', component: UserComponent },
+      { path: 'settings/groupes-thematiques', component: GroupeThematiqueComponent },
       { path: 'settings/logiciels', component: LogicielComponent },
       { path: 'settings/editeurs', component: EditeurComponent },
     ])
