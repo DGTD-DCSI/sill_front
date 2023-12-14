@@ -15,12 +15,13 @@ export class CategorieComponent implements OnInit {
   categories: Categorie[] = [];
 
   categorie: Categorie ;
+  
   current_categorie: Categorie;
 
   selectedCategories: Categorie[] = [];
   cols = [];
 
-  selectedCategorieMere: Categorie | null = null;
+  selectedCategorieMere: Categorie | null;
 
   categoriesMeres: Categorie[] = [];
 
@@ -39,15 +40,13 @@ export class CategorieComponent implements OnInit {
    
     this.categorieService.getCategories().subscribe((data) => {
      
-        // if( data.code == 200 ) {
-        //   this.categories = data.result;
-
-        //   this.categoriesMeres = data.result;
-        // }
-       
+        if( data.code == 200 ) {
           this.categories = data.result;
 
           this.categoriesMeres = data.result;
+        }
+       
+          
         
        this.categorie = {} as Categorie;
   });
@@ -75,30 +74,45 @@ saveCategorie() {
       
         if (this.categorie.id) {
 
-         // this.selectedCategorieMere.id = this.categorie.categorieMereId ;
+            // // this.selectedCategorieMere.id = this.categorie.categorieMereId ;
 
-          this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
-            console.log(data);
+            // this.selectedCategorieMere = this.categoriesMeres.find(
+            //   (categorieMere) => categorieMere.id === this.categorie.categorieMereId
+            // );
+
+            //   console.log(this.selectedCategorieMere);
               
-            this.categorie = data.result;
-            this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
-          },  
-          );
+            //   this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
+            //     console.log(data);
+                  
+            //     this.categorie = data.result;
+            //     this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
+            //     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Données utilisateur mis-à-jour', life: 3000 });
+            //   },  
+            //   );
 
+            this.categorie.categorieMereId = this.selectedCategorieMere == null ? null : this.selectedCategorieMere.id   ; 
+
+            this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
+              this.categorie = data.result;
+              this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
+              this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Catégorie mise-à-jour', life: 3000 });
+            })
           
           
         } 
-
+        
         else {
 
+          this.categorie.categorieMereId = this.selectedCategorieMere == null ? null : this.selectedCategorieMere.id   ;
 
-          this.categorie.categorieMereId = this.selectedCategorieMere ? this.selectedCategorieMere.id : null ;
+          // console.log(this.selectedCategorieMere);
 
-          console.log(this.categorie);
+          // console.log("sdjd");
+          
           
           this.categorieService.saveCategorie( this.categorie ).subscribe( data => {
-            console.log(data);
+          // console.log(data.result);
             
           this.categorie = data.result;
           this.categories.push(this.categorie);
@@ -106,7 +120,7 @@ saveCategorie() {
           },  
           );
 
-          this.selectedCategorieMere = null;
+         // this.selectedCategorieMere = null;
 
         }
 
@@ -121,24 +135,25 @@ saveCategorie() {
     }
 }
 
-findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.categories.length; i++) {
-        if (this.categories[i].id === id) {
-            index = i;
-            break;
-        }
-    }
 
-    return index;
-}
+  findIndexById(id: string): number {
+      let index = -1;
+      for (let i = 0; i < this.categories.length; i++) {
+          if (this.categories[i].id === id) {
+              index = i;
+              break;
+          }
+      }
+
+      return index;
+  }
 
 confirmDelete() {
   this.categorieService.deleteCategorie( this.categorie.id ).subscribe( data => {
       console.log("confirmDelete")
     this.deleteCategorieDialog = false;
     this.categories = this.categories.filter(val => val.id !== this.categorie.id);
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégorie supprimée', life: 3000 });
     this.categorie = {
       id: '',
       libelle: '',
