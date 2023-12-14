@@ -39,6 +39,9 @@ export class LoginComponent implements OnInit {
     public handleLogin() {
         this.authService.login( this.loginRequest ).subscribe( data => {
 
+            console.log("soi")
+            console.log(data)
+            
             if( data.code == 200 ){
                 this.user = data.result;
                 this.tokenStorageService.saveUser( this.user );
