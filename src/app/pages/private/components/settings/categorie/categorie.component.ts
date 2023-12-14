@@ -39,11 +39,16 @@ export class CategorieComponent implements OnInit {
    
     this.categorieService.getCategories().subscribe((data) => {
      
-        if( data.code == 200 ) {
+        // if( data.code == 200 ) {
+        //   this.categories = data.result;
+
+        //   this.categoriesMeres = data.result;
+        // }
+       
           this.categories = data.result;
 
           this.categoriesMeres = data.result;
-        }
+        
        this.categorie = {} as Categorie;
   });
  
@@ -69,36 +74,22 @@ saveCategorie() {
      // console.log("log");
       
         if (this.categorie.id) {
-          // this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
-          //   console.log(data);
-            
-          // this.categorie = data.result;
-          // this.categories.push(this.categorie);
-          //   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégorie ajouté', life: 3000 });
-          // });
 
-          this.categorieService.updateCategorie(this.categorie).subscribe(
-            (response) => {
-              this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Succès',
-                detail: 'Catégorie mise à jour avec succès.'
-              });
-            },
-            (error) => {
-              console.error('Error updating category:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Erreur',
-                detail: 'Erreur lors de la mise à jour de la catégorie.'
-              });
-            }
+         // this.selectedCategorieMere.id = this.categorie.categorieMereId ;
+
+          this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
+            console.log(data);
+              
+            this.categorie = data.result;
+            this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
+          },  
           );
-            
-            // this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
-            // this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégorie de logiciel mise-à-jour', life: 3000 });
+
+          
+          
         } 
+
         else {
 
 
@@ -115,6 +106,8 @@ saveCategorie() {
           },  
           );
 
+          this.selectedCategorieMere = null;
+
         }
 
         this.categories = [...this.categories];
@@ -123,7 +116,7 @@ saveCategorie() {
           id: '',
           libelle: '',
           description: '',
-          categorieMereId: '',
+          categorieMereId: null,
         };
     }
 }
@@ -157,10 +150,11 @@ confirmDelete() {
 }
 
 confirmDeleteSelected() {
-  this.deleteCategorieDialog = false;
+  this.deleteCategoriesDialog = false;
   this.categories = this.categories.filter(val => !this.selectedCategories.includes(val));
   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégories supprimés', life: 3000 });
   this.selectedCategories= [];
+
 }
 
 onGlobalFilter(table: Table, event: Event) {

@@ -1,6 +1,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
+            <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
@@ -101,15 +102,6 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteCategoriesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Voulez-vous vraiment supprimer ces catégories ?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCategoriesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
-            </ng-template>
-        </p-dialog>
+      
     </div>
 </div>
