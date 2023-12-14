@@ -22,6 +22,13 @@ export class UserService {
     );
   }
 
+  update(user: User): Observable<User> {
+    return this.httpClient.put<User>(
+      environment.baseUrl + '/utilisateurs',
+      user
+    );
+  }
+
   deleteUser(user_id: string): Observable<any> {
     return this.httpClient.delete<any>(
       environment.baseUrl + '/utilisateurs/delete/' + user_id
