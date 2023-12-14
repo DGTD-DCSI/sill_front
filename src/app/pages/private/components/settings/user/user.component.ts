@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { GroupeThematique } from 'src/app/pages/shared/models/groupeThematique.model';
 import { User } from 'src/app/pages/shared/models/user.model';
+import { GroupeThematiqueService } from 'src/app/pages/shared/service/groupeThematique.service';
 import { UserService } from 'src/app/pages/shared/service/user.service';
 
 @Component({
@@ -13,9 +15,11 @@ import { UserService } from 'src/app/pages/shared/service/user.service';
 export class UserComponent implements OnInit {
   constructor(
     private messageService: MessageService,
-    private userService: UserService
+    private userService: UserService,
+    private groupeThematiqueService: GroupeThematiqueService,
   ) {}
   users: User[] = [];
+  groupeThematiques: GroupeThematique[] = [];
 
   user: User = {
     id: '',
@@ -45,6 +49,9 @@ export class UserComponent implements OnInit {
     this.userService.getUsers().subscribe((data) => {
         this.users = data;
     });
+    this.groupeThematiqueService.getGroupeThematiques().subscribe((data) => {
+        this.groupeThematiques = data;
+    });
 
     this.cols = [
       { field: 'nom', header: 'Nom' },
@@ -65,6 +72,8 @@ export class UserComponent implements OnInit {
   }
 
   openNew() {
+    console.log("sdio oidfj")
+    console.log(this.groupeThematiques)
       this.user ={
         id: '',
         nom: '',
@@ -91,7 +100,7 @@ export class UserComponent implements OnInit {
       if (this.user.nom?.trim()) {
           if (this.user.id) {
               // @ts-ignore
-              this.userService.saveUser( this.user ).subscribe( data => {
+              this.userService.update( this.user ).subscribe( data => {
                 this.users[this.findIndexById(this.user.id)] = this.user;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
               })

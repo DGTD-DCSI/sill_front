@@ -26,12 +26,15 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { GroupeThematiqueComponent } from './components/settings/groupe-thematique/groupe-thematique.component';
 import { LogicielComponent } from './components/settings/logiciel/logiciel.component';
+import { CategorieComponent } from './components/settings/categorie/categorie.component';
 import { EditeurComponent } from './components/settings/editeur/editeur.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     UserComponent,
+    LogicielComponent,
+    CategorieComponent,
     GroupeThematiqueComponent,
     LogicielComponent,
     EditeurComponent,
@@ -68,6 +71,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
       { path: 'settings/users', component: UserComponent },
       { path: 'settings/groupes-thematiques', component: GroupeThematiqueComponent },
       { path: 'settings/logiciels', component: LogicielComponent },
+      { path: 'settings/categories', component: CategorieComponent },
       { path: 'settings/editeurs', component: EditeurComponent },
     ])
   ]

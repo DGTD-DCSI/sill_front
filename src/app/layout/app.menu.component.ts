@@ -29,7 +29,7 @@ export class AppMenuComponent implements OnInit {
                         { label: 'Groupe Thématique', icon: 'pi pi-fw pi-users', routerLink: ['/private/settings/groupes-thematiques'] },
                     ] },
                     { label: 'Paramètres', icon: 'pi pi-spin pi-cog', items: [
-                        { label: 'Catégorie logicielle', icon: 'pi pi-fw pi-desktop', routerLink: ['/private'] },
+                        { label: 'Catégorie logicielle', icon: 'pi pi-fw pi-desktop', routerLink: ['/private/settings/categories'] },
                         { label: 'Système d\'Exploitation',  icon: 'pi pi-fw pi-apple', routerLink: ['/private'] },
                         { label: 'Éditeur Logiciel', icon: 'pi pi-fw pi-building', routerLink: ['/private/settings/editeurs'] }
                     ] },
