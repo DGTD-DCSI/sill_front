@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit {
             //     return acc + element.nbTelechargement;
             // });
 
-
         }
       });
       
