@@ -61,8 +61,8 @@ export class LandingComponent implements OnInit {
       { name: 'Rome', code: 'RM' }];
 
     this.sortOptions = [
-      { label: 'Price High to Low', value: '!price' },
-      { label: 'Price Low to High', value: 'price' }
+      { label: 'Tri par libellé', value: 'libelle' },
+      { label: 'Tri par categorie', value: 'categorie' }
     ];
   }
 
