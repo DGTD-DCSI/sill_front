@@ -192,9 +192,13 @@
                                                 <!--<p-chip label="Apple" class="bg-green-500" icon="pi pi-apple">ivi
                                                 </p-chip>-->
 
-                                                <a [href]="logiciel.telechargementUrl" target="_blank"><p-button
-                                                        icon="pi pi-download" label="Telecharger"
-                                                        class="p-button-text p-button-rounded"></p-button></a>
+                                                <a [href]="download(logiciel.id)" target="_blank">
+                                                    <p-button icon="pi pi-download" label="Telecharger"
+                                                        class="p-button-text p-button-rounded"
+                                                        badge="{{ logiciel.nbTelechargement }}">
+                                                        <!-- <p-badge [value]="logiciel.nbTelechargement" class=""></p-badge> -->
+                                                    </p-button>
+                                                </a>
                                                 <!--
                                             <p-button icon="pi pi-shopping-cart"
                                                 [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>

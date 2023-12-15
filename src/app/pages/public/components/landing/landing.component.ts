@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
-import { Logiciel } from 'src/app/pages/public/models/logiciel';
-import { LogicielService } from 'src/app/pages/public/service/logiciel.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DataView } from 'primeng/dataview';
+import { Logiciel } from 'src/app/pages/shared/models/logiciel.model';
+import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
 
 @Component({
   selector: 'app-landing',
@@ -14,6 +14,7 @@ import { DataView } from 'primeng/dataview';
 export class LandingComponent implements OnInit {
 
   logiciels: Logiciel[] = [];
+  logiciel: Logiciel;
 
   sortOptions: SelectItem[] = [];
 
@@ -35,9 +36,6 @@ export class LandingComponent implements OnInit {
         this.logiciels = data['result'];
         console.log('dd');
       }
-
-      else
-        console.log('erreur');
 
     });
 
@@ -89,6 +87,12 @@ export class LandingComponent implements OnInit {
 
   onFilter(dv: DataView, event: Event) {
     dv.filter((event.target as HTMLInputElement).value);
+  }
+
+  download(id: string) {
+    console.log(this.logicielService.getLogicielDownload(id));
+    console.log(this.logicielService.getLogicielDownload(id).subscribe(data => data));
+    return this.logicielService.getLogicielDownload(id).subscribe(data => data);
   }
 
 }

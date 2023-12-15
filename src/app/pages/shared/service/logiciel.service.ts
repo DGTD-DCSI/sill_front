@@ -11,7 +11,7 @@ import { Version } from '../models/version.model';
   providedIn: 'root',
 })
 export class LogicielService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   create(object: Logiciel): Observable<Response<Logiciel>> {
     return this.httpClient.post<Response<Logiciel>>(

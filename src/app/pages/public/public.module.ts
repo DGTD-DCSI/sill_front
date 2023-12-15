@@ -13,6 +13,7 @@ import { PickListModule } from 'primeng/picklist';
 import { OrderListModule } from 'primeng/orderlist';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import { BadgeModule } from 'primeng/badge';
 import { RatingModule } from 'primeng/rating';
 
 
@@ -33,6 +34,7 @@ import { RatingModule } from 'primeng/rating';
     OrderListModule,
     InputTextModule,
     DropdownModule,
+    BadgeModule,
     RatingModule,
     RouterModule.forChild([
       { path: '', component: LandingComponent }
