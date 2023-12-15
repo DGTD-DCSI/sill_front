@@ -27,6 +27,9 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { GroupeThematiqueComponent } from './components/settings/groupe-thematique/groupe-thematique.component';
 import { LogicielComponent } from './components/settings/logiciel/logiciel.component';
 import { CategorieComponent } from './components/settings/categorie/categorie.component';
+import { TabViewModule } from 'primeng/tabview';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,9 @@ import { CategorieComponent } from './components/settings/categorie/categorie.co
     ChipModule,
     InputSwitchModule,
     MultiSelectModule,
+    TabViewModule,
+    ToggleButtonModule,
+    CalendarModule,
 
     RouterModule.forChild([
       { path: '', component: DashboardComponent },

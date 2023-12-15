@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+// import { Product } from 'src/app/demo/api/product';
+// import { ProductService } from 'src/app/demo/service/product.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { User } from 'src/app/pages/shared/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ export class DashboardComponent implements OnInit {
 
   items!: MenuItem[];
 
-  products!: Product[];
+  multipleObject!: User[];
 
   chartData: any;
 
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
   subscription!: Subscription;
 
-  constructor(private productService: ProductService, public layoutService: LayoutService) {
+  constructor(public layoutService: LayoutService) {
       this.subscription = this.layoutService.configUpdate$.subscribe(() => {
           this.initChart();
       });
@@ -30,7 +31,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
       this.initChart();
-      this.productService.getProductsSmall().then(data => this.products = data);
+    //   this.productService.getProductsSmall().then(data => this.products = data);
 
       this.items = [
           { label: 'Add New', icon: 'pi pi-fw pi-plus' },

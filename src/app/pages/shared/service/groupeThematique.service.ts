@@ -12,20 +12,20 @@ import { GroupeThematique } from '../models/groupeThematique.model';
 export class GroupeThematiqueService {
   constructor(private httpClient: HttpClient) {}
 
-  getGroupeThematiques(): Observable<GroupeThematique[]> {
+  read(): Observable<GroupeThematique[]> {
     return this.httpClient.get<GroupeThematique[]>( environment.baseUrl + '/groupe-thematiques' );
   }
 
-  saveGroupeThematique(groupeThematique: GroupeThematique): Observable<GroupeThematique> {
+  create(groupeThematique: GroupeThematique): Observable<GroupeThematique> {
     return this.httpClient.post<GroupeThematique>(
       environment.baseUrl + '/groupe-thematiques',
       groupeThematique
     );
   }
 
-  deleteGroupeThematique(groupeThematique_id: string): Observable<any> {
+  delete(object: GroupeThematique): Observable<any> {
     return this.httpClient.delete<any>(
-      environment.baseUrl + '/groupe-thematiques/delete/' + groupeThematique_id
+      environment.baseUrl + '/groupe-thematiques/' + object.id
     );
   }
 }
