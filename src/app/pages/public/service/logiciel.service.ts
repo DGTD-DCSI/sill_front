@@ -13,4 +13,5 @@ export class LogicielService {
     getLogiciels() {
         return this.http.get<Logiciel[]>(environment.baseUrl + ('/logiciels'));
     }
+
 }
