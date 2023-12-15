@@ -28,6 +28,7 @@ import { GroupeThematiqueComponent } from './components/settings/groupe-thematiq
 import { LogicielComponent } from './components/settings/logiciel/logiciel.component';
 import { CategorieComponent } from './components/settings/categorie/categorie.component';
 import { EditeurComponent } from './components/settings/editeur/editeur.component';
+import { CompatibiliteOsComponent } from './components/settings/compatibilite-os/compatibilite-os.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
     GroupeThematiqueComponent,
     LogicielComponent,
     EditeurComponent,
+    CompatibiliteOsComponent,
   ],
   imports: [
     CommonModule,
