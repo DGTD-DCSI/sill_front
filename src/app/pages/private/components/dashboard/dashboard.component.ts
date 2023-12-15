@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
 
@@ -15,7 +14,7 @@ export class DashboardComponent implements OnInit {
 
   items!: MenuItem[];
 
-  products!: Product[];
+
 
   chartData: any;
 
@@ -25,7 +24,7 @@ export class DashboardComponent implements OnInit {
   nbrelogiciels!: number;
   sommelogiciels!: number;
 
-  constructor(private productService: ProductService, public layoutService: LayoutService, private logicielService:LogicielService) {
+  constructor(public layoutService: LayoutService, private logicielService:LogicielService) {
       this.subscription = this.layoutService.configUpdate$.subscribe(() => {
           this.initChart();
       });
@@ -33,13 +32,15 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
       this.initChart();
-      this.productService.getProductsSmall().then(data => this.products = data);
       this.logicielService.getLogiciels().subscribe((data)=>{
         if (data.code == 200){
             this.nbrelogiciels = data.result.length;
-            // this.sommelogiciels = data.result.reduce(function(acc, element){
-            //     return acc + element.nbTelechargement;
-            // });
+            this.sommelogiciels = data.result.reduce(function(acc, element){
+                //console.log(acc + " Nombre" + element.nbTelechargement)
+                return acc + element.nbTelechargement;
+               
+            }, 0);
+
 
         }
       });
@@ -58,19 +59,19 @@ export class DashboardComponent implements OnInit {
       const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
       this.chartData = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre','Novembre', 'Décembre'],
           datasets: [
               {
-                  label: 'First Dataset',
-                  data: [65, 59, 80, 81, 56, 55, 40],
+                  label: 'Nombre de téléchargements',
+                  data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55],
                   fill: false,
                   backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
                   borderColor: documentStyle.getPropertyValue('--bluegray-700'),
                   tension: .4
               },
               {
-                  label: 'Second Dataset',
-                  data: [28, 48, 40, 19, 86, 27, 90],
+                  label: 'Nombre de visites',
+                  data: [28, 48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27, 90],
                   fill: false,
                   backgroundColor: documentStyle.getPropertyValue('--green-600'),
                   borderColor: documentStyle.getPropertyValue('--green-600'),

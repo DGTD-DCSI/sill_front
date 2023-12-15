@@ -1,10 +1,11 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
+            <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Ajouter un logiciel" icon="pi pi-plus" class="p-button-success mr-2"></button>
+                        <button pButton pRipple label="Ajouter un logiciel" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
                         <!-- <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button> -->
                     </div>
                 </ng-template>
@@ -15,7 +16,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="logiciels" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','description', 'isActif', 'logoUrl','categorie', 'editeur', 'groupeThematique',]" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedLogiciels" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="multipleObjects" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','description', 'isActif', 'logoUrl','categorie', 'editeur', 'groupeThematique',]" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedLogiciels" selectionMode="multiple" [rowHover]="true" dataKey="id">
 
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -41,45 +42,43 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-logiciel>
+                <ng-template pTemplate="body" let-singleObject>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="logiciel"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="singleObject"></p-tableCheckbox>
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Libellé</span>
-                            {{ logiciel.libelle }}
+                            {{ singleObject.libelle }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Description</span>
-                            {{ logiciel.description }}
+                            {{ singleObject.description }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Est actif</span>
-                            {{ logiciel.isActif }}
+                            {{ singleObject.isActif }}
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Logo</span>
-                            {{ logiciel.logoUrl }}
+                            <img src="{{ singleObject.logoUrl }}" alt="{{ singleObject.libelle }}" width="75em">
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Catégorie</span>
-                            {{ logiciel.categorie }}
+                            {{ singleObject.categorie?.libelle || '' }}
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Editeur</span>
-                            {{ logiciel.editeur }}
+                            {{ singleObject.editeur?.libelle || '' }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Groupe thématique</span>
-                            <!-- <ng-template ngFor let-item [ngForOf]="user.groupeThematiques" let-i="index">
-                                <p-chip label="{{ item.libelle }}"></p-chip>
-                            </ng-template> -->
+                            {{ singleObject.groupeThematique?.libelle || '' }}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editSingleObject(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteSingleObject(singleObject)"></button>
                             </div>
                         </td>
                     </tr>
@@ -87,53 +86,135 @@
             </p-table>
         </div>
 
-        <!-- <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Editer utilisateur" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="flagSingleObjectDialog" [style]="{width: '550px'}" header="Editer Logiciel" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="nom">Nom</label>
-                    <input type="text" pInputText id="nom" [(ngModel)]="user.nom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.nom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.nom">Veuillez saisir le nom.</small>
-                </div>
-                <div class="field">
-                    <label for="prenom">Prenom(s)</label>
-                    <input type="text" pInputText id="prenom" [(ngModel)]="user.prenom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.prenom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.prenom">Veuillez saisir le(s) prénom(s).</small>
-                </div>
-                <div class="field">
-                    <label for="login">Identifiant</label>
-                    <input type="text" pInputText id="login" [(ngModel)]="user.login" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.login}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.login">Veuillez saisir le login.</small>
-                </div>
-                <div class="field">
-                    <label for="isAdmin">Est admin</label>
-                    <p-inputSwitch [(ngModel)]="user.isAdmin"></p-inputSwitch>
-                </div>
-                <div class="field">
-                    <label for="isActif">Est Actif</label>
-                    <p-inputSwitch [(ngModel)]="user.isActif"></p-inputSwitch>
-                </div>
-                <div class="field">
-                    <label for="groupeThematiques">Groupe thématique</label>
-                    <p-multiSelect [options]="groupeThematiques" [(ngModel)]="user.groupeThematiques" placeholder="Veuillez choisir les groupes thématiques" optionLabel="name" display="chip" [showClear]="true"></p-multiSelect>
-                </div>
+
+
+                <p-tabView>
+                    <p-tabPanel header="Informations Logiciel">
+                        <div class="field">
+                            <label for="libelle">Libellé</label>
+                            <input type="text" pInputText id="libelle" [(ngModel)]="singleObject.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.libelle}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.libelle">Veuillez saisir le nom du logiciel.</small>
+                        </div>
+                        <div class="field">
+                            <label for="categorie">Catégorie</label>
+                            <p-dropdown [options]="categoriesList" [(ngModel)]="singleObject.categorie" placeholder="Veuillez définir la catégorie..." [editable]="true" optionLabel="libelle"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.categorie">Veuillez définir la catégorie du logiciel.</small>
+                        </div>
+                        <div class="field">
+                            <label for="groupeThematique">Groupe Thématique</label>
+                            <p-dropdown [options]="groupesThematiquesList" [(ngModel)]="singleObject.groupeThematique" placeholder="Veuillez définir le groupe thématique..." [editable]="true" optionLabel="libelle"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.groupeThematique">Veuillez définir la catégorie du logiciel.</small>
+                        </div>
+                        <div class="field">
+                            <label for="editeur">Editeur</label>
+                            <p-dropdown [options]="editeursList" [(ngModel)]="singleObject.editeur" placeholder="Veuillez définir l'éditeur..." [editable]="true" optionLabel="libelle"></p-dropdown>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.editeur">Veuillez définir la catégorie du logiciel.</small>
+                        </div>
+                        <!-- <div class="field">
+                            <label for="lastVersion">Dernière version</label>
+                                <div>
+                                    <p-dropdown [options]="singleObject.versions" [(ngModel)]="singleObject.lastVersion" required placeholder="Veuillez définir la dernière version..." [editable]="true" optionLabel="libelle"></p-dropdown>
+                                    <button pButton pRipple icon="pi pi-plus" class="p-button-info mr-2" (click)="openNew()"></button>
+                                </div>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion">Veuillez définir la catégorie du logiciel.</small>
+                        </div> -->
+                        <div class="field">
+                            <label for="description">Description</label>
+                            <textarea id="description" pInputTextarea [(ngModel)]="singleObject.description" rows="3" cols="20"></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="communauteUrl">Lien de la communauté</label>
+                            <input type="text" pInputText id="communauteUrl" [(ngModel)]="singleObject.communauteUrl" autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.communauteUrl}"/>
+                        </div>
+                        <div class="field">
+                            <label for="isActif">Est actif</label>
+                            <p-inputSwitch [(ngModel)]="singleObject.isActif"></p-inputSwitch>
+                        </div>
+                        <div class="field">
+                            <label for="isActif">Définir version</label>
+                            <!-- <p-inputSwitch [(ngModel)]="flagSingleObjectNewVersion"></p-inputSwitch> -->
+                            <p-toggleButton [(ngModel)]="flagSingleObjectNewVersion" onLabel="Oui" offLabel="Non"></p-toggleButton>
+                        </div>
+                        <div class="field">
+                            <label for="logoUrl">Lien du logo</label>
+                            <input type="text" pInputText id="logoUrl" [(ngModel)]="singleObject.logoUrl" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.logoUrl}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.logoUrl">Veuillez fournir le logo du logiciel ou de l'éditeur.</small>
+                        </div>
+                        <div class="field">
+                            <label for="telechargementUrl">Lien de téléchargement</label>
+                            <input type="text" pInputText id="telechargementUrl" [(ngModel)]="singleObject.telechargementUrl" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.telechargementUrl}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.telechargementUrl">Veuillez fournir une URL de téléchargement fiable du logiciel.</small>
+                        </div>
+                    </p-tabPanel>
+                    <p-tabPanel [disabled]="flagSingleObjectNewVersion"  header="Informations Version">
+                        <div class="field">
+                            <label for="slibelle">Libellé</label>
+                            <input type="text" pInputText id="libelle" [(ngModel)]="singleObject.lastVersion.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.libelle}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.libelle">Veuillez saisir le libellé de la version.</small>
+                        </div>
+                        <div class="field">
+                            <label for="datePublication">Date de publication</label>
+                            <p-calendar [(ngModel)]="singleObject.lastVersion.datePublication"></p-calendar>
+                        </div>
+                        <div class="field">
+                            <label for="licence">License</label>
+                            <p-dropdown [options]="categoriesList" [(ngModel)]="singleObject.lastVersion.licence" placeholder="Veuillez définir la license..." [editable]="true" optionLabel="libelle"></p-dropdown>
+                        </div>
+                        <div class="field">
+                            <label for="lien">Lien</label>
+                            <input type="text" pInputText id="lien" [(ngModel)]="singleObject.lastVersion.lien" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.lien}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.lien">Veuillez saisir le lien de la version.</small>
+                        </div>
+                        <div class="field">
+                            <label for="lienCodeSource">Lien Source</label>
+                            <input type="text" pInputText id="lienCodeSource" [(ngModel)]="singleObject.lastVersion.lienCodeSource" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.lienCodeSource}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.lienCodeSource">Veuillez saisir le lien de la version.</small>
+                        </div>
+                        <div class="field">
+                            <label for="logo">Logo</label>
+                            <input type="text" pInputText id="logo" [(ngModel)]="singleObject.lastVersion.logo" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.logo}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.logo">Veuillez saisir le logo de la version.</small>
+                        </div>
+                        <div class="field">
+                            <label for="dateInscription">Date de inscription</label>
+                            <p-calendar [(ngModel)]="singleObject.lastVersion.dateInscription"></p-calendar>
+                        </div>
+                        <div class="field">
+                            <label for="taille">Taille</label>
+                            <p-inputNumber inputId="integeronly" [(ngModel)]="singleObject.lastVersion.taille"> </p-inputNumber>
+                        </div>
+                        <div class="field">
+                            <label for="lienDoc">Lien Source</label>
+                            <input type="text" pInputText id="lienDoc" [(ngModel)]="singleObject.lastVersion.lienDoc" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.lienDoc}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.lienDoc">Veuillez saisir le lien de la version.</small>
+                        </div>
+                        <div class="field">
+                            <label for="localUrl">Locale URL</label>
+                            <input type="text" pInputText id="localUrl" [(ngModel)]="singleObject.lastVersion.localUrl" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.lastVersion.localUrl}"/>
+                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.lastVersion.localUrl">Veuillez saisir le localUrl de la version.</small>
+                        </div>
+                    </p-tabPanel>
+                </p-tabView>
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveSingleObject()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteUserDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="flagSingleObjectDeleteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="user">Veuillez confirmer la suppression de l'utilisateur <b>{{user.login}}</b>?</span>
+                <span *ngIf="singleObject">Veuillez confirmer la suppression du logiciel <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUserDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="flagSingleObjectDeleteDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
-        </p-dialog> -->
+        </p-dialog>
 
         <!-- <p-dialog [(visible)]="deleteUsersDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">

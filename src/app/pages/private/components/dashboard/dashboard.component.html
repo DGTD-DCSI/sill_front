@@ -10,8 +10,8 @@
                     <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">24 new </span>
-            <span class="text-500">since last visit</span>
+            <!-- <span class="text-green-500 font-medium">24 new </span>
+            <span class="text-500">since last visit</span> -->
         </div>
     </div>
     <div class="col-12 lg:col-6 xl:col-4">
@@ -25,12 +25,12 @@
                     <i class="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">%52+ </span>
-            <span class="text-500">since last week</span>
+            <!-- <span class="text-green-500 font-medium">%52+ </span>
+            <span class="text-500">since last week</span> -->
         </div>
     </div>
     <div class="col-12 lg:col-6 xl:col-4">
-        <div class="card mb-0">
+        <!-- <div class="card mb-0">
             <div class="flex justify-content-between mb-4">
                 <div>
                     <span class="block text-500 font-medium mb-3">Nombre de clients</span>
@@ -42,7 +42,7 @@
             </div>
             <span class="text-green-500 font-medium">520  </span>
             <span class="text-500">newly registered</span>
-        </div>
+        </div> -->
     </div>
    <!--  <div class="col-12 lg:col-6 xl:col-3">
         <div class="card mb-0">
@@ -65,7 +65,7 @@
     <div class="col-12 xl:col-6">
         <div class="card">
             <h5>Recent Sales</h5>
-            <p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+            <p-table [value]="multipleObject" [paginator]="true" [rows]="5" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Image</th>
@@ -178,7 +178,7 @@
 
     <div class="col-12 xl:col-12">
         <div class="card">
-            <h5>Sales Overview</h5>
+            <h5>Nombre de téléchargement par mois</h5>
             <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
         </div>
 
