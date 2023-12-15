@@ -44,6 +44,8 @@ export class CategorieComponent implements OnInit {
           this.categories = data.result;
 
           this.categoriesMeres = data.result;
+         // console.log(data.result);
+          
         }
        
           
@@ -70,26 +72,8 @@ saveCategorie() {
     this.submitted = true;
 
     if (this.categorie.libelle?.trim()) {
-     // console.log("log");
       
         if (this.categorie.id) {
-
-            // // this.selectedCategorieMere.id = this.categorie.categorieMereId ;
-
-            // this.selectedCategorieMere = this.categoriesMeres.find(
-            //   (categorieMere) => categorieMere.id === this.categorie.categorieMereId
-            // );
-
-            //   console.log(this.selectedCategorieMere);
-              
-            //   this.categorieService.updateCategorie( this.categorie ).subscribe( data => {
-            //     console.log(data);
-                  
-            //     this.categorie = data.result;
-            //     this.categories[this.findIndexById(this.categorie.id)] = this.categorie;
-            //     this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Données utilisateur mis-à-jour', life: 3000 });
-            //   },  
-            //   );
 
             this.categorie.categorieMereId = this.selectedCategorieMere == null ? null : this.selectedCategorieMere.id   ; 
 
@@ -99,17 +83,11 @@ saveCategorie() {
               this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Catégorie mise-à-jour', life: 3000 });
             })
           
-          
         } 
         
         else {
 
           this.categorie.categorieMereId = this.selectedCategorieMere == null ? null : this.selectedCategorieMere.id   ;
-
-          // console.log(this.selectedCategorieMere);
-
-          // console.log("sdjd");
-          
           
           this.categorieService.saveCategorie( this.categorie ).subscribe( data => {
           // console.log(data.result);
@@ -119,8 +97,6 @@ saveCategorie() {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégorie ajouté', life: 3000 });
           },  
           );
-
-         // this.selectedCategorieMere = null;
 
         }
 
