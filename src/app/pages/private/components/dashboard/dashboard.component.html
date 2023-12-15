@@ -1,39 +1,39 @@
 <div class="grid">
-    <div class="col-12 lg:col-6 xl:col-3">
+    <div class="col-12 lg:col-6 xl:col-4">
         <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
+            <div class="flex justify-content-between mb-4">
                 <div>
-                    <span class="block text-500 font-medium mb-3">Orders</span>
-                    <div class="text-900 font-medium text-xl">152</div>
+                    <span class="block text-500 font-medium mb-3">Nombre de logiciels</span>
+                    <div class="text-900 font-medium text-xl">{{nbrelogiciels}}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">24 new </span>
-            <span class="text-500">since last visit</span>
+            <!-- <span class="text-green-500 font-medium">24 new </span>
+            <span class="text-500">since last visit</span> -->
         </div>
     </div>
-    <div class="col-12 lg:col-6 xl:col-3">
+    <div class="col-12 lg:col-6 xl:col-4">
         <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
+            <div class="flex justify-content-between mb-4">
                 <div>
-                    <span class="block text-500 font-medium mb-3">Revenue</span>
-                    <div class="text-900 font-medium text-xl">$2.100</div>
+                    <span class="block text-500 font-medium mb-3">Nombre de téléchargement </span>
+                    <div class="text-900 font-medium text-xl">{{sommelogiciels}}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-map-marker text-orange-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">%52+ </span>
-            <span class="text-500">since last week</span>
+            <!-- <span class="text-green-500 font-medium">%52+ </span>
+            <span class="text-500">since last week</span> -->
         </div>
     </div>
-    <div class="col-12 lg:col-6 xl:col-3">
-        <div class="card mb-0">
-            <div class="flex justify-content-between mb-3">
+    <div class="col-12 lg:col-6 xl:col-4">
+        <!-- <div class="card mb-0">
+            <div class="flex justify-content-between mb-4">
                 <div>
-                    <span class="block text-500 font-medium mb-3">Customers</span>
+                    <span class="block text-500 font-medium mb-3">Nombre de clients</span>
                     <div class="text-900 font-medium text-xl">28441</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
@@ -42,9 +42,9 @@
             </div>
             <span class="text-green-500 font-medium">520  </span>
             <span class="text-500">newly registered</span>
-        </div>
+        </div> -->
     </div>
-    <div class="col-12 lg:col-6 xl:col-3">
+   <!--  <div class="col-12 lg:col-6 xl:col-3">
         <div class="card mb-0">
             <div class="flex justify-content-between mb-3">
                 <div>
@@ -59,6 +59,8 @@
             <span class="text-500">responded</span>
         </div>
     </div>
+
+
 
     <div class="col-12 xl:col-6">
         <div class="card">
@@ -170,14 +172,17 @@
             </ul>
         </div>
     </div>
+-->
 
-    <div class="col-12 xl:col-6">
+
+
+    <div class="col-12 xl:col-12">
         <div class="card">
-            <h5>Sales Overview</h5>
+            <h5>Nombre de téléchargement par mois</h5>
             <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
         </div>
 
-        <div class="card">
+        <!--  <div class="card">
             <div class="flex align-items-center justify-content-between mb-4">
                 <h5>Notifications</h5>
                 <div>
@@ -223,6 +228,10 @@
             </ul>
         </div>
 
+
+
+        
+
         <div class="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3" [ngStyle]="{borderRadius: '1rem', background: 'linear-gradient(0deg, rgba(0, 123, 255, 0.5), rgba(0, 123, 255, 0.5)), linear-gradient(92.54deg, #1C80CF 47.88%, #FFFFFF 100.01%)'}">
        <div>
            <div class="text-blue-100 font-medium text-xl mt-2 mb-3">TAKE THE NEXT STEP</div>
@@ -233,7 +242,11 @@
                Get Started
            </a>
        </div>
-    </div>
+    </div> -->
+
+
+
+
 </div>
 </div>
 
