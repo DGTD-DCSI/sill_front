@@ -18,10 +18,10 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private groupeThematiqueService: GroupeThematiqueService,
   ) {}
-  users: User[] = [];
+  multipleObjects: User[] = [];
   groupeThematiques: GroupeThematique[] = [];
 
-  user: User = {
+  singleObject: User = {
     id: '',
     nom: '',
     prenom: '',
@@ -35,21 +35,21 @@ export class UserComponent implements OnInit {
 
   cols: any[] = [];
 
-  selectedUsers: User[] = [];
+  // selectedUsers: User[] = [];
 
   submitted: boolean = false;
 
-  deleteUserDialog: boolean = false;
+  flagSingleObjectDeleteDialog: boolean = false;
 
-  deleteUsersDialog: boolean = false;
+  // deleteUsersDialog: boolean = false;
 
-  userDialog: boolean = false;
+  flagSingleObjectDialog: boolean = false;
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe((data) => {
-        this.users = data;
+    this.userService.read().subscribe((data) => {
+        this.multipleObjects = data;
     });
-    this.groupeThematiqueService.getGroupeThematiques().subscribe((data) => {
+    this.groupeThematiqueService.read().subscribe((data) => {
         this.groupeThematiques = data;
     });
 
@@ -63,9 +63,9 @@ export class UserComponent implements OnInit {
     ];
   }
 
-  deleteSelectedProducts() {
-    this.deleteUsersDialog = true;
-  }
+  // deleteSelectedProducts() {
+  //   this.deleteUsersDialog = true;
+  // }
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -73,8 +73,9 @@ export class UserComponent implements OnInit {
 
   openNew() {
     console.log("sdio oidfj")
+    // console.log()
     console.log(this.groupeThematiques)
-      this.user ={
+      this.singleObject ={
         id: '',
         nom: '',
         prenom: '',
@@ -86,37 +87,37 @@ export class UserComponent implements OnInit {
         groupeThematiques: [],
       };
       this.submitted = false;
-      this.userDialog = true;
+      this.flagSingleObjectDialog = true;
   }
 
   hideDialog() {
-      this.userDialog = false;
+      this.flagSingleObjectDialog = false;
       this.submitted = false;
   }
 
-  saveUser() {
+  saveSingleObject() {
       this.submitted = true;
 
-      if (this.user.nom?.trim()) {
-          if (this.user.id) {
+      if (this.singleObject.nom?.trim()) {
+          if (this.singleObject.id) {
               // @ts-ignore
-              this.userService.update( this.user ).subscribe( data => {
-                this.users[this.findIndexById(this.user.id)] = this.user;
+              this.userService.update( this.singleObject ).subscribe( data => {
+                this.multipleObjects[this.findIndexById(this.singleObject.id)] = this.singleObject;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données utilisateur mis-à-jour', life: 3000 });
               })
           } else {
-                this.user.password = "admin";
-                this.userService.saveUser( this.user ).subscribe( data => {
-                    this.user = data;
-                    this.users.push(this.user);
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 })
+                this.singleObject.password = "admin";
+                this.userService.create( this.singleObject ).subscribe( data => {
+                    this.singleObject = data;
+                    this.multipleObjects.push(this.singleObject);
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur ajouté', life: 3000 });
                 })
 
           }
 
-          this.users = [...this.users];
-          this.userDialog = false;
-          this.user = {
+          this.multipleObjects = [...this.multipleObjects];
+          this.flagSingleObjectDialog = false;
+          this.singleObject = {
             id: '',
             nom: '',
             prenom: '',
@@ -132,8 +133,8 @@ export class UserComponent implements OnInit {
 
   findIndexById(id: string): number {
       let index = -1;
-      for (let i = 0; i < this.users.length; i++) {
-          if (this.users[i].id === id) {
+      for (let i = 0; i < this.multipleObjects.length; i++) {
+          if (this.multipleObjects[i].id === id) {
               index = i;
               break;
           }
@@ -142,19 +143,18 @@ export class UserComponent implements OnInit {
       return index;
   }
 
-  deleteUser(user: User) {
-    console.log("sosio oijzodij")
-      this.deleteUserDialog = true;
-      this.user = { ...user };
+  deleteSingleObject(singleObject: User) {
+      this.flagSingleObjectDeleteDialog = true;
+      this.singleObject = { ...singleObject };
   }
 
   confirmDelete() {
-    this.userService.deleteUser( this.user.id ).subscribe( data => {
+    this.userService.delete( this.singleObject.id ).subscribe( data => {
         console.log("soidsoi oikjfvqz")
-      this.deleteUserDialog = false;
-      this.users = this.users.filter(val => val.id !== this.user.id);
+      this.flagSingleObjectDeleteDialog = false;
+      this.multipleObjects = this.multipleObjects.filter(val => val.id !== this.singleObject.id);
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateur supprimé', life: 3000 });
-      this.user = {
+      this.singleObject = {
         id: '',
         nom: '',
         prenom: '',
@@ -168,19 +168,19 @@ export class UserComponent implements OnInit {
     })
   }
 
-  deleteSelectedUsers() {
-      this.deleteUsersDialog = true;
-  }
+  // deleteSelectedUsers() {
+  //     this.deleteUsersDialog = true;
+  // }
 
-  confirmDeleteSelected() {
-      this.deleteUsersDialog = false;
-      this.users = this.users.filter(val => !this.selectedUsers.includes(val));
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateurs supprimé', life: 3000 });
-      this.selectedUsers = [];
-  }
+  // confirmDeleteSelected() {
+  //     this.deleteUsersDialog = false;
+  //     this.multipleObjects = this.multipleObjects.filter(val => !this.selectedUsers.includes(val));
+  //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Utilisateurs supprimé', life: 3000 });
+  //     this.selectedUsers = [];
+  // }
 
-  editUser(user: User) {
-      this.user = { ...user };
-      this.userDialog = true;
+  editSingleObject(singleObject: User) {
+      this.singleObject = { ...singleObject };
+      this.flagSingleObjectDialog = true;
   }
 }

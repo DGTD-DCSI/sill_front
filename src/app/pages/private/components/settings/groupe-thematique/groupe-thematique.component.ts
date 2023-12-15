@@ -12,9 +12,9 @@ import { GroupeThematiqueService } from 'src/app/pages/shared/service/groupeThem
 })
 export class GroupeThematiqueComponent implements OnInit {
 
-  groupeThematiques: GroupeThematique[] = [];
+  multipleObjects: GroupeThematique[] = [];
 
-  groupeThematique: GroupeThematique = {
+  singleObject: GroupeThematique = {
     'id': '',
     'code': '',
     'libelle': '',
@@ -24,19 +24,15 @@ export class GroupeThematiqueComponent implements OnInit {
 
   submitted: boolean = false;
 
-  deleteGroupeThematiqueDialog: boolean = false;
+  flagSingleObjectDeleteDialog: boolean = false;
 
-  groupeThematiqueDialog: boolean = false;
-
-  selectedGroupeThematiques: GroupeThematique[] = [];
-
-  deleteGroupeThematiquesDialog: boolean = false;
+  flagSingleObjectDialog: boolean = false;
 
   constructor( private messageService: MessageService, private groupeThematiqueService: GroupeThematiqueService ) { }
 
   ngOnInit(): void {
-    this.groupeThematiqueService.getGroupeThematiques().subscribe((data) => {
-      this.groupeThematiques = data;
+    this.groupeThematiqueService.read().subscribe((data) => {
+      this.multipleObjects = data;
       console.log("doi")
       console.log(data)
     });
@@ -48,56 +44,56 @@ export class GroupeThematiqueComponent implements OnInit {
     ];  
   }
 
-  deleteSelectedGroupeThematiques() {
-    this.deleteGroupeThematiquesDialog = true;
-  }
+  // deleteSelectedGroupeThematiques() {
+  //   this.deleteGroupeThematiquesDialog = true;
+  // }
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
   openNew() {
-      this.groupeThematique ={
+      this.singleObject ={
         id: '',
         code: '',
         libelle: '',
       };
       this.submitted = false;
-      this.groupeThematiqueDialog = true;
+      this.flagSingleObjectDialog = true;
   }
 
-  editGroupeThematique(groupeThematique: GroupeThematique) {
-      this.groupeThematique = { ...groupeThematique };
-      this.groupeThematiqueDialog = true;
+  editSingleObject(singleObject: GroupeThematique) {
+      this.singleObject = { ...singleObject };
+      this.flagSingleObjectDialog = true;
   }
 
   hideDialog() {
-      this.groupeThematiqueDialog = false;
+      this.flagSingleObjectDialog = false;
       this.submitted = false;
   }
 
-  saveGroupeThematique() {
+  saveSingleObject() {
       this.submitted = true;
 
-      if (this.groupeThematique.code?.trim()) {
-          if (this.groupeThematique.id) {
+      if (this.singleObject.code?.trim()) {
+          if (this.singleObject.id) {
               // @ts-ignore
-              this.groupeThematiqueService.saveGroupeThematique( this.groupeThematique ).subscribe( data => {
-                this.groupeThematiques[this.findIndexById(this.groupeThematique.id)] = this.groupeThematique;
+              this.groupeThematiqueService.create( this.singleObject ).subscribe( data => {
+                this.multipleObjects[this.findIndexById(this.singleObject.id)] = this.singleObject;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Données Groupe Thématique mis-à-jour', life: 3000 }); 
               })
           } else {
-                this.groupeThematiqueService.saveGroupeThematique( this.groupeThematique ).subscribe( data => {
-                  this.groupeThematique = data;
-                  this.groupeThematiques.push(this.groupeThematique);
+                this.groupeThematiqueService.create( this.singleObject ).subscribe( data => {
+                  this.singleObject = data;
+                  this.multipleObjects.push(this.singleObject);
                   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Groupe Thématique ajouté', life: 3000 });
                 })
 
           }
 
-          this.groupeThematiques = [...this.groupeThematiques];
-          this.groupeThematiqueDialog = false;
-          this.groupeThematique = {
+          this.multipleObjects = [...this.multipleObjects];
+          this.flagSingleObjectDialog = false;
+          this.singleObject = {
             'id': '',
             'code': '',
             'libelle': '',
@@ -107,8 +103,8 @@ export class GroupeThematiqueComponent implements OnInit {
 
   findIndexById(id: string): number {
       let index = -1;
-      for (let i = 0; i < this.groupeThematiques.length; i++) {
-          if (this.groupeThematiques[i].id === id) {
+      for (let i = 0; i < this.multipleObjects.length; i++) {
+          if (this.multipleObjects[i].id === id) {
               index = i;
               break;
           }
@@ -118,16 +114,18 @@ export class GroupeThematiqueComponent implements OnInit {
   }
 
   deleteGroupeThematique(groupeThematique: GroupeThematique) {
-      this.deleteGroupeThematiqueDialog = true;
-      this.groupeThematique = { ...groupeThematique };
+      this.flagSingleObjectDeleteDialog = true;
+      this.singleObject = { ...groupeThematique };
   }
 
   confirmDelete() {
-    this.groupeThematiqueService.deleteGroupeThematique( this.groupeThematique.id ).subscribe( data => {
-      this.deleteGroupeThematiqueDialog = false;
-      this.groupeThematiques = this.groupeThematiques.filter(val => val.id !== this.groupeThematique.id);
+    console.log("avant")
+    this.groupeThematiqueService.delete( this.singleObject ).subscribe( data => {
+      console.log("après")
+      this.flagSingleObjectDeleteDialog = false;
+      this.multipleObjects = this.multipleObjects.filter(val => val.id !== this.singleObject.id);
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Groupe thématique supprimé', life: 3000 });
-      this.groupeThematique = {
+      this.singleObject = {
         'id': '',
         'code': '',
         'libelle': '',

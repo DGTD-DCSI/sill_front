@@ -16,7 +16,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="users" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nom','prenom', 'login', 'isAdmin','isActif']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedUsers" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="multipleObjects" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nom','prenom', 'login', 'isAdmin','isActif']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="single" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Gestion des utilisateurs</h5>
@@ -40,40 +40,40 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-user>
+                <ng-template pTemplate="body" let-singleObject>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="user"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="singleObject"></p-tableCheckbox>
                         </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Nom</span>
-                            {{ user.nom }}
+                            {{ singleObject.nom }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Prenom(s)</span>
-                            {{ user.prenom }}
+                            {{ singleObject.prenom }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Identifiant</span>
-                            {{ user.login }}
+                            {{ singleObject.login }}
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Est Admin</span>
-                            {{ user.isAdmin }}
+                            {{ singleObject.isAdmin }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Est Actif</span>
-                            {{ user.isActif }}
+                            {{ singleObject.isActif }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Groupe thématique</span>
-                            <ng-template ngFor let-item [ngForOf]="user.groupeThematiques" let-i="index">
+                            <ng-template ngFor let-item [ngForOf]="singleObject.groupeThematiques" let-i="index">
                                 <p-chip label="{{ item.libelle }}"></p-chip>
                             </ng-template>
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editSingleObject(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteSingleObject(singleObject)"></button>
                             </div>
                         </td>
                     </tr>
@@ -81,50 +81,50 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Editer utilisateur" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="flagSingleObjectDialog" [style]="{width: '450px'}" header="Editer utilisateur" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
+                    <div class="field">
+                        <label for="groupeThematiques">Groupe thématique</label>
+                        <p-multiSelect [options]="groupeThematiques" [(ngModel)]="singleObject.groupeThematiques" placeholder="Veuillez choisir les groupes thématiques" optionLabel="libelle" display="chip" [showClear]="true"></p-multiSelect>
+                    </div>
                     <label for="nom">Nom</label>
-                    <input type="text" pInputText id="nom" [(ngModel)]="user.nom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.nom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.nom">Veuillez saisir le nom.</small>
+                    <input type="text" pInputText id="nom" [(ngModel)]="singleObject.nom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.nom}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.nom">Veuillez saisir le nom.</small>
                 </div>
                 <div class="field">
                     <label for="prenom">Prenom(s)</label>
-                    <input type="text" pInputText id="prenom" [(ngModel)]="user.prenom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.prenom}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.prenom">Veuillez saisir le(s) prénom(s).</small>
+                    <input type="text" pInputText id="prenom" [(ngModel)]="singleObject.prenom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.prenom}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.prenom">Veuillez saisir le(s) prénom(s).</small>
                 </div>
                 <div class="field">
                     <label for="login">Identifiant</label>
-                    <input type="text" pInputText id="login" [(ngModel)]="user.login" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.login}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.login">Veuillez saisir le login.</small>
+                    <input type="text" pInputText id="login" [(ngModel)]="singleObject.login" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.login}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !singleObject.login">Veuillez saisir le login.</small>
                 </div>
                 <div class="field">
                     <label for="isAdmin">Est admin</label>
-                    <p-inputSwitch [(ngModel)]="user.isAdmin"></p-inputSwitch>
+                    <p-inputSwitch [(ngModel)]="singleObject.isAdmin"></p-inputSwitch>
                 </div>
                 <div class="field">
                     <label for="isActif">Est Actif</label>
-                    <p-inputSwitch [(ngModel)]="user.isActif"></p-inputSwitch>
-                </div>
-                <div class="field">
-                    <label for="groupeThematiques">Groupe thématique</label>
-                    <p-multiSelect [options]="groupeThematiques" [(ngModel)]="user.groupeThematiques" placeholder="Veuillez choisir les groupes thématiques" optionLabel="libelle" display="chip" [showClear]="true"></p-multiSelect>
+                    <p-inputSwitch [(ngModel)]="singleObject.isActif"></p-inputSwitch>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveSingleObject()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteUserDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="flagSingleObjectDeleteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="user">Veuillez confirmer la suppression de l'utilisateur <b>{{user.login}}</b>?</span>
+                <span *ngIf="singleObject">Veuillez confirmer la suppression de l'utilisateur <b>{{singleObject.login}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="deleteUserDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="flagSingleObjectDeleteDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Oui" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
