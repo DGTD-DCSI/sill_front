@@ -30,6 +30,7 @@ import { CategorieComponent } from './components/settings/categorie/categorie.co
 import { TabViewModule } from 'primeng/tabview';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CalendarModule } from 'primeng/calendar';
+import { EditeurComponent } from './components/settings/editeur/editeur.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { CalendarModule } from 'primeng/calendar';
     CategorieComponent,
     GroupeThematiqueComponent,
     LogicielComponent,
+    EditeurComponent,
   ],
   imports: [
     CommonModule,
@@ -76,6 +78,7 @@ import { CalendarModule } from 'primeng/calendar';
       { path: 'settings/groupes-thematiques', component: GroupeThematiqueComponent },
       { path: 'settings/logiciels', component: LogicielComponent },
       { path: 'settings/categories', component: CategorieComponent },
+      { path: 'settings/editeurs', component: EditeurComponent },
     ])
   ]
 })

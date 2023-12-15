@@ -44,6 +44,8 @@ export class CategorieComponent implements OnInit {
           this.multipleObjects = data.result;
 
           this.categoriesMeres = data.result;
+         // console.log(data.result);
+          
         }
        
           
@@ -99,7 +101,6 @@ saveSingleObject() {
               this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Catégorie mise-à-jour', life: 3000 });
             })
           
-          
         } 
         
         else {
@@ -119,8 +120,6 @@ saveSingleObject() {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Catégorie ajouté', life: 3000 });
           },  
           );
-
-         // this.selectedCategorieMere = null;
 
         }
 

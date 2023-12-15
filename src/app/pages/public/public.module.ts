@@ -7,7 +7,6 @@ import { DividerModule } from 'primeng/divider';
 import { ChartModule } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
-import { ListComponent } from './components/list/list.component';
 import { FormsModule } from '@angular/forms';
 import { DataViewModule } from 'primeng/dataview';
 import { PickListModule } from 'primeng/picklist';
@@ -17,11 +16,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
 
 
-
 @NgModule({
   declarations: [
     LandingComponent,
-    ListComponent
   ],
   imports: [
     CommonModule,

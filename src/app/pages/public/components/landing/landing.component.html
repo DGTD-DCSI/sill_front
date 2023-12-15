@@ -1,10 +1,10 @@
 <div class="surface-0 flex justify-content-center">
-    <div id="home" class="landing-wrapper overflow-hidden">
+    <div id="home" class="landing-wrapper overflow-hidden w-full">
         <div
             class="py-4 px-4 mx-0 md:mx-6 lg:mx-8 lg:px-8 flex align-items-center justify-content-between relative lg:static mb-3">
             <a class="flex align-items-center" href="#">
-                <!-- 
-                    <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg"
+                <!--
+                <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg"
                     alt="Sakai Logo" height="50" class="mr-0 lg:mr-2"><span
                     class="text-900 font-medium text-2xl line-height-3 mr-8">SAKAI</span>
                 -->
@@ -24,10 +24,9 @@
                     <li>
                         <a (click)="router.navigate(['/landing'], {fragment: 'home'})" pRipple
                             class="flex m-0 md:ml-5 px-0 py-3 text-900 font-medium line-height-3">
-                            <span>Accueil</span>
+                            <span>Home</span>
                         </a>
                     </li>
-                    
                     <li>
                         <a (click)="router.navigate(['/landing'], {fragment: 'features'})" pRipple
                             class="flex m-0 md:ml-5 px-0 py-3 text-900 font-medium line-height-3">
@@ -51,22 +50,24 @@
                 <div
                     class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0">
                     <button (click)="btnLogin();" pButton pRipple label="Se connecter"
+                
                         class="p-button-text p-button-rounded border-none font-light line-height-2 text-blue-500"></button>
-                    <!-- 
-                        <button (click)="btnRegister();" pButton pRipple label="Register" class="p-button-rounded border-none ml-5 font-light line-height-2 bg-blue-500 text-white"></button> 
+                    <!--
+                        <button pButton pRipple label="Register"
+                        class="p-button-rounded border-none ml-5 font-light line-height-2 bg-blue-500 text-white"></button>
                     -->
                 </div>
             </div>
         </div>
 
-        <div id="hero" style="display: none !important;" class="flex flex-column pt-4 px-4 lg:px-8 overflow-hidden"
+        <div id="hero" class="flex flex-column pt-4 px-4 lg:px-8 overflow-hidden"
             style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, #EEEFAF 0%, #C3E3FA 100%); clip-path: ellipse(150% 87% at 93% 13%);">
             <div class="mx-4 md:mx-8 mt-0 md:mt-4">
                 <!--
                 <h1 class="text-6xl font-bold text-gray-900 line-height-2"><span class="font-light block">Eu sem
                         integer</span>eget magna fermentum</h1>
-                        <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">Sed blandit libero volutpat sed
-                            cras. Fames ac turpis egestas integer. Placerat in egestas erat... </p>
+                <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">Sed blandit libero volutpat sed
+                    cras. Fames ac turpis egestas integer. Placerat in egestas erat... </p>
                 -->
                 <h1 class="text-6xl font-bold text-gray-900 line-height-2"><br>
                     Le Socle Interministeriel des Logiciels
@@ -74,23 +75,140 @@
                 <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">Retrouvez les logiciels
                     libres
                     recommandés au Burkina Faso ... </p>
-
-                <!--    
-                    <button pButton pRipple type="button" label="Get Started"
+                <!--
+                <button pButton pRipple type="button" label="Get Started"
                     class="p-button-rounded text-xl border-none mt-3 bg-blue-500 font-normal line-height-3 px-3 text-white"></button>
                 -->
             </div>
             <div class="flex justify-content-center md:justify-content-end">
-                <img src="assets/demo/images/landing/caroussel.png" alt="Caroussel Image" class="w-5 md:w-auto"
-                    style="width: 35% !important;">
+
+                <img src="assets/demo/images/landing/caroussel.png" alt="Caroussel Image" class="w-9 md:w-auto">
                 <!--
-                    <img src="assets/demo/images/landing/screen-1.png" alt="Hero Image" class="w-9 md:w-auto">
+                <img src="assets/demo/images/landing/screen-1.png" alt="Hero Image" class="w-9 md:w-auto">
                 -->
             </div>
         </div>
+        <div class="flex-none"></div>
 
         <div id="features" class="py-4 px-4 lg:px-8 mt-5 mx-0 lg:mx-8">
-            <app-list></app-list>
+            <div class="grid">
+                <div class="col-12">
+                    <div class="card">
+                        <h5>Liste des logiciels</h5>
+
+                        <p-dataView #dv [value]="logiciels" [paginator]="true" [rows]="6" filterBy="libelle"
+                            [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+                            <ng-template pTemplate="header">
+                                <div class="flex flex-column md:flex-row md:justify-content-between gap-2">
+                                    <p-dropdown [options]="sortOptions" placeholder="Trier"
+                                        (onChange)="onSortChange($event)"></p-dropdown>
+
+                                    <span class="p-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <input type="search" pInputText placeholder="Rechercher"
+                                            (input)="onFilter(dv, $event)">
+                                    </span>
+                                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                                </div>
+                            </ng-template>
+                            <!--
+                            <ng-template let-product pTemplate="listItem">
+                                <div class="col-12">
+                                    <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                                        <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name"
+                                            class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+                                        <div
+                                            class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                                            <div class="font-bold text-2xl">{{product.name}}</div>
+                                            <div class="mb-2">{{product.description}}</div>
+                                            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"
+                                                styleClass="mb-2"></p-rating>
+                                            <div class="flex align-items-center mt-2">
+                                                <i class="pi pi-tag mr-2"></i>
+                                                <span class="font-semibold">{{product.category}}</span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                                            <span
+                                                class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">${{product.price}}</span>
+                                            <p-button icon="pi pi-shopping-cart" label="Add to Cart"
+                                                [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"
+                                                styleClass="mb-2 p-button-sm"></p-button>
+                                            <span
+                                                [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        -->
+                            <ng-template let-logiciel pTemplate="gridItem">
+                                <div class="col-12 md:col-4 border-green-900 shadow-1 ">
+                                    <a href="#" class="text-color">
+                                        <div class="card m-3 border-1 surface-border">
+                                            <div
+                                                class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+                                                <div class="flex align-items-center">
+                                                    <!--<i class="pi pi-tag mr-2"></i>-->
+                                                    <p class="text-center">
+                                                        <span class=" font-semibold bg-orange-200 border-round px-2">{{
+                                                            logiciel.lastVersion?.licence?.libelle
+                                                            }}</span>
+                                                        <br>
+                                                        <span class="font-semibold bg-blue-200 border-round px-2">{{
+                                                            logiciel.editeur?.libelle
+                                                            }}</span>
+                                                    </p>
+                                                </div>
+                                                <span class="font-semibold bg-yellow-200 border-round px-2">{{
+                                                    logiciel?.categorie?.libelle }}</span>
+
+                                                <!--
+                                            <span
+                                                [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
+                                            -->
+                                            </div>
+                                            <div class="flex flex-column align-items-center text-center mb-3">
+                                                <img width="200" height="200" [src]="logiciel.logoUrl"
+                                                    [alt]="logiciel.libelle"
+                                                    class="border-round p-1 w-9 shadow-none my-3 mx-0" />
+                                                <div class="text-2xl font-bold text-green-500">{{ logiciel.libelle }}
+                                                </div>
+                                                <div class="mb-3" title="{{ logiciel.description }}">{{
+                                                    logiciel.description |
+                                                    slice:O:100}}</div>
+                                                <!--
+                                            <p-rating [ngModel]="product.rating" [readonly]="true"
+                                                [cancel]="false"></p-rating>
+                                                -->
+                                            </div>
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="text-2xl font-semibold"> {{
+                                                    logiciel.lastVersion?.libelle
+                                                    }} <em class="text-xs bg-green-100 border-round px-2">{{
+                                                        logiciel.lastVersion?.datePublication
+                                                        | date }}</em>
+                                                </span>
+                                                <!--<p-chip label="Apple" class="bg-green-500" icon="pi pi-apple">ivi
+                                                </p-chip>-->
+
+                                                <a [href]="logiciel.telechargementUrl" target="_blank"><p-button
+                                                        icon="pi pi-download" label="Telecharger"
+                                                        class="p-button-text p-button-rounded"></p-button></a>
+                                                <!--
+                                            <p-button icon="pi pi-shopping-cart"
+                                                [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>
+                                                -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </ng-template>
+                        </p-dataView>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
