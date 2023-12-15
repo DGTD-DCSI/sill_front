@@ -82,7 +82,7 @@ export class LogicielComponent implements OnInit {
           this.categoriesList = data.result;
         }
     });
-    this.editeurService.read().subscribe((data) => {
+    this.editeurService.getAllEditeurs().subscribe((data) => {
       if( data.code == 200 ) {
         this.editeursList = data.result;
       }

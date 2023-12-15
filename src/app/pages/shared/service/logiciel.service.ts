@@ -23,6 +23,9 @@ export class LogicielService {
   read(): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels' );
   }
+  getLogiciels(): Observable<Response<Logiciel[]>> {
+    return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels');
+  }
 
   update(object: Logiciel): Observable<Response<Logiciel>> {
     return this.httpClient.put<Response<Logiciel>>(
@@ -35,6 +38,10 @@ export class LogicielService {
     return this.httpClient.delete<any>(
       environment.baseUrl + '/logiciels/delete/' + object_id
     );
+  }
+
+  getLogicielDownload(logiciel_id: string): Observable<any> {
+    return (this.httpClient.get<any>(environment.baseUrl + ('/logiciels/download/' + logiciel_id)));
   }
 
 
