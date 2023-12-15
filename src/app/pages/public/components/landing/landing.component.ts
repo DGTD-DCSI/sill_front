@@ -5,6 +5,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DataView } from 'primeng/dataview';
 import { Logiciel } from 'src/app/pages/shared/models/logiciel.model';
 import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-landing',
@@ -60,8 +61,8 @@ export class LandingComponent implements OnInit {
       { name: 'Rome', code: 'RM' }];
 
     this.sortOptions = [
-      { label: 'Price High to Low', value: '!price' },
-      { label: 'Price Low to High', value: 'price' }
+      { label: 'Tri par libellé', value: 'libelle' },
+      { label: 'Tri par categorie', value: 'categorie' }
     ];
   }
 
@@ -89,10 +90,16 @@ export class LandingComponent implements OnInit {
     dv.filter((event.target as HTMLInputElement).value);
   }
 
-  download(id: string) {
-    console.log(this.logicielService.getLogicielDownload(id));
-    console.log(this.logicielService.getLogicielDownload(id).subscribe(data => data));
-    return this.logicielService.getLogicielDownload(id).subscribe(data => data);
-  }
+  /*
+    download(id: string) {
+      //window.location.href =
+      event.stopPropagation();
+      this.logicielService.getLogicielDownload(id).pipe()
+      this.logicielService.getLogicielDownload(id).subscribe(data => {
+        console.log(data);
+  
+      });
+    }*/
+
 
 }

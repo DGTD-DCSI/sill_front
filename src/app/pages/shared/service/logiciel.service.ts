@@ -21,7 +21,7 @@ export class LogicielService {
   }
 
   read(): Observable<Response<Logiciel[]>> {
-    return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels' );
+    return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels');
   }
   getLogiciels(): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels');
@@ -39,10 +39,10 @@ export class LogicielService {
       environment.baseUrl + '/logiciels/delete/' + object_id
     );
   }
-
-  getLogicielDownload(logiciel_id: string): Observable<any> {
-    return (this.httpClient.get<any>(environment.baseUrl + ('/logiciels/download/' + logiciel_id)));
-  }
+  /*
+    getLogicielDownload(logiciel_id: string): Observable<any> {
+      return (this.httpClient.get<any>(environment.baseUrl + ('/logiciels/download/' + logiciel_id)));
+    }*/
 
 
   /////////////// other logiciel related models
@@ -55,6 +55,6 @@ export class LogicielService {
   }
 
   readVersion(object: Logiciel): Observable<Response<Logiciel[]>> {
-    return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels/' + object.id + '/versions' );
+    return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels/' + object.id + '/versions');
   }
 }

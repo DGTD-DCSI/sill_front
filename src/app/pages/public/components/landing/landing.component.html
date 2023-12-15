@@ -50,7 +50,6 @@
                 <div
                     class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0">
                     <button (click)="btnLogin();" pButton pRipple label="Se connecter"
-                
                         class="p-button-text p-button-rounded border-none font-light line-height-2 text-blue-500"></button>
                     <!--
                         <button pButton pRipple label="Register"
@@ -75,6 +74,18 @@
                 <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">Retrouvez les logiciels
                     libres
                     recommandés au Burkina Faso ... </p>
+                <p>
+                    Le SILL est une liste de logiciels libres significativement utilisés dans des structures de la
+                    fonction publique et qui forment un catalogue de référence pour les usagers de l’administration
+                </p>
+                <p>
+                    La liste des logiciels du SILL est publiée dans un site web de l’administration publique. Le Site
+                    web permet l’identification rapide d’un logiciel, la dernière version stable recommandée et un
+                    historique des anciennes versions stables (toute administration est libre d’utiliser une version
+                    plus récente). Il est donc possible de consulter l’état d’avancement du statut d’un logiciel du
+                    SILL, selon qu’il est en cours d’observation ou recommandé. Un lien de téléchargement est disponible
+                    sur le site.
+                </p>
                 <!--
                 <button pButton pRipple type="button" label="Get Started"
                     class="p-button-rounded text-xl border-none mt-3 bg-blue-500 font-normal line-height-3 px-3 text-white"></button>
@@ -108,7 +119,7 @@
                                         <input type="search" pInputText placeholder="Rechercher"
                                             (input)="onFilter(dv, $event)">
                                     </span>
-                                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                                    <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
                                 </div>
                             </ng-template>
                             <!--
@@ -160,7 +171,8 @@
                                                             }}</span>
                                                     </p>
                                                 </div>
-                                                <span class="font-semibold bg-yellow-200 border-round px-2">{{
+                                                <span
+                                                    class="font-semibold bg-yellow-200 border-round px-2 text-overflow">{{
                                                     logiciel?.categorie?.libelle }}</span>
 
                                                 <!--
@@ -174,9 +186,9 @@
                                                     class="border-round p-1 w-9 shadow-none my-3 mx-0" />
                                                 <div class="text-2xl font-bold text-green-500">{{ logiciel.libelle }}
                                                 </div>
-                                                <div class="mb-3" title="{{ logiciel.description }}">{{
+                                                <div class="mb-3 " heigth="10" title="{{ logiciel.description }}">{{
                                                     logiciel.description |
-                                                    slice:100}}</div>
+                                                    slice:0:30}}</div>
                                                 <!--
                                             <p-rating [ngModel]="product.rating" [readonly]="true"
                                                 [cancel]="false"></p-rating>
@@ -192,7 +204,7 @@
                                                 <!--<p-chip label="Apple" class="bg-green-500" icon="pi pi-apple">ivi
                                                 </p-chip>-->
 
-                                                <a [href]="download(logiciel.id)" target="_blank">
+                                                <a [href]="logiciel.telechargementUrl" target="_blank">
                                                     <p-button icon="pi pi-download" label="Telecharger"
                                                         class="p-button-text p-button-rounded"
                                                         badge="{{ logiciel.nbTelechargement }}">
