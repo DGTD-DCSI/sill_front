@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,8 +22,10 @@ export class DashboardComponent implements OnInit {
   chartOptions: any;
 
   subscription!: Subscription;
+  nbrelogiciels!: number;
+  sommelogiciels!: number;
 
-  constructor(private productService: ProductService, public layoutService: LayoutService) {
+  constructor(private productService: ProductService, public layoutService: LayoutService, private logicielService:LogicielService) {
       this.subscription = this.layoutService.configUpdate$.subscribe(() => {
           this.initChart();
       });
@@ -31,6 +34,17 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
       this.initChart();
       this.productService.getProductsSmall().then(data => this.products = data);
+      this.logicielService.getLogiciels().subscribe((data)=>{
+        if (data.code == 200){
+            this.nbrelogiciels = data.result.length;
+            // this.sommelogiciels = data.result.reduce(function(acc, element){
+            //     return acc + element.nbTelechargement;
+            // });
+
+
+        }
+      });
+      
 
       this.items = [
           { label: 'Add New', icon: 'pi pi-fw pi-plus' },
