@@ -5,7 +5,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Ajouter un editeur" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewEditeur()"></button>
+                        <button pButton pRipple label="Ajouter un compabibilites" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewCompatibilite()"></button>
                         <!-- <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button> -->
                     </div>
                 </ng-template>
@@ -16,11 +16,11 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="editeurs" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','createdDate', 'lastUpdatedDate', 'url',]" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedEditeurs" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="compatibilites" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','createdDate', 'lastUpdatedDate', 'architecture','langue',]" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedCompatibilites" selectionMode="multiple" [rowHover]="true" dataKey="id">
 
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Gestion des editeurs</h5>
+                        <h5 class="m-0">Gestion de la compatibilité des OS</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Rechercher..."  class="w-full sm:w-auto"/>
@@ -35,19 +35,20 @@
                         <th pSortableColumn="libelle"  >Libellé<p-sortIcon field="libelle" ></p-sortIcon></th>
                         <!-- <th pSortableColumn="createdDate">Date de création<p-sortIcon field="createdDate"></p-sortIcon></th>
                         <th pSortableColumn="lastUpdatedDate">Date de la dernière mise à jour<p-sortIcon field="lastUpdatedDate"></p-sortIcon></th> -->
-                        <th pSortableColumn="url" >URL<p-sortIcon field="url" ></p-sortIcon></th>
+                        <th pSortableColumn="architecture" >Architecture<p-sortIcon field="architecture" ></p-sortIcon></th>
+                        <th pSortableColumn="langue" >Langue<p-sortIcon field="langue" ></p-sortIcon></th>
                         <th pSortableColumn="action" >Actions<p-sortIcon field="action" ></p-sortIcon></th>
                         <!-- <th> </th> -->
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-editeur>
+                <ng-template pTemplate="body" let-compatibilite>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="editeur"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="compatibilites"></p-tableCheckbox>
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Libellé</span>
-                            {{ editeur.libelle }}
+                            {{ compatibilite.libelle }}
                         </td>
                         <!-- <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Date de création</span>
@@ -58,13 +59,13 @@
                             {{ editeur.lastUpdatedDate }}
                         </td> -->
                         <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">URL</span>
-                            {{ editeur.url }}
+                            <span class="p-column-title">Architecture</span>
+                            {{compatibilite.architecture }}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEditeur(editeur)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"(click)="deleteEditeur(editeur)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCompatibilite(compatibilite)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"(click)="deleteCompatibilite(compatibilite)"></button>
                             </div>
                         </td>
                     </tr>
@@ -72,27 +73,27 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="editeurDialog" [style]="{width: '450px'}" header="Editer un editeur" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="compatibiliteDialog" [style]="{width: '450px'}" header="Editer la compatibilite d'un OS" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="libelle">Libellé</label>
-                    <input type="text" pInputText id="libelle" [(ngModel)]="editeur.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.libelle}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.libelle">Veuillez saisir le libellé.</small>
+                    <input type="text" pInputText id="libelle" [(ngModel)]="compatibilite.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !compatibilite.libelle}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !compatibilite.libelle">Veuillez saisir le libellé.</small>
                 </div>
                 <!-- <div class="field">
                     <label for="createdDate">Date de création</label>
                     <input type="date" pInputText id="createdDate" [(ngModel)]="editeur.createdDate" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.createdDate}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.createdDate">Veuillez saisir la date de creation.</small>
-                </div>
+                </div>-->
                 <div class="field">
-                    <label for="login">Date de la dernière mise à jour</label>
-                    <input type="date" pInputText id="lastUpdatedDate" [(ngModel)]="editeur.lastUpdatedDate" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.lastUpdatedDate}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.lastUpdatedDate">Veuillez saisir la dernier date de modification.</small>
-                </div> -->
+                    <label for="architecture">Architecture</label>
+                    <input type="texte" pInputText id="architecture" [(ngModel)]="compatibilite.architecture" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !compatibilite.architecture}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !compatibilite.architecture">Veuillez saisir l'architecture.</small>
+                </div> 
                 <div class="field">
-                    <label for="url">URL</label>
-                    <input type="text" pInputText id="url" [(ngModel)]="editeur.url" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !editeur.url}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !editeur.url">Veuillez saisir l'url.</small>
+                    <label for="langue">langue</label>
+                    <input type="text" pInputText id="url" [(ngModel)]="compatibilite.langue" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !compatibilite.langue}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !compatibilite.langue">Veuillez saisir langue.</small>
                 </div>
                 <!-- <div class="field">
                     <label for="delete">Est Supprimer</label>
@@ -102,28 +103,28 @@
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveEditeur()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCompatibilite()"></button>
             </ng-template>
         </p-dialog>
  
-        <p-dialog [(visible)]="deleteEditeurDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteCompatibiliteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="editeur">Veuillez confirmer la suppression de l'utilisateur <b>{{editeur.libelle}}</b>?</span>
+                <span *ngIf="compatibilite">Veuillez confirmer la suppression de l'utilisateur <b>{{compatibilite.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEditeurDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCompatibiliteDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog> 
 
-<!-- <p-dialog [(visible)]="deleteEditeurDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+<!-- <p-dialog [(visible)]="deleteCompatibiliteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span>Êtes-vous sûr de vouloir supprimer l’éditeur sélectionné ?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEditeurDialog = false"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCompatibiliteDialog = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>  -->

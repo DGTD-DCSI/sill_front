@@ -81,6 +81,7 @@ import { CompatibiliteOsComponent } from './components/settings/compatibilite-os
       { path: 'settings/logiciels', component: LogicielComponent },
       { path: 'settings/categories', component: CategorieComponent },
       { path: 'settings/editeurs', component: EditeurComponent },
+      { path: 'settings/compatibilites_os', component: CompatibiliteOsComponent },
     ])
   ]
 })
