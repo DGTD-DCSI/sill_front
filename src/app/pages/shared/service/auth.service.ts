@@ -10,7 +10,7 @@ import { LoginResponse } from '../models/response/login.response.model';
 })
 export class AuthService {
   constructor( private httpClient: HttpClient ) {}
-
+ 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(
       environment.baseUrl + '/auth/login',

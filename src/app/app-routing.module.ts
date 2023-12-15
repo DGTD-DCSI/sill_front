@@ -19,11 +19,13 @@ import { AuthGuardGuard } from './auth-guard.guard';
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
+                    
                 ]
             },
             { path: '', loadChildren: () => import('./pages/public/public.module').then(m => m.PublicModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'auth', loadChildren: () => import('./pages/public/components/auth/auth.module').then(m => m.AuthModule) },
+            //{ path: 'pages', loadChildren: () => import('./pages/private/private.module').then(m => m.PrivateModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
