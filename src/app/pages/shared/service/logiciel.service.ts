@@ -65,21 +65,21 @@ export class LogicielService {
 
   retirer(object: Logiciel): Observable<Response<Logiciel>> {
     return this.httpClient.put<Response<Logiciel>>(
-      environment.baseUrl + '/logiciels/' + object.id,
+      environment.baseUrl + '/logiciels/' + object.id + '/etat/retirer',
       object
     );
   }
 
   rejeter(object: Logiciel): Observable<Response<Logiciel>> {
     return this.httpClient.put<Response<Logiciel>>(
-      environment.baseUrl + '/logiciels/' + object.id,
+      environment.baseUrl + '/logiciels/' + object.id + '/etat/rejetect',
       object
     );
   }
 
   accepter(object: Logiciel): Observable<Response<Logiciel>> {
     return this.httpClient.put<Response<Logiciel>>(
-      environment.baseUrl + '/logiciels/' + object.id,
+      environment.baseUrl + '/logiciels/' + object.id + '/etat/accept',
       object
     );
   }

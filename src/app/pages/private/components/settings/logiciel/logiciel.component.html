@@ -255,5 +255,40 @@
                 <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
             </ng-template>
         </p-dialog>
+
+        <p-dialog [(visible)]="acceptDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="singleObject">Veuillez confirmer l'aceptation du logiciel <b>{{singleObject.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="acceptDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="accepterConfirm()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="rejetDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="singleObject">Veuillez confirmer le rejet du logiciel <b>{{singleObject.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="rejetDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="rejeterConfirm()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="retraitDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="singleObject">Veuillez confirmer le retrait du logiciel <b>{{singleObject.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="retraitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="retirerConfirm()"></button>
+            </ng-template>
+        </p-dialog>
     </div>
 </div>

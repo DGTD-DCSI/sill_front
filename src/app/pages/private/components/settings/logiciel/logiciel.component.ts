@@ -85,6 +85,9 @@ export class LogicielComponent implements OnInit {
   flagSingleObjectNewVersion: boolean = false;
   flagSingleObjectDialog: boolean = false;
   commentDialog: boolean = false;
+  rejetDialog: boolean = false;
+  retraitDialog: boolean = false;
+  acceptDialog: boolean = false;
   commentViewDialog: boolean = false;
   flagSingleObjectDeleteDialog: boolean = false;
   submitted: boolean = false;
@@ -205,6 +208,9 @@ export class LogicielComponent implements OnInit {
     this.flagSingleObjectDialog = false;
     this.flagSingleObjectNewVersion = false;
     this.commentDialog = false;
+    this.rejetDialog = false;
+    this.retraitDialog = false;
+    this.acceptDialog = false;
     this.commentViewDialog = false;
       this.submitted = false;
   }
@@ -373,17 +379,46 @@ openCommentaireView(singleObject) {
       }
 
   }
-
+      
   rejeter(singleObject: Logiciel){
-
+    this.rejetDialog = true;
+    this.singleObject = { ...singleObject };
   }
 
   retirer(singleObject: Logiciel){
-
+    this.retraitDialog = true;
+    this.singleObject = { ...singleObject };
   }
 
   accepter(singleObject: Logiciel){
+    this.acceptDialog = true;
+    this.singleObject = { ...singleObject };
+  }
 
+  rejeterConfirm(){
+    this.logicielService.rejeter( this.singleObject ).subscribe( data => {
+    this.rejetDialog = false;
+    this.multipleObjects = this.multipleObjects.filter(val => val.id !== this.singleObject.id); 
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logiciel rejeté', life: 3000 });
+    })
+  }
+
+  retirerConfirm(){
+    this.logicielService.retirer( this.singleObject).subscribe( data => {
+    this.retraitDialog = false;
+    this.multipleObjects = this.multipleObjects.filter(val => val.id !== this.singleObject.id); 
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logiciel retiré', life: 3000 });
+    })
+    
+  }
+
+  accepterConfirm(){
+    this.logicielService.accepter( this.singleObject ).subscribe( data => {
+    this.acceptDialog = false;
+    this.multipleObjects = this.multipleObjects.filter(val => val.id !== this.singleObject.id); 
+    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Logiciel accepté', life: 3000 });
+    })
+    
   }
 
 }
