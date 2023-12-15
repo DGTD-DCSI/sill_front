@@ -49,8 +49,7 @@
                 </ul>
                 <div
                     class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0">
-                    <button (click)="btnLogin();" pButton pRipple label="Se connecter"
-                
+                    <button pButton pRipple label="Login"
                         class="p-button-text p-button-rounded border-none font-light line-height-2 text-blue-500"></button>
                     <!--
                         <button pButton pRipple label="Register"
@@ -75,6 +74,18 @@
                 <p class="font-normal text-2xl line-height-3 md:mt-3 text-gray-700">Retrouvez les logiciels
                     libres
                     recommandés au Burkina Faso ... </p>
+                <p>
+                    Le SILL est une liste de logiciels libres significativement utilisés dans des structures de la
+                    fonction publique et qui forment un catalogue de référence pour les usagers de l’administration
+                </p>
+                <p>
+                    La liste des logiciels du SILL est publiée dans un site web de l’administration publique. Le Site
+                    web permet l’identification rapide d’un logiciel, la dernière version stable recommandée et un
+                    historique des anciennes versions stables (toute administration est libre d’utiliser une version
+                    plus récente). Il est donc possible de consulter l’état d’avancement du statut d’un logiciel du
+                    SILL, selon qu’il est en cours d’observation ou recommandé. Un lien de téléchargement est disponible
+                    sur le site.
+                </p>
                 <!--
                 <button pButton pRipple type="button" label="Get Started"
                     class="p-button-rounded text-xl border-none mt-3 bg-blue-500 font-normal line-height-3 px-3 text-white"></button>
@@ -160,7 +171,8 @@
                                                             }}</span>
                                                     </p>
                                                 </div>
-                                                <span class="font-semibold bg-yellow-200 border-round px-2">{{
+                                                <span
+                                                    class="font-semibold bg-yellow-200 border-round px-2 text-overflow">{{
                                                     logiciel?.categorie?.libelle }}</span>
 
                                                 <!--
