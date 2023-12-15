@@ -25,7 +25,7 @@ export class LogicielService {
   }
 
   readPrivate(): Observable<Response<Logiciel[]>> {
-    return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels/groupe-thematique' );
+    return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels/groupe-thematiques' );
   }
   getLogiciels(): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels');

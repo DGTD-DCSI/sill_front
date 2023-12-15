@@ -70,17 +70,14 @@ export class LogicielComponent implements OnInit {
     {label: 'Rejeter la proposition', icon: 'pi pi-undo', command: () => {
         this.rejeter(this.singleObject);
     }},
-    {label: 'Retirer le logiciel', icon: 'pi pi-remove', command: () => {
+    {label: 'Retirer le logiciel', icon: 'pi pi-times', command: () => {
       this.retirer(this.singleObject);
       }},
       {label: 'Accepter la proposition', icon: 'pi pi-check', command: () => {
         this.accepter(this.singleObject);
       }},
       {separator: true},
-      
-      {label: 'Commenter', icon: 'pi pi-times', command: () => {
-        this.commenter();
-      }}
+ 
   ];*/
 
   logid: null;
@@ -124,6 +121,8 @@ export class LogicielComponent implements OnInit {
     this.logicielService.readPrivate().subscribe((data) => {
         if( data.code == 200 ) {
           this.multipleObjects = data.result;
+        console.log(this.multipleObjects, "logiciels");
+
         }
     });
     this.categorieService.getCategories().subscribe((data) => {
