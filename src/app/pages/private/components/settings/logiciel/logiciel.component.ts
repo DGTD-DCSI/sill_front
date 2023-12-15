@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
+import { CommentaireService } from 'src/app/pages/shared/service/commentaires.service';
 import { MessageService } from 'primeng/api';
 import { Logiciel } from 'src/app/pages/shared/models/logiciel.model';
 import { Table } from 'primeng/table';
@@ -8,9 +9,12 @@ import { EditeurService } from 'src/app/pages/shared/service/editeur.service';
 import { GroupeThematiqueService } from 'src/app/pages/shared/service/groupeThematique.service';
 import { VersionService } from 'src/app/pages/shared/service/version.service';
 import { Categorie } from 'src/app/pages/shared/models/categorie.model';
+import { Commentaire } from 'src/app/pages/shared/models/commentaire.model';
 import { Editeur } from 'src/app/pages/shared/models/editeur.model';
 import { GroupeThematique } from 'src/app/pages/shared/models/groupeThematique.model';
 import { Version } from 'src/app/pages/shared/models/version.model';
+// import { TooltipModule } from 'primeng/tooltip';
+import {SplitButtonModule} from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-logiciel',
@@ -20,6 +24,12 @@ import { Version } from 'src/app/pages/shared/models/version.model';
 })
 export class LogicielComponent implements OnInit {
   multipleObjects: Logiciel[] = [];
+  commentaires: Commentaire[] = [];
+  commentaire: Commentaire = {
+    id: null,
+    libelle: '',
+    // logicielId: null,
+  };
   pVersion: Version = {
     id: '',
     libelle: '',
@@ -56,8 +66,29 @@ export class LogicielComponent implements OnInit {
   selectedLogiciels: Logiciel[] = [];
   cols = [];
 
+  /*itemsDecision  = [
+    {label: 'Rejeter la proposition', icon: 'pi pi-undo', command: () => {
+        this.rejeter(this.singleObject);
+    }},
+    {label: 'Retirer le logiciel', icon: 'pi pi-remove', command: () => {
+      this.retirer(this.singleObject);
+      }},
+      {label: 'Accepter la proposition', icon: 'pi pi-check', command: () => {
+        this.accepter(this.singleObject);
+      }},
+      {separator: true},
+      
+      {label: 'Commenter', icon: 'pi pi-times', command: () => {
+        this.commenter();
+      }}
+  ];*/
+
+  logid: null;
+
   flagSingleObjectNewVersion: boolean = false;
   flagSingleObjectDialog: boolean = false;
+  commentDialog: boolean = false;
+  commentViewDialog: boolean = false;
   flagSingleObjectDeleteDialog: boolean = false;
   submitted: boolean = false;
 
@@ -69,10 +100,28 @@ export class LogicielComponent implements OnInit {
   constructor( 
     private messageService: MessageService, private logicielService: LogicielService, 
     private categorieService: CategorieService, private editeurService: EditeurService,
-    private groupeThematiqueService: GroupeThematiqueService, private versionService: VersionService ) { }
+    private groupeThematiqueService: GroupeThematiqueService, private versionService: VersionService,
+    private commentaireService: CommentaireService) { }
 
   ngOnInit(): void {
-    this.logicielService.read().subscribe((data) => {
+    /*this.itemsDecision = [
+      {label: 'Rejeter la proposition', icon: 'pi pi-undo', command: () => {
+          this.rejeter(this.singleObject);
+      },
+      {label: 'Retirer le logiciel', icon: 'pi pi-remove', command: () => {
+        this.retirer(this.singleObject);
+        },
+        {label: 'Accepter la proposition', icon: 'pi pi-check', command: () => {
+          this.accepter(this.singleObject);
+        },
+        {separator: true},
+        
+        {label: 'Commenter', icon: 'pi pi-times', command: () => {
+          this.commenter();
+        },
+
+    ];*/
+    this.logicielService.readPrivate().subscribe((data) => {
         if( data.code == 200 ) {
           this.multipleObjects = data.result;
         }
@@ -156,6 +205,8 @@ export class LogicielComponent implements OnInit {
   hideDialog() {
     this.flagSingleObjectDialog = false;
     this.flagSingleObjectNewVersion = false;
+    this.commentDialog = false;
+    this.commentViewDialog = false;
       this.submitted = false;
   }
 
@@ -284,6 +335,56 @@ export class LogicielComponent implements OnInit {
         versions: [],
       };
     })
+  }
+
+
+  openCommentaire(singleObject) {
+    this.commentDialog = true;
+    this.commentaire = {
+      id: null,
+      libelle: '',
+      // logicielId: null,
+    };
+    this.logid = singleObject;
+
+    this.submitted = false;
+}
+
+openCommentaireView(singleObject) {
+  this.commentViewDialog = true;
+
+  this.commentaireService.getCommentaires(singleObject).subscribe((data) => {
+    if( data.code == 200 ) {
+      this.commentaires = data.result;
+      console.log(this.commentaires, "Commentaire");
+    }
+  });
+}
+
+
+  commenter( ){
+    this.submitted = true;
+      if (this.commentaire.libelle?.trim()) {
+            this.commentaireService.create( this.commentaire, this.logid  ).subscribe( data => {
+                this.commentaire = data.result;
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Commenataire ajouté', life: 3000 });
+            })
+          this.commentDialog = false;
+
+      }
+
+  }
+
+  rejeter(singleObject: Logiciel){
+
+  }
+
+  retirer(singleObject: Logiciel){
+
+  }
+
+  accepter(singleObject: Logiciel){
+
   }
 
 }

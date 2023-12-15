@@ -23,6 +23,10 @@ export class LogicielService {
   read(): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels' );
   }
+
+  readPrivate(): Observable<Response<Logiciel[]>> {
+    return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels/groupe-thematique' );
+  }
   getLogiciels(): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>(environment.baseUrl + '/logiciels');
   }
@@ -56,5 +60,27 @@ export class LogicielService {
 
   readVersion(object: Logiciel): Observable<Response<Logiciel[]>> {
     return this.httpClient.get<Response<Logiciel[]>>( environment.baseUrl + '/logiciels/' + object.id + '/versions' );
+  }
+
+
+  retirer(object: Logiciel): Observable<Response<Logiciel>> {
+    return this.httpClient.put<Response<Logiciel>>(
+      environment.baseUrl + '/logiciels/' + object.id,
+      object
+    );
+  }
+
+  rejeter(object: Logiciel): Observable<Response<Logiciel>> {
+    return this.httpClient.put<Response<Logiciel>>(
+      environment.baseUrl + '/logiciels/' + object.id,
+      object
+    );
+  }
+
+  accepter(object: Logiciel): Observable<Response<Logiciel>> {
+    return this.httpClient.put<Response<Logiciel>>(
+      environment.baseUrl + '/logiciels/' + object.id,
+      object
+    );
   }
 }
