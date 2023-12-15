@@ -38,9 +38,9 @@ UpdateCompatibilite(compatibilite: Compatibilite): Observable<Response<Compatibi
     return this.httpClient.delete<Response<Compatibilite[]>>(
       environment.baseUrl + '/compatibiliteOS/delete/' + id    );
   }
-  getCompatibiliteActives(): Observable<Response<Compatibilite[]>> {
-    return this.httpClient.get<Response<Compatibilite[]>>(environment.baseUrl + "/compatibiliteOS/active");
-  }
+//   getCompatibiliteActives(): Observable<Response<Compatibilite[]>> {
+//     return this.httpClient.get<Response<Compatibilite[]>>(environment.baseUrl + "/compatibiliteOS/active");
+//   }
 
 
 

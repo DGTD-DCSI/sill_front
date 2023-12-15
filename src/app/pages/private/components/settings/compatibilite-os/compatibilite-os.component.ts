@@ -71,9 +71,9 @@ export class CompatibiliteOsComponent implements OnInit {
 
     this.cols = [
       { field: 'libelle', header: 'Libellé' },
-      { field: 'createdDate', header: 'Date de création' },
-      { field: 'deleted', header: 'Est Supprimer' },
-     { field: 'lastUpdatedDate', header: 'Date de la dernière mise à jour' },
+    //   { field: 'createdDate', header: 'Date de création' },
+    //   { field: 'deleted', header: 'Est Supprimer' },
+    //  { field: 'lastUpdatedDate', header: 'Date de la dernière mise à jour' },
       { field: 'architecture', header: 'Architecture' },
       { field: 'langue', header: 'Langue' },
     ];
