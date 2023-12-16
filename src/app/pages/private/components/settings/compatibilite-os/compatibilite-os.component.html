@@ -50,6 +50,14 @@
                             <span class="p-column-title">Libellé</span>
                             {{ compatibilite.libelle }}
                         </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Architecture</span>
+                            {{compatibilite.architecture }}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Langue</span>
+                            {{compatibilite.langue }}
+                        </td>
                         <!-- <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Date de création</span>
                             {{ editeur.createdDate }}
@@ -58,10 +66,7 @@
                             <span class="p-column-title">Date de la dernière mise à jour</span>
                             {{ editeur.lastUpdatedDate }}
                         </td> -->
-                        <td style="width:14%; min-width:8rem;">
-                            <span class="p-column-title">Architecture</span>
-                            {{compatibilite.architecture }}
-                        </td>
+                        
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCompatibilite(compatibilite)"></button>

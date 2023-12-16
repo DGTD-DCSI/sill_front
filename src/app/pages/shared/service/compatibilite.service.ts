@@ -16,17 +16,17 @@ export class CompatibiliteService {
     return this.httpClient.get<Response<Compatibilite[]>>(`${environment.baseUrl + '/compatibiliteOS'}/${id}`);
   }
 
-  getAllCompatibilites(): Observable<Response<Compatibilite[]>> {
-    return this.httpClient.get<Response<Compatibilite[]>>(environment.baseUrl + '/compatibiliteOS');
+  getAllCompatibilites(): Observable<Compatibilite[]> {
+    return this.httpClient.get<Compatibilite[]>(environment.baseUrl + '/compatibiliteOS');
   }
 
   
-  createOrUpdateCompatibilite(compatibilite: Compatibilite): Observable<Response<Compatibilite>> {
-    return this.httpClient.post<Response<Compatibilite>>(environment.baseUrl + '/compatibiliteOS', compatibilite );
+  createOrUpdateCompatibilite(compatibilite: Compatibilite): Observable<Compatibilite> {
+    return this.httpClient.post<Compatibilite>(environment.baseUrl + '/compatibiliteOS', compatibilite );
   }
 
-UpdateCompatibilite(compatibilite: Compatibilite): Observable<Response<Compatibilite>> {
-  return this.httpClient.put<Response<Compatibilite>>(
+UpdateCompatibilite(compatibilite: Compatibilite): Observable<Compatibilite> {
+  return this.httpClient.put<Compatibilite>(
     environment.baseUrl + '/compatibiliteOS/update' + compatibilite.id,
     compatibilite
   );

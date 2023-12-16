@@ -60,13 +60,14 @@ export class CompatibiliteOsComponent implements OnInit {
  compatibiliteDialog: boolean = false;
   ngOnInit(): void {
     this.compatibiliteService.getAllCompatibilites().subscribe((data) => {
-      console.log("un")
-        if( data.code == 200 ) {
-          this.compatibilites = data.result;
-          console.log("deux")
-          console.log(this.compatibilites)
+     // console.log("un")
+      //console.log(data)
+        if( data ) {
+          this.compatibilites = data;
+        //  console.log("deux")
+          //console.log(this.compatibilites)
         }
-        console.log("trois")
+        //console.log("trois")
     });
 
     this.cols = [
@@ -110,6 +111,8 @@ saveCompatibilite() {
       if (this.compatibilite.id) {
           // Mise à jour de 
             console.log('poiuytrew');
+            console.log(this.compatibilite);
+            
           this.compatibiliteService.UpdateCompatibilite(this.compatibilite).subscribe(data => {
             console.log('gggggggggg');
               console.log(data);
@@ -125,10 +128,11 @@ saveCompatibilite() {
               this.resetCompatibilite();
           });
       } else {
-          // Création d'un nouvel éditeur
+          // Création d'une nouvelle compatibilité
           this.compatibiliteService.createOrUpdateCompatibilite(this.compatibilite).subscribe(data => {
-              console.log(data);
-              this.compatibilite = data.result;
+              // console.log(data);
+              this.compatibilite =  data;
+           //   console.log(data);
               this.compatibilites.push(this.compatibilite);
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Compatibilite OS ajouté', life: 3000 });
 
