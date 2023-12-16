@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
 import { RatingModule } from 'primeng/rating';
+import {CardModule} from 'primeng/card';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { RatingModule } from 'primeng/rating';
     InputTextModule,
     DropdownModule,
     BadgeModule,
+    CardModule,
     RatingModule,
     RouterModule.forChild([
       { path: '', component: LandingComponent }
