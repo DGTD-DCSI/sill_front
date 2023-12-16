@@ -32,6 +32,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CalendarModule } from 'primeng/calendar';
 import { EditeurComponent } from './components/settings/editeur/editeur.component';
+import { CompatibiliteOsComponent } from './components/settings/compatibilite-os/compatibilite-os.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
     GroupeThematiqueComponent,
     LogicielComponent,
     EditeurComponent,
+    CompatibiliteOsComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +83,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
       { path: 'settings/logiciels', component: LogicielComponent },
       { path: 'settings/categories', component: CategorieComponent },
       { path: 'settings/editeurs', component: EditeurComponent },
+      { path: 'settings/compatibilites_os', component: CompatibiliteOsComponent },
     ])
   ]
 })
