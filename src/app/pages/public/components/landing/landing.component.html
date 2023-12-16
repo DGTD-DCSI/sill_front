@@ -24,11 +24,10 @@
 
                         </ul>
 
-                            <div
-                                class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0">
+                            <!-- <div class="flex justify-content-between lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0"> -->
                                 <button (click)="btnLogin();" pButton pRipple label="Se connecter"
                                     class="p-button-text p-button-rounded border-none font-light line-height-2 text-blue-500"></button>
-                            </div>
+                            <!-- </div> -->
                        
                     </div>
                 </div>
@@ -183,3 +182,55 @@ style="background: linear-gradient(0deg, rgba(245, 3, 19, 0.2), rgba(64, 187, 19
 
 
 <!-- footer -->
+<p-panel header="Coonectez-vous avec nous sur les réseaux sociaux:" align="center" >
+    <ng-template pTemplate="icons">
+            <button pButton class="p-panel-header-icon p-link" >
+                <a href="https://www.facebook.com/www.mdenp.gov.bf/?locale=fr_FR" target="_blank"><span class="pi pi-facebook"></span></a>
+            </button>
+            <!-- <button pButton class="p-panel-header-icon p-link" >
+                <span class="pi pi-twitter"></span>
+            </button>
+            <button pButton class="p-panel-header-icon p-link" >
+                <span class="pi pi-google"></span>
+            </button>
+            <button pButton class="p-panel-header-icon p-link" >
+                <span class="pi pi-instagram"></span>
+            </button>
+            <button pButton class="p-panel-header-icon p-link" >
+                <span class="pi pi-linkedin"></span>
+            </button> -->
+            <!-- <p-menu #menu id="config_menu"  [popup]="true"></p-menu> -->
+    </ng-template>
+    <div class="flex align-items-center justify-content-between">
+        <div>
+            <h5>MTDPCE</h5> <br>
+            <span class="block">Ministère de la Transistion Digitale, des Postes et des Communications Electroniques.</span>
+        </div>
+    
+        <p-divider layout="vertical" ></p-divider>
+
+        <div>
+            <h5>Annuaire officiel</h5><br>
+            <a href="https://www.mdenp.gov.bf/">Le MTDPCE</a><br>
+            <a href="http://servicepublic.gov.bf/">Le service public</a><br>
+*        </div>
+        
+        <p-divider layout="vertical" ></p-divider>
+
+        <div class="text-left">
+            <h5>Contact</h5><br>
+            <span class="pi pi-home"></span> <label for="">Ouagadougou, Koulouba</label><br>
+            <span class="pi pi-at"></span><label for="">dgtic.mdenp@tic.gov.bf</label><br>
+            <span class="pi pi-phone"></span><label for="">2549002002</label>
+        </div>
+        
+    </div>
+    
+    <ng-template pTemplate="footer" class="align-items-center text-center">
+        <span class="align-items-center text-center">&copy; {{current_year}} Copyright MTDPCE</span>
+    </ng-template>
+</p-panel>
+
+<!-- <p-card footer="footer">
+     <span align="center"> Copyright</span>
+</p-card> -->

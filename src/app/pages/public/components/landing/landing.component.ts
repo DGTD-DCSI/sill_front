@@ -29,6 +29,9 @@ export class LandingComponent implements OnInit {
 
   orderCities: any[] = [];
 
+
+  current_year = new Date().getFullYear();
+
   constructor(public layoutService: LayoutService, public router: Router, private logicielService: LogicielService) { }
 
   ngOnInit(): void {
