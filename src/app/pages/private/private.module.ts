@@ -20,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import {SplitButtonModule} from 'primeng/splitbutton';
 import { UserComponent } from './components/settings/user/user.component';
 import { ChipModule } from 'primeng/chip';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -63,6 +64,7 @@ import { EditeurComponent } from './components/settings/editeur/editeur.componen
     InputTextareaModule,
     DropdownModule,
     RadioButtonModule,
+    SplitButtonModule,
     InputNumberModule,
     DialogModule,
     ChipModule,

@@ -34,11 +34,12 @@
                         </th>
                         <th pSortableColumn="libelle">Libellé<p-sortIcon field="nom"></p-sortIcon></th>
                         <th pSortableColumn="description">Description<p-sortIcon field="prenom"></p-sortIcon></th>
-                        <th pSortableColumn="isActif">Est actif<p-sortIcon field="login"></p-sortIcon></th>
+                        <th pSortableColumn="isActif">Statut<p-sortIcon field="login"></p-sortIcon></th>
                         <th pSortableColumn="logoUrl">Logo<p-sortIcon field="isAdmin"></p-sortIcon></th>
                         <th pSortableColumn="categorie">Catégorie<p-sortIcon field="isActif"></p-sortIcon></th>
                         <th pSortableColumn="editeur">Editeur<p-sortIcon field="groupeThematiques"></p-sortIcon></th>
-                        <th pSortableColumn="groupeThematique">Groupe thématique<p-sortIcon field="isAdmin"></p-sortIcon></th>
+                        <!-- <th pSortableColumn="groupeThematique">Groupe thématique<p-sortIcon field="isAdmin"></p-sortIcon></th> -->
+                        <th pSortableColumn="groupeThematique">Etat<p-sortIcon field="isAdmin"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -56,8 +57,9 @@
                             {{ singleObject.description }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Est actif</span>
-                            {{ singleObject.isActif }}
+                            <span class="p-column-title">Statut</span>
+                            <span *ngIf="singleObject.isActif, else elseBlock" class="font-semibold bg-green-200 border-round px-2">Actif</span>
+                            <ng-template #elseBlock class="font-semibold bg-red-200 border-round px-2">Inactif</ng-template>                            
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Logo</span>
@@ -72,13 +74,23 @@
                             {{ singleObject.editeur?.libelle || '' }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Groupe thématique</span>
-                            {{ singleObject.groupeThematique?.libelle || '' }}
+                            <span class="p-column-title">Etat</span>
+                            <span class="font-semibold bg-blue-200 border-round px-2" *ngIf="singleObject.etat == 'NOUVEAU' ">{{ singleObject.etat }}</span>
+                            <span class="font-semibold bg-green-200 border-round px-2" *ngIf="singleObject.etat =='ACCEPTER'">{{ singleObject.etat }}</span>
+                            <span class="font-semibold bg-yellow-200 border-round px-2" *ngIf="singleObject.etat =='REJETER'">{{ singleObject.etat }}</span>
+                            <span class="font-semibold bg-red-200 border-round px-2" *ngIf="singleObject.etat =='RETIRER'">{{ singleObject.etat }}</span>
+                            
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editSingleObject(singleObject)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteSingleObject(singleObject)"></button>
+                                <button *ngIf="singleObject.etat == 'NOUVEAU' && singleObject.etat != 'REJETER'" pButton pRipple icon="pi pi-undo" pTooltip="Rejeter la proposition" class="p-button-rounded p-button-warning mr-2" (click)="rejeter(singleObject)"></button>
+                                <button *ngIf="singleObject.etat == 'ACCEPTER' && singleObject.etat != 'RETIRER'" pButton pRipple icon="pi pi-times" pTooltip="Retirer le logiciel" class="p-button-rounded p-button-danger mr-2" (click)="retirer(singleObject)"></button>
+                                <button *ngIf="singleObject.etat != 'ACCEPTER' && singleObject.etat != 'RETIRER'" pButton pRipple icon="pi pi-check" pTooltip="Accepter la proposition" class="p-button-rounded p-button-success mr-2" (click)="accepter(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-comments" pTooltip="Commenter" class="p-button-rounded p-button-primary mr-2" (click)="openCommentaire(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-eye" pTooltip="Voir les commenataires" class="p-button-rounded p-button-secondary mr-2" (click)="openCommentaireView(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" pTooltip="Mettre à jour" class="p-button-rounded p-button-success mr-2" (click)="editSingleObject(singleObject)"></button>
+                                <button pButton pRipple icon="pi pi-trash" pTooltip="Supprimer" class="p-button-rounded p-button-warning" (click)="deleteSingleObject(singleObject)"></button>
+                                <!-- <p-splitButton label="Décision"  [model]="itemsDecision" styleClass="p-button-secondary p-button-rounded p-button-outlined ml-2"></p-splitButton> -->
                             </div>
                         </td>
                     </tr>
@@ -129,7 +141,7 @@
                             <input type="text" pInputText id="communauteUrl" [(ngModel)]="singleObject.communauteUrl" autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !singleObject.communauteUrl}"/>
                         </div>
                         <div class="field">
-                            <label for="isActif">Est actif</label>
+                            <label for="isActif">Statut</label>
                             <p-inputSwitch [(ngModel)]="singleObject.isActif"></p-inputSwitch>
                         </div>
                         <div class="field">
@@ -216,15 +228,67 @@
             </ng-template>
         </p-dialog>
 
-        <!-- <p-dialog [(visible)]="deleteUsersDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+
+        <p-dialog [(visible)]="commentDialog" [style]="{width: '550px'}" header="Ajouter un commentaire" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="description">Votre commentaire</label>
+                    <textarea id="libelle" pInputTextarea [(ngModel)]="commentaire.libelle" rows="6" cols="20"></textarea>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Commenter" icon="pi pi-check" class="p-button-text" (click)="commenter()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="commentViewDialog" [style]="{width: '550px'}" header="Commentaires" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content" >
+                <div class="field" *ngFor="let comment of commentaires">
+                    <p> {{comment.libelle}}</p><br><hr>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="acceptDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected products?</span>
+                <span *ngIf="singleObject">Veuillez confirmer l'aceptation du logiciel <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsersDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="acceptDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="accepterConfirm()"></button>
             </ng-template>
-        </p-dialog> -->
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="rejetDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="singleObject">Veuillez confirmer le rejet du logiciel <b>{{singleObject.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="rejetDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="rejeterConfirm()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="retraitDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="singleObject">Veuillez confirmer le retrait du logiciel <b>{{singleObject.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="retraitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="retirerConfirm()"></button>
+            </ng-template>
+        </p-dialog>
     </div>
 </div>

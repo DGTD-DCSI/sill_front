@@ -11,7 +11,7 @@ export interface Version {
     dateInscription: string;
     taille: number;
     lienDoc: string;
-    formatTelechargement: any;
+    formatTelechargement: any[];
     prerequis: any;
     langue: any;
     localUrl: any;
