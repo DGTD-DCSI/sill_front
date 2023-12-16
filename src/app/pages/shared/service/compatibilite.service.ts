@@ -27,7 +27,7 @@ export class CompatibiliteService {
 
 UpdateCompatibilite(compatibilite: Compatibilite): Observable<Compatibilite> {
   return this.httpClient.put<Compatibilite>(
-    environment.baseUrl + '/compatibiliteOS/update' + compatibilite.id,
+    environment.baseUrl + '/compatibiliteOS/update', 
     compatibilite
   );
 }
