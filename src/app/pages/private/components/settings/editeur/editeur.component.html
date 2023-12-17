@@ -112,8 +112,8 @@
                 <span *ngIf="editeur">Veuillez confirmer la suppression de l'utilisateur <b>{{editeur.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteEditeurDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="deleteEditeurDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog> 
 

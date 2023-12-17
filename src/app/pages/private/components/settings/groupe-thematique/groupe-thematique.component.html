@@ -85,8 +85,8 @@
                 <span *ngIf="singleObject">Veuillez confirmer la suppression du groupe thématique <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="flagSingleObjectDeleteDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Oui" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="flagSingleObjectDeleteDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 

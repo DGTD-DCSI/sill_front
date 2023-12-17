@@ -286,8 +286,8 @@
                 <span *ngIf="singleObject">Veuillez confirmer le retrait du logiciel <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="retraitDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="retirerConfirm()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="retraitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="retirerConfirm()"></button>
             </ng-template>
         </p-dialog>
     </div>

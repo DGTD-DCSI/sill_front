@@ -98,8 +98,8 @@
                 <span *ngIf="singleObject">Veuillez confirmer la suppression de la catégorie <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="flagSingleObjectDeleteDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="flagSingleObjectDeleteDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
