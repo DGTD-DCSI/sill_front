@@ -217,14 +217,14 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="flagSingleObjectDeleteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="flagSingleObjectDeleteDialog" header="Confirmation de suppression" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="singleObject">Veuillez confirmer la suppression du logiciel <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="flagSingleObjectDeleteDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="flagSingleObjectDeleteDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
@@ -280,14 +280,14 @@
         </p-dialog>
 
 
-        <p-dialog [(visible)]="retraitDialog" header="Confirmirmation de suppression" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="retraitDialog" header="Confirmirmation de retrait" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="singleObject">Veuillez confirmer le retrait du logiciel <b>{{singleObject.libelle}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Annuler" (click)="retraitDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Supprimer définitivement" (click)="retirerConfirm()"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Retirer" (click)="retirerConfirm()"></button>
             </ng-template>
         </p-dialog>
     </div>
