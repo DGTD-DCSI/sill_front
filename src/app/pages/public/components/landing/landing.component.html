@@ -23,6 +23,60 @@
 
 
 
+
+<div class="surface-section px-4 py-8 md:px-6 lg:px-8 text-center">
+    <div class="mb-3 font-bold text-3xl">
+        <span class="text-900">Socle Interministériel des </span>
+        <span class="text-blue-600">Logiciels Libres</span>
+    </div>
+    <div class="text-700 mb-6">Le socle ... est une initiative ......(suite de la description) </div>
+    <div class="grid">
+        <div class="col-12 md:col-4 mb-4 px-5">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-desktop text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Classification</div>
+            <span class="text-700 line-height-3">Les otuils sont catégorisés et classé selon des groupes thématiques spécifiques </span>
+        </div>
+        <div class="col-12 md:col-4 mb-4 px-5">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-lock text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Sécurité</div>
+            <span class="text-700 line-height-3">Risus nec feugiat in fermentum posuere urna nec. Posuere sollicitudin aliquam ultrices sagittis.</span>
+        </div>
+        <div class="col-12 md:col-4 mb-4 px-5">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-check-circle text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Utilisabilité</div>
+            <span class="text-700 line-height-3">Les outils sont déjà  prêts à l'emploi</span>
+        </div>
+        <div class="col-12 md:col-4 mb-4 px-5">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-globe text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Accessibilité</div>
+            <span class="text-700 line-height-3">Les outils sont disponibles et accessibles partout</span>
+        </div>
+        <div class="col-12 md:col-4 mb-4 px-5">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-github text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Liberté</div>
+            <span class="text-700 line-height-3">Tous les outils proposés sont libres de droits et gratuits </span>
+        </div>
+        <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
+            <span class="p-3 shadow-2 mb-3 inline-block surface-card" style="border-radius: 10px">
+                <i class="pi pi-shield text-4xl text-blue-500"></i>
+            </span>
+            <div class="text-900 text-xl mb-3 font-medium">Vérification</div>
+            <span class="text-700 line-height-3">Les outils ont été vérifié et validés en amont pour des groupes thématiques</span>
+        </div>
+    </div>
+</div>
+
+
 <div id="features" class="py-4 px-4 lg:px-8 mt-5 mx-0 lg:mx-8">
     <div class="grid">
         <div class="col-12">
@@ -107,15 +161,16 @@
 
 
 <!-- footer -->
-<p-panel header="Coonectez-vous avec nous sur les réseaux sociaux:" align="center" >
+<p-panel header="Coonectez-vous avec nous sur les réseaux sociaux:" align="center">
     <ng-template pTemplate="icons">
             <button pButton class="p-panel-header-icon p-link" >
                 <a href="https://www.facebook.com/www.mdenp.gov.bf/?locale=fr_FR" target="_blank"><span class="pi pi-facebook"></span></a>
             </button>
     </ng-template>
     <div class="flex align-items-center justify-content-between">
+        
         <div>
-            <h5>MTDPCE</h5> <br>
+            <img src="https://www.mdenp.gov.bf/fileadmin/user_upload/armoirie.png" alt="MTDPCE" width="200" height="200">
             <span class="block">Ministère de la Transistion Digitale, des Postes et des Communications Electroniques.</span>
         </div>
     
@@ -123,22 +178,26 @@
 
         <div>
             <h5>Annuaire officiel</h5><br>
-            <a href="https://www.mdenp.gov.bf/">Le MTDPCE</a><br>
-            <a href="http://servicepublic.gov.bf/">Le service public</a><br>
-*        </div>
+            <a href="https://www.mdenp.gov.bf/" target="_blank">Le MTDPCE</a><br>
+            <a href="http://servicepublic.gov.bf/" target="_blank">Le service public</a><br>
+        </div>
         
         <p-divider layout="vertical" ></p-divider>
 
         <div class="text-left">
-            <h5>Contact</h5><br>
-            <span class="pi pi-home"></span> <label for="">Ouagadougou, Koulouba</label><br>
-            <span class="pi pi-at"></span><label for="">dgtic.mdenp@tic.gov.bf</label><br>
-            <span class="pi pi-phone"></span><label for="">2549002002</label>
+            <h5>Contacts</h5><br>
+            <span><i class="pi pi-home"></i> Ouagadougou, Koulouba</span><br>
+            <span><i class="pi pi-at"></i> dgtic.mdenp@tic.gov.bf</span><br>
+            <span><i class="pi pi-phone"></i> 25490202</span>
         </div>
         
     </div>
-    
-    <ng-template pTemplate="footer" class="align-items-center text-center">
-        <span class="align-items-center text-center">&copy; {{current_year}} Copyright MTDPCE</span>
-    </ng-template>
-</p-panel>
+</p-panel> 
+ <!-- Copyright -->
+ <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    &copy; {{current_year}}
+    <a class="text-reset fw-bold" href="https://www.mdenp.gov.bf/accueil" target="_blank">Ministère de la Transition Digitale, des Postes et des Communications Électroniques. </a>
+    Tous droits réservés. 
+  </div>
+  <!-- Copyright -->
+
