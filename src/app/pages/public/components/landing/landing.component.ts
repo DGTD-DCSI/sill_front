@@ -23,6 +23,9 @@ export class LandingComponent implements OnInit {
 
   sortField: string = '';
 
+  detailViewDialog : boolean = false;
+
+
   current_year = new Date().getFullYear();
 
   constructor(public layoutService: LayoutService, public router: Router, private logicielService: LogicielService) { }
@@ -62,6 +65,25 @@ export class LandingComponent implements OnInit {
 
   onFilter(dv: DataView, event: Event) {
     dv.filter((event.target as HTMLInputElement).value);
+  }
+
+  // openCommentaireView(singleObject) {
+  //   this.commentViewDialog = true;
+  
+  //   this.logicielService.getCommentaires(singleObject).subscribe((data) => {
+  //     if( data.code == 200 ) {
+  //       this.commentaires = data.result;
+  //       console.log(this.commentaires, "Commentaire");
+  //     }
+  //   });
+  // }
+
+  openDetail(){
+    this.detailViewDialog = true;
+  }
+
+  hideDialog() {
+    this.detailViewDialog = false;
   }
 
 }
