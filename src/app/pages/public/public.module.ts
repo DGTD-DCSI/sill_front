@@ -16,6 +16,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
 import { RatingModule } from 'primeng/rating';
 import {CardModule} from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import {CardModule} from 'primeng/card';
     InputTextModule,
     DropdownModule,
     BadgeModule,
+    DialogModule,
     CardModule,
     RatingModule,
     RouterModule.forChild([
