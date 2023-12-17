@@ -23,13 +23,6 @@ export class LandingComponent implements OnInit {
 
   sortField: string = '';
 
-  sourceCities: any[] = [];
-
-  targetCities: any[] = [];
-
-  orderCities: any[] = [];
-
-
   current_year = new Date().getFullYear();
 
   constructor(public layoutService: LayoutService, public router: Router, private logicielService: LogicielService) { }
@@ -38,31 +31,9 @@ export class LandingComponent implements OnInit {
     this.logicielService.getLogiciels().subscribe(data => {
       if (data['code'] === 200) {
         this.logiciels = data['result'];
-        console.log('dd');
       }
 
     });
-
-    this.sourceCities = [
-      { name: 'San Francisco', code: 'SF' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Paris', code: 'PRS' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Berlin', code: 'BRL' },
-      { name: 'Barcelona', code: 'BRC' },
-      { name: 'Rome', code: 'RM' }];
-
-    this.targetCities = [];
-
-    this.orderCities = [
-      { name: 'San Francisco', code: 'SF' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Paris', code: 'PRS' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Berlin', code: 'BRL' },
-      { name: 'Barcelona', code: 'BRC' },
-      { name: 'Rome', code: 'RM' }];
-
     this.sortOptions = [
       { label: 'Tri par libellé', value: 'libelle' },
       { label: 'Tri par categorie', value: 'categorie' }
@@ -92,17 +63,5 @@ export class LandingComponent implements OnInit {
   onFilter(dv: DataView, event: Event) {
     dv.filter((event.target as HTMLInputElement).value);
   }
-
-  /*
-    download(id: string) {
-      //window.location.href =
-      event.stopPropagation();
-      this.logicielService.getLogicielDownload(id).pipe()
-      this.logicielService.getLogicielDownload(id).subscribe(data => {
-        console.log(data);
-  
-      });
-    }*/
-
 
 }
