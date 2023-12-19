@@ -17,7 +17,7 @@ import { BadgeModule } from 'primeng/badge';
 import { RatingModule } from 'primeng/rating';
 import {CardModule} from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
-
+import {TabViewModule} from 'primeng/tabview';
 
 
 @NgModule({
@@ -37,6 +37,7 @@ import { DialogModule } from 'primeng/dialog';
     OrderListModule,
     InputTextModule,
     DropdownModule,
+    TabViewModule,
     BadgeModule,
     DialogModule,
     CardModule,
