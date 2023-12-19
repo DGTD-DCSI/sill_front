@@ -106,7 +106,7 @@
 
                     <ng-template let-logiciel pTemplate="gridItem">
                         <div class="col-12 md:col-4 border-green-900 shadow-1 ">
-                            <a href="#" class="text-color" (click)="openDetail()">
+                            <a href="#" class="text-color" (click)="openDetail(logiciel)">
                                 <div class="card m-3 border-1 surface-border">
                                     <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
                                         <div class="flex align-items-center">
@@ -162,9 +162,9 @@
             </div>
         </div>
 
-        <p-dialog [(visible)]="detailViewDialog" [style]="{width: '850px'}" header="Détail du logiciel [x]" [modal]="true">
+        <p-dialog [(visible)]="detailViewDialog" [style]="{width: '850px'}" header="Détail du logiciel {{ singleObject.libelle }}" [modal]="true">
             <ng-template pTemplate="content" >
-                <p>Descriptoon du logiciel avec les autres infoc tels les versions et les nombres de téléchargement</p>
+                <p>{{ singleObject.description }}</p>
             </ng-template>
         
             <ng-template pTemplate="footer">

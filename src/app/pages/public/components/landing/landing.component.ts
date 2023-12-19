@@ -6,6 +6,8 @@ import { DataView } from 'primeng/dataview';
 import { Logiciel } from 'src/app/pages/shared/models/logiciel.model';
 import { LogicielService } from 'src/app/pages/shared/service/logiciel.service';
 import { retry } from 'rxjs';
+import { Version } from 'src/app/pages/shared/models/version.model';
+
 
 @Component({
   selector: 'app-landing',
@@ -16,6 +18,41 @@ export class LandingComponent implements OnInit {
 
   logiciels: Logiciel[] = [];
   logiciel: Logiciel;
+
+  pVersion: Version = {
+    id: '',
+    libelle: '',
+    datePublication: '',
+    licence: null,
+    lien: '',
+    lienCodeSource: '',
+    logo: '',
+    dateInscription: '',
+    taille: 0,
+    lienDoc: '',
+    formatTelechargement: [],
+    prerequis: '',
+    langue: '',
+    localUrl: '',
+    logicielId: '',
+  };
+
+  singleObject: Logiciel = {
+    id: null,
+    libelle: '',
+    description: '',
+    communauteUrl: '',
+    nbTelechargement: 0,
+    isActif: true,
+    logoUrl: '',
+    telechargementUrl: '',
+    categorie: null,
+    etat: null,
+    editeur: null,
+    groupeThematique: null,
+    lastVersion: this.pVersion,
+    versions: [],
+  };
 
   sortOptions: SelectItem[] = [];
 
@@ -78,7 +115,8 @@ export class LandingComponent implements OnInit {
   //   });
   // }
 
-  openDetail(){
+  openDetail(singleObject: Logiciel){
+    this.singleObject = { ...singleObject };
     this.detailViewDialog = true;
   }
 
