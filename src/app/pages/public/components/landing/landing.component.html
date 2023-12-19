@@ -112,10 +112,6 @@
                                         <div class="flex align-items-center">
                                             <!--<i class="pi pi-tag mr-2"></i>-->
                                             <p class="text-center">
-                                                <span class=" font-semibold bg-orange-200 border-round px-2">{{
-                                                    logiciel.lastVersion?.licence?.libelle
-                                                    }}</span>
-                                                <br>
                                                 <span class="font-semibold bg-blue-200 border-round px-2">{{
                                                     logiciel.editeur?.libelle
                                                     }}</span>
@@ -139,15 +135,9 @@
                                         </div>
                                     </div>
                                     <div class="flex align-items-center justify-content-between">
-                                        <span class="text-2xl font-semibold"> {{
-                                            logiciel.lastVersion?.libelle
-                                            }} <em class="text-xs bg-green-100 border-round px-2">{{
-                                                logiciel.lastVersion?.datePublication
-                                                | date }}</em>
-                                        </span>
-
+                                        <button pButton type="button" icon="pi pi-eye" label="Détails" class="p-button-secondary p-button-rounded" (click)="openDetail(logiciel)"></button>
                                         <a [href]="logiciel.telechargementUrl" target="_blank">
-                                            <p-button icon="pi pi-download" label="Telecharger"
+                                            <p-button icon="pi pi-download" label="Télécharger"
                                                 class="p-button-text p-button-rounded"
                                                 badge="{{ logiciel.nbTelechargement }}">
                                                 <!-- <p-badge [value]="logiciel.nbTelechargement" class=""></p-badge> -->
@@ -167,19 +157,56 @@
             <p-tabView styleClass="tabview-custom">
                 <p-tabPanel>
                     <ng-template pTemplate = "header">
-                        <i class="pi pi-info"></i>
-                        <span> Informations générales </span>
+                        <span>Informations générales </span>
                     </ng-template>
+                    <h3>Catégorie: </h3>
+                    <span class="font-semibold px-2 text-overflow">{{
+                        singleObject?.categorie?.libelle }}</span> <br>
+
+                    <h3>Editeur: </h3>
+                    <span class="font-semiboldpx-2">{{
+                        singleObject.editeur?.libelle
+                        }}</span><br>
+
+                    <h3>Description: </h3>
                     <p>{{ singleObject.description }}</p>
+
+                    <h5>Langue: </h5>
+                    <span class="text-xs px-2">{{
+                        singleObject.lastVersion?.langue
+                       }}</span>
+
+                    <h5>Lien du code source: </h5>
+                    <a href="{{
+                        singleObject.lastVersion?.lienCodeSource
+                    }}">{{
+                        singleObject.lastVersion?.lienCodeSource
+                    }}</a>
                 </p-tabPanel>
-                <p-tabPanel header="Header II">
+                <p-tabPanel header="Version">
                     <ng-template pTemplate = "header">
-                        <i class="pi pi-cog"></i>
-                        <span> Version</span>
+                        <span>Version </span>
                     </ng-template>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                        architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-                        voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.</p>
+                    <h3>Version actuelle: </h3>
+                    <span class="text-2xl font-semibold"> {{
+                        singleObject.lastVersion?.libelle
+                        }} 
+                    </span> <br>
+
+                    <h3>Date de publication: </h3>
+                    <span class="text-xs px-2">{{
+                        singleObject.lastVersion?.datePublication
+                        | date }}</span>
+
+                    <h3>Licence: </h3>
+                    <span class="text-xs px-2">{{
+                        singleObject.lastVersion?.licence?.libelle
+                    }}</span>
+
+                    <h3>Taille du fichier: </h3>
+                    <span class="text-xs px-2">{{
+                        singleObject.lastVersion?.taille
+                    }}</span>
                 </p-tabPanel>
             </p-tabView>
         
