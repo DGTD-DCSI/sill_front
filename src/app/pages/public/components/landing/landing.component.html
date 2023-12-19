@@ -113,7 +113,7 @@
                                             <!--<i class="pi pi-tag mr-2"></i>-->
                                             <p class="text-center" *ngIf="logiciel.editeur?.libelle">
                                                 <span class="font-semibold bg-blue-200 border-round px-2">{{
-                                                    logiciel.editeur?.libelle
+                                                    logiciel.editeur?.libelle | uppercase
                                                     }}</span>
                                             </p>
                                         </div>
@@ -198,12 +198,12 @@
                         singleObject.lastVersion?.datePublication
                         | date }}</span>
 
-                    <h3>Licence: </h3>
+                    <h5>Licence: </h5>
                     <span class="text-xs px-2">{{
                         singleObject.lastVersion?.licence?.libelle
                     }}</span>
 
-                    <h3>Taille du fichier: </h3>
+                    <h5>Taille du fichier: </h5>
                     <span class="text-xs px-2">{{
                         singleObject.lastVersion?.taille
                     }}</span>
