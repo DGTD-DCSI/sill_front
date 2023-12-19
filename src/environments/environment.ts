@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://sill.gov.bf/server/',
+  baseUrl: 'https://sill.gov.bf/server',
 
 };
 
